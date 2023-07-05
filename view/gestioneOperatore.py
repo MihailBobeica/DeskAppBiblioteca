@@ -21,20 +21,36 @@ while True:
     if event == sg.WINDOW_CLOSED:
         break
     elif event == 'Inserisci un nuovo operatore':
-        inserisciOperatore = [[sg.Text('Codice fiscale'), sg.Input(key='codiceFiscale')],
-                              [sg.Text('Nome'), sg.Input(key='nome')],
-                              [sg.Text('Cognome'), sg.Input(key='cognome')],
-                              [sg.Text('email'), sg.Input(key='email')],
-                              [sg.Text('Telefono'), sg.Input(key='telefono')],
-                              [sg.Button('Invia')]]
-        window_inserisci_operatore = sg.Window('Inserisci operatore', inserisciOperatore)
+        window_ricerca_operatore = sg.Window('Ricerca operatore', view_ricerca_operatore)
         while True:
-            event2, values2 = window_inserisci_operatore.read()
-            if event2 == sg.WINDOW_CLOSED or event2 == "Chiudi":
+            event9, values9 = window_ricerca_operatore.read()
+            if event9 == sg.WINDOW_CLOSED:
                 break
-            elif event2 == 'Invia':
-                Operatore.Operatore.inserisci_operatore(values2)
-                window_inserisci_operatore.close()
+            elif event9 == 'Cerca':
+                operatore = Operatore.Operatore.ricerca_operatore(str(values9['codiceFiscale']))
+                if operatore:
+                    inserisciOperatore = [[sg.Text("L'operatore è già stato inserito")]]
+                    window_inserisci_operatore = sg.Window('Inserisci operatore', inserisciOperatore)
+                    while True:
+                        event10, values10 = window_inserisci_operatore.read()
+                        if event10 == sg.WINDOW_CLOSED:
+                            break
+                else:
+
+                    inserisciOperatore = [[sg.Text('Codice fiscale'),sg.Input(str(values9['codiceFiscale']), key='codiceFiscale',readonly=True)],
+                                          [sg.Text('Nome'), sg.Input(key='nome')],
+                                          [sg.Text('Cognome'), sg.Input(key='cognome')],
+                                          [sg.Text('email'), sg.Input(key='email')],
+                                          [sg.Text('Telefono'), sg.Input(key='telefono')],
+                                          [sg.Button('Invia')]]
+                    window_inserisci_operatore = sg.Window('Inserisci operatore', inserisciOperatore)
+                    while True:
+                        event2, values2 = window_inserisci_operatore.read()
+                        if event2 == sg.WINDOW_CLOSED:
+                            break
+                        elif event2 == 'Invia':
+                            Operatore.Operatore.inserisci_operatore(values2)
+                            window_inserisci_operatore.close()
 
     elif event == 'Visualizza un operatore':
         window_ricerca_operatore = sg.Window('Ricerca operatore', view_ricerca_operatore)
