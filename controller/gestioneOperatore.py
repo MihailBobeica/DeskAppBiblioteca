@@ -25,7 +25,7 @@ def ricerca_operatore(cf):
 
     return None
 
-
+#da rivedere
 def modifica_operatore(operatore, new_data):
     with open('Operatori.pickle', 'rb') as f:
         objects = []
@@ -65,48 +65,49 @@ def elimina_operatore(operatore):
 
 
 
+def gestione_operatore():
+    while True:
+        event, values = gestioneOperatore.gestioneOperatoreView.view_gestione_operatore()
+        if event == sg.WINDOW_CLOSED:
+            break
+        if event == 'Inserisci un nuovo operatore':
+            value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
+            operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
+            if operatore:
+                gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore_no()
+            else:
+                gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore(value)
 
-while True:
-    event, values = gestioneOperatore.gestioneOperatoreView.view_gestione_operatore()
-    if event == sg.WINDOW_CLOSED:
-        break
-    if event == 'Inserisci un nuovo operatore':
-        value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
-        operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
-        if operatore:
-            gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore_no()
-        else:
-            gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore(value)
+        elif event == 'Visualizza un operatore':
+            value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
+            operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
+            if operatore:
+                gestioneOperatore.gestioneOperatoreView.view_visualizza_operatore(operatore)
+            else:
+                gestioneOperatore.gestioneOperatoreView.view_errore('Operatore non trovato')
 
-    elif event == 'Visualizza un operatore':
-        value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
-        operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
-        if operatore:
-            gestioneOperatore.gestioneOperatoreView.view_visualizza_operatore(operatore)
-        else:
-            gestioneOperatore.gestioneOperatoreView.view_errore('Operatore non trovato')
+        elif event == 'Modifica un operatore':
+            value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
+            operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
+            if operatore:
+                value = gestioneOperatore.gestioneOperatoreView.view_modifica_operatore(operatore)
+                if value[0] == 'Invia':
+                    modifica_operatore(operatore,value[1])
+            else:
+                gestioneOperatore.gestioneOperatoreView.view_errore('Operatore non trovato')
 
-    elif event == 'Modifica un operatore':
-        value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
-        operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
-        if operatore:
-            value = gestioneOperatore.gestioneOperatoreView.view_modifica_operatore(operatore)
-            modifica_operatore(operatore,value[1])
-        else:
-            gestioneOperatore.gestioneOperatoreView.view_errore('Operatore non trovato')
-
-    elif event == 'Elimina un operatore':
-        value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
-        operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
-        if operatore:
-            gestioneOperatore.gestioneOperatoreView.view_errore('Operatore eliminato')
-            elimina_operatore(operatore)
-        else:
-            gestioneOperatore.gestioneOperatoreView.view_errore('Operatore non trovato')
+        elif event == 'Elimina un operatore':
+            value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
+            operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
+            if operatore:
+                gestioneOperatore.gestioneOperatoreView.view_errore('Operatore eliminato')
+                elimina_operatore(operatore)
+            else:
+                gestioneOperatore.gestioneOperatoreView.view_errore('Operatore non trovato')
 
 
 
-
+gestione_operatore()
 
 
 
