@@ -108,7 +108,7 @@ def gestione_operatore():
 
 
 
-gestione_operatore()
+
 
 
 
