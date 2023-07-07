@@ -74,9 +74,10 @@ def gestione_operatore():
             value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()
             operatore = ricerca_operatore(str(value[1]['codiceFiscale']))
             if operatore:
-                gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore_no()
+                gestioneOperatore.gestioneOperatoreView.view_errore('Operatore già inserito')
             else:
-                gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore(value)
+                data = gestioneOperatore.gestioneOperatoreView.view_inserisci_operatore(value)
+                inserisci_operatore(data[1])
 
         elif event == 'Visualizza un operatore':
             value = gestioneOperatore.gestioneOperatoreView.view_ricerca_operatore()

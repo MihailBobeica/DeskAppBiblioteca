@@ -38,15 +38,7 @@ class gestioneOperatoreView:
         window_ricerca_operatore.close()
         return event,values
 
-    def view_inserisci_operatore_no():
-        view_inserisci_operatore_no = [[sg.Text("L'operatore è già stato inserito")]]
-        window_inserisci_operatore_no = sg.Window('Inserisci operatore', view_inserisci_operatore_no)
-        while True:
-            event, values = window_inserisci_operatore_no.read()
-            if event == sg.WINDOW_CLOSED:
-                break
 
-        window_inserisci_operatore_no.close()
 
     def view_inserisci_operatore(value):
         view_inserisci_operatore = [
