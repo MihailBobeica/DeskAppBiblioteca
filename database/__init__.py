@@ -16,8 +16,17 @@ class Utente(Base):
     id = Column(Integer, primary_key=True)
     nome = Column(String)
     cognome = Column(String)
-    matricola = Column(String)
+    username = Column(String)
     password = Column(String)
+
+
+class Libro(Base):
+    __tablename__ = 'libri'
+
+    id = Column(Integer, primary_key=True)
+    titolo = Column(String)
+    autore = Column(String)
+    isbn = Column(String)
 
 
 Base.metadata.drop_all(db_engine)    # cancella tutte le tabelle
