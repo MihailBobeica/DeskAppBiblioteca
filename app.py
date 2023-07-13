@@ -3,6 +3,9 @@ from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QWidget, QVBoxLayout, QL
 
 from utils import get_style, create_buttons
 
+from view.first import First
+from view.login import Login
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -10,7 +13,11 @@ class MainWindow(QMainWindow):
 
         self.init_window()
         self.create_menu()
-        self.init_layout()
+
+        first = First(self)
+        login = Login(self)
+        self.setCentralWidget(first)
+        # self.init_layout()
 
     def init_window(self):
         self.setWindowTitle("Catalogo")
@@ -43,14 +50,46 @@ class MainWindow(QMainWindow):
         # create the sidebar layout
         sidebar_layout = QVBoxLayout(sidebar)
         sidebar_layout.setAlignment(Qt.AlignTop)
-        sidebar_btn_labels = ("Libri in prestito",
-                              "Libri prenotati",
-                              "Lista di osservazione",
-                              "Catalogo",
-                              "Sanzioni",
-                              "Info",
-                              "Logout")
-        sidebar_btn = create_buttons(labels=sidebar_btn_labels,
+        sidebar_btn = create_buttons(labels=("Libri in prestito",
+                                             "Libri prenotati",
+                                             "Lista di osservazione",
+                                             "Catalogo",
+                                             "Sanzioni",
+                                             "Info",
+                                             "Logout"),
+                                     layout=sidebar_layout,
+                                     style="button")
+
+        sidebar_btn["Libri in prestito"].clicked.connect(self.change_layout)
+
+        # Create the content area
+        content = QWidget()
+        content_layout = QVBoxLayout(content)
+        content_label = QLabel("Main Content")
+        content_label.setAlignment(Qt.AlignCenter)
+        content_layout.addWidget(content_label)
+
+        # Add the sidebar and content to the main layout
+        layout.addWidget(sidebar)
+        layout.addWidget(content)
+
+    def change_layout(self):
+        # Create a central widget for the main window
+        central_widget = QWidget(self)
+
+        # Create the layout
+        layout = QHBoxLayout(central_widget)
+
+        # Create the sidebar
+        sidebar = QWidget()
+        sidebar.setFixedWidth(200)
+        sidebar.setStyleSheet(get_style("sidebar"))
+
+        # create the sidebar layout
+        sidebar_layout = QVBoxLayout(sidebar)
+        sidebar_layout.setAlignment(Qt.AlignTop)
+        sidebar_btn = create_buttons(labels=("Libri in prestito",
+                                             "Libri prenotati"),
                                      layout=sidebar_layout,
                                      style="button")
 
@@ -65,3 +104,4 @@ class MainWindow(QMainWindow):
         layout.addWidget(sidebar)
         layout.addWidget(content)
 
+        self.setCentralWidget(central_widget)
