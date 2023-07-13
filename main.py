@@ -1,11 +1,12 @@
-import database
-from database import Session
-from database import Utente
+import sys
 
-db_session = Session()
+from PySide6.QtWidgets import QApplication
 
-un_utente = Utente(nome='nome', cognome='cognome', username='username', password='password')
-un2_utente = Utente(nome='nome2', cognome='cognome', username='username', password='password')
+from app import MainWindow
 
-db_session.add_all([un_utente, un2_utente])
-db_session.commit()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
