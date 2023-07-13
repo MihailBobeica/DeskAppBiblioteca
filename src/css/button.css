@@ -1,0 +1,6 @@
+QPushButton {
+    background-color: lightgreen;
+    text-align: left;
+    padding-left: 20px;
+    height: 32px;
+}
