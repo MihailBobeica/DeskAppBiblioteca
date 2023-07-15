@@ -1,8 +1,9 @@
 from os import path
 import traceback
-from typing import TypedDict, Iterable
+from typing import TypedDict, Iterable, Tuple
 
 from PySide6.QtWidgets import QPushButton, QLayout
+import bcrypt
 
 PATH_CSS = "src/css"
 
@@ -27,3 +28,16 @@ def create_buttons(labels: Iterable[str], layout: QLayout, style=None) -> Labele
             btn.setStyleSheet(get_style(style))
             layout.addWidget(btn)
     return d
+
+
+def hash_password(password: str) -> str:
+    password = password.encode("utf-8")
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password, salt)
+    return hashed_password.decode()
+
+
+def check_password(password: str, stored_password: str) -> bool:
+    password = password.encode("utf-8")
+    is_matched = bcrypt.checkpw(password, stored_password.encode("utf-8"))
+    return is_matched
