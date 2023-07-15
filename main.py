@@ -8,7 +8,6 @@ from view.main_window import MainWindow
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # init views
     window = MainWindow()
 
     window.show()
