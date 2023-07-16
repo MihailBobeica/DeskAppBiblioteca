@@ -4,14 +4,10 @@ from PySide6.QtWidgets import QWidget, QMainWindow
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        self.init_window()
+        self.initialize()
         self.create_menu()
 
-        from .first import First
-        self.change_view(First(self))
-
-    def init_window(self):
+    def initialize(self):
         self.setWindowTitle("Catalogo")
         width, height = 640, 480
         self.resize(width, height)
@@ -26,5 +22,5 @@ class MainWindow(QMainWindow):
         help_menu = menu.addMenu("Help")
         help_menu.addAction("Docs")
 
-    def change_view(self, view: QWidget):
+    def set_view(self, view: QWidget):
         self.setCentralWidget(view)

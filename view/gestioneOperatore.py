@@ -16,15 +16,15 @@ class gestioneOperatoreView:
 
 
     def view_gestione_operatore():
-        view_gestione_operatore = [[sg.Button('Inserisci un nuovo operatore')],
-                         [sg.Button('Visualizza un operatore')],
-                         [sg.Button('Modifica un operatore')],
-                         [sg.Button('Elimina un operatore')]]
+        view_gestione_operatore = [[sg.LabeledButton('Inserisci un nuovo operatore')],
+                                   [sg.LabeledButton('Visualizza un operatore')],
+                                   [sg.LabeledButton('Modifica un operatore')],
+                                   [sg.LabeledButton('Elimina un operatore')]]
         window_gestione_operatore = sg.Window('Gestione operatore', view_gestione_operatore)
         return window_gestione_operatore.read()
 
     def view_ricerca_operatore():
-        view_ricerca_operatore = [[sg.Text('Codice fiscale'), sg.Input(key='codiceFiscale')], [sg.Button('Cerca')]]
+        view_ricerca_operatore = [[sg.Text('Codice fiscale'), sg.Input(key='codiceFiscale')], [sg.LabeledButton('Cerca')]]
         window_ricerca_operatore = sg.Window('Ricerca operatore', view_ricerca_operatore)
         while True:
             event, values = window_ricerca_operatore.read()
@@ -47,7 +47,7 @@ class gestioneOperatoreView:
             [sg.Text('Cognome'), sg.Input(key='cognome')],
             [sg.Text('email'), sg.Input(key='email')],
             [sg.Text('Telefono'), sg.Input(key='telefono')],
-            [sg.Button('Invia')]]
+            [sg.LabeledButton('Invia')]]
         window_inserisci_operatore = sg.Window('Inserisci operatore', view_inserisci_operatore)
         while True:
             event, values = window_inserisci_operatore.read()
@@ -78,7 +78,7 @@ class gestioneOperatoreView:
             [sg.Text('Cognome'), sg.Input(default_text=operatore['cognome'], key='cognome')],
             [sg.Text('email'), sg.Input(default_text=operatore['email'], key='email')],
             [sg.Text('Telefono'), sg.Input(default_text=operatore['telefono'], key='telefono')],
-            [sg.Button('Invia')]]
+            [sg.LabeledButton('Invia')]]
         window_modifica_operatore = sg.Window('Modifica operatore',view_modifica_operatore)
         while True:
             event, values = window_modifica_operatore.read()

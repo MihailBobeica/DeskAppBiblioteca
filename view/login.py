@@ -1,26 +1,35 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout
+from typing import Optional, Dict
 
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout
+
+from abstract.model import Model
+from abstract.view import View
 from utils import get_style
 from view import INPUT_WIDTH, INPUT_HEIGHT
 
 
-class Login(QWidget):
-    def __init__(self, parent_window: QWidget):
-        super().__init__(parent_window)
+class LoginView(View):
+    def __init__(self, models: Optional[Dict[str, Model]] = None):
+        super().__init__(models)
 
+    def create_layout(self):
+        # content
         username_label = QLabel("Username")
-        username_input = QLineEdit()
+        username_input = self.qle["username"] = QLineEdit()
         username_input.setFixedSize(INPUT_WIDTH, INPUT_HEIGHT)
         username_input.setStyleSheet(get_style("input"))
+
         password_label = QLabel("Password")
-        password_input = QLineEdit()
+        password_input = self.qle["password"] = QLineEdit()
         password_input.setFixedSize(INPUT_WIDTH, INPUT_HEIGHT)
         password_input.setStyleSheet(get_style("input"))
         password_input.setEchoMode(QLineEdit.EchoMode.Password)
-        self.btn_submit = QPushButton("Login")
-        self.btn_back = QPushButton("Indietro")
 
+        btn_submit = self.btn["submit"] = QPushButton("Login")
+        btn_back = self.btn["back"] = QPushButton("Indietro")
+
+        # layout
         h_layout = QHBoxLayout(self)
         v_layout = QVBoxLayout()
         h_layout.addLayout(v_layout)
@@ -30,13 +39,26 @@ class Login(QWidget):
         v_layout.addWidget(password_label)
         v_layout.addWidget(password_input)
         v_layout.addSpacing(40)
-        v_layout.addWidget(self.btn_submit)
-        v_layout.addWidget(self.btn_back)
+        v_layout.addWidget(btn_submit)
+        v_layout.addWidget(btn_back)
 
         h_layout.setAlignment(Qt.AlignCenter)
 
-        self.connect_buttons()
-
     def connect_buttons(self):
-        from .first import First
-        self.btn_back.clicked.connect(lambda: self.parent().change_view(First(self.parent())))
+        self.btn["back"].clicked.connect(self.go_back)
+        self.btn["submit"].clicked.connect(self.send_login_data)
+
+    def attach_controllers(self):
+        from app import controller_login
+        self.attach("", controller_login)  # TODO: fix this
+
+    def go_back(self):
+        from .first import FirstView
+        self.main_window.set_view(FirstView())
+
+    def get_login_data(self):
+        return {"username": self.qle["username"].text(),
+                "password": self.qle["password"].text()}
+
+    def send_login_data(self):
+        self.notify("login", self.get_login_data())

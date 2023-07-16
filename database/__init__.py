@@ -11,6 +11,10 @@ Session = sessionmaker(bind=db_engine)
 
 Base = declarative_base()
 
+ADMIN = "admin"
+OPERATORE = "operatore"
+UTENTE = "utente"
+
 
 class Utente(Base):
     __tablename__ = 'utenti'
@@ -18,7 +22,7 @@ class Utente(Base):
     id = Column(Integer, primary_key=True)
     nome = Column(String)
     cognome = Column(String)
-    ruolo = Column(Enum('admin', 'operatore', 'utente'))
+    ruolo = Column(Enum(ADMIN, OPERATORE, UTENTE))
     username = Column(String)
     password = Column(String)
 

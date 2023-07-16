@@ -3,7 +3,6 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from database import Session
-from view.main_window import MainWindow
 
 
 if __name__ == "__main__":
@@ -11,7 +10,7 @@ if __name__ == "__main__":
 
     db_session = Session()
 
-    window = MainWindow()
+    from app import main_window
+    main_window.show()
 
-    window.show()
     sys.exit(app.exec())

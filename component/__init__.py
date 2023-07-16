@@ -1,9 +1,9 @@
-from typing import Iterable
+from typing import Iterable, Dict
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QVBoxLayout, QFrame, QLabel
+from PySide6.QtWidgets import QVBoxLayout, QFrame, QLabel, QPushButton
 
-from utils import get_style, create_buttons, LabeledButton
+from utils import get_style, create_buttons
 
 
 class Sidebar(QFrame):
@@ -16,7 +16,7 @@ class Sidebar(QFrame):
         self.lyt = QVBoxLayout(self)
         self.lyt.setAlignment(Qt.AlignTop)
 
-    def add_buttons(self, labels: Iterable[str]) -> LabeledButton:
+    def add_buttons(self, labels: Iterable[str]) -> Dict[str, QPushButton]:
         return create_buttons(labels=labels, layout=self.lyt, style="button")
 
 

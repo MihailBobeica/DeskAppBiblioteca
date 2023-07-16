@@ -1,23 +1,28 @@
-from PySide6.QtWidgets import QWidget, QHBoxLayout
+from abc import ABC
+from typing import Dict, Optional, Type
 
+from PySide6.QtWidgets import QHBoxLayout, QMainWindow
+
+from abstract.model import Model
+from abstract.view import View
 from component import Sidebar, Placeholder
 
 
-class First(QWidget):
-    def __init__(self, parent_window: QWidget):
-        super().__init__(parent_window)
+class FirstView(View):
+    def __init__(self, models: Optional[Dict[str, Type[Model]]] = None):
+        super().__init__(models)
 
+    def create_layout(self):
+        # content
         sidebar = Sidebar()
-        self.btn = sidebar.add_buttons(("Login",))
-
+        self.add_buttons(sidebar.add_buttons(("Login",)))
         content = Placeholder("Catalogo")
 
-        self.lyt = QHBoxLayout(self)
-        self.lyt.addWidget(sidebar)
-        self.lyt.addWidget(content)
-
-        self.connect_buttons()
+        # layout
+        layout = QHBoxLayout(self)
+        layout.addWidget(sidebar)
+        layout.addWidget(content)
 
     def connect_buttons(self):
-        from .login import Login
-        self.btn["Login"].clicked.connect(lambda: self.parent().change_view(Login(self.parent())))
+        from .login import LoginView
+        self.btn["Login"].clicked.connect(lambda: self.main_window.set_view(LoginView()))
