@@ -2,5 +2,5 @@ from typing import Protocol
 
 
 class Observer(Protocol):
-    def update(self):
+    def receive_message(self, message: str, data: dict):
         ...

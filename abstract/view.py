@@ -4,38 +4,21 @@ from typing import Dict, Optional
 from PySide6.QtWidgets import QWidget, QPushButton, QLineEdit
 
 from protocol.observer import Observer
-from .model import Model
+from utils import get_label
 
 
 class View(QWidget):
-    def __init__(self, models: Optional[Dict[str, Model]] = None):
-        super().__init__()
-        self.models = models
-        self.controllers: Dict[str: Observer] = dict()
-        self.btn: Dict[str, QPushButton] = dict()
-        self.qle: Dict[str, QLineEdit] = dict()
-
-        from app import main_window
-        self.main_window = main_window
-
-        self.create_layout()
-        self.connect_buttons()
-        self.attach_controllers()
-
-    def attach(self, label: str, observer: Observer):
-        self.controllers[label] = observer
+    def attach(self, observer: Observer, label: Optional[str] = None):
+        self.controllers[get_label(label)] = observer
 
     def detach(self, label: str):
         del self.controllers[label]
 
     def notify(self, message: str, data: dict):
         for controller in self.controllers.values():
-            controller.update(message, data)
+            controller.receive_message(message, data)
 
-    def add_buttons(self, btn: Dict[str, QPushButton]):
-        self.btn.update(btn)
-
-    def attach_controllers(self):
+    def receive_message(self, message: str, data: dict):
         pass
 
     @abstractmethod
@@ -45,3 +28,22 @@ class View(QWidget):
     @abstractmethod
     def connect_buttons(self):
         pass
+
+    def __init__(self):
+        super().__init__()
+        from app import main_window
+        self.main_window = main_window
+
+        self.btn: Dict[str, QPushButton] = dict()
+        self.qle: Dict[str, QLineEdit] = dict()
+        self.controllers: Dict[str: Observer] = dict()
+
+        self.create_layout()
+        self.connect_buttons()
+        self.attach_controllers()
+
+    def attach_controllers(self):
+        pass
+
+    def add_buttons(self, btn: Dict[str, QPushButton]):
+        self.btn.update(btn)
