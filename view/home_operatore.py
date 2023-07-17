@@ -10,7 +10,7 @@ class HomeOperatoreView(View):
         self.add_buttons(sidebar.add_buttons(("Option 1",
                                               "Option 2",
                                               "Option 3",
-                                              "Option 4",)))
+                                              "Logout",)))
         content = Placeholder("Home operatore")
 
         # layout
@@ -19,7 +19,11 @@ class HomeOperatoreView(View):
         layout.addWidget(content)
 
     def connect_buttons(self):
-        pass
+        self.btn["Logout"].clicked.connect(self.send_logout_request)
+
+    def attach_controllers(self) -> None:
+        from app import controller_logout
+        self.attach(controller_logout)
 
     def __init__(self):
         super().__init__()

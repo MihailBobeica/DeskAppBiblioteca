@@ -50,3 +50,6 @@ class View(QWidget):
 
     def redirect(self, view: Any) -> None:
         self.main_window.set_view(view)
+
+    def send_logout_request(self):
+        self.notify("logout", dict())

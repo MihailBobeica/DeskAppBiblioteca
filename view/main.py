@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
         self.create_menu()
 
     def initialize(self):
-        self.setWindowTitle("Catalogo")
+        self.setWindowTitle("App Biblioteca")
         width, height = 640, 480
         self.resize(width, height)
         self.setMinimumSize(width, height)
