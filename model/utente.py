@@ -1,15 +1,12 @@
 from abstract.model import Model
-from database import Utente, Session
+from database import Session
+from database import Utente as DbUtente
 
 db_session = Session()
 
 
-class GestisciUtente(Model):
-    def __init__(self):
-        super().__init__()
-
-    def get_utente_by_username(self, username):
-        print(username)
-        utente = db_session.query(Utente).filter(Utente.username == username).first()
-        print(utente.password)
+class Utente(Model):
+    @staticmethod
+    def by_username(username):
+        utente = db_session.query(DbUtente).filter(DbUtente.username == username).first()
         return utente
