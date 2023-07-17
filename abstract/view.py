@@ -8,25 +8,25 @@ from utils import get_label
 
 
 class View(QWidget):
-    def attach(self, observer: Observer, label: Optional[str] = None):
+    def attach(self, observer: Observer, label: Optional[str] = None) -> None:
         self.controllers[get_label(label)] = observer
 
-    def detach(self, label: str):
+    def detach(self, label: str) -> None:
         del self.controllers[label]
 
-    def notify(self, message: str, data: dict):
+    def notify(self, message: str, data: dict) -> None:
         for controller in self.controllers.values():
             controller.receive_message(message, data)
 
-    def receive_message(self, message: str, data: dict):
+    def receive_message(self, message: str, data: dict) -> None:
         pass
 
     @abstractmethod
-    def create_layout(self):
+    def create_layout(self) -> None:
         pass
 
     @abstractmethod
-    def connect_buttons(self):
+    def connect_buttons(self) -> None:
         pass
 
     def __init__(self):
@@ -42,8 +42,8 @@ class View(QWidget):
         self.connect_buttons()
         self.attach_controllers()
 
-    def attach_controllers(self):
+    def attach_controllers(self) -> None:
         pass
 
-    def add_buttons(self, btn: Dict[str, QPushButton]):
+    def add_buttons(self, btn: Dict[str, QPushButton]) -> None:
         self.btn.update(btn)
