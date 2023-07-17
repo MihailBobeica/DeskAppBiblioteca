@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 
 from PySide6.QtWidgets import QWidget, QPushButton, QLineEdit
 
@@ -47,3 +47,6 @@ class View(QWidget):
 
     def add_buttons(self, btn: Dict[str, QPushButton]) -> None:
         self.btn.update(btn)
+
+    def redirect(self, view: Any) -> None:
+        self.main_window.set_view(view)

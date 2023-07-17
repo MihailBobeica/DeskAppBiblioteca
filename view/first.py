@@ -1,16 +1,12 @@
-from abc import ABC
-from typing import Dict, Optional, Type
+from PySide6.QtWidgets import QHBoxLayout
 
-from PySide6.QtWidgets import QHBoxLayout, QMainWindow
-
-from abstract.model import Model
 from abstract.view import View
 from component import Sidebar, Placeholder
 
 
 class FirstView(View):
-    def __init__(self, models: Optional[Dict[str, Type[Model]]] = None):
-        super().__init__(models)
+    def __init__(self):
+        super().__init__()
 
     def create_layout(self):
         # content

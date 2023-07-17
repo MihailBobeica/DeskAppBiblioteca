@@ -1,31 +1,33 @@
-from typing import Optional, Dict
-
-from PySide6.QtWidgets import QMessageBox
-
 from abstract.controller import Controller
-from abstract.model import Model
-from abstract.view import View
 from database import ADMIN, OPERATORE, UTENTE
 from model.utente import Utente
-from utils import check_password
+from utils import check_password, is_empty
 from view.home_admin import HomeAdminView
 from view.home_operatore import HomeOperatoreView
 from view.home_utente import HomeUtenteView
 
-BAD_CREDENTIALS_TITLE = "Accesso non riuscito"
+ACCESS_DENIED_TITLE = "Accesso non riuscito"
 BAD_CREDENTIALS_MESSAGE = "Credenziali di accesso errate"
+NO_USERNAME_MESSAGE = "Non hai inserito l'username"
+NO_PASSWORD_MESSAGE = "Non hai inserito la password"
 
 
 class LoginController(Controller):
-    def __init__(self, models: Optional[Dict[str, Model]] = None, views: Optional[Dict[str, View]] = None):
-        super().__init__(models, views)
+    def __init__(self):
+        super().__init__()
 
-    def update(self, message: str, data: dict):
+    def receive_message(self, message: str, data: dict):
         if message == "login":
             self.login(data["username"], data["password"])
 
     def login(self, username: str, password: str) -> None:
         utente = Utente.by_username(username)
+        if is_empty(username):
+            self.no_username_popup()
+            return
+        if is_empty(password):
+            self.no_password_popup()
+            return
         if (utente is None) or (not check_password(password, utente.password)):
             self.bad_credentials_popup()
             return
@@ -38,16 +40,15 @@ class LoginController(Controller):
         if utente.ruolo == UTENTE:
             self.redirect_home_utente()
             return
-        print(utente.password)
-        print(utente.ruolo)
 
     def bad_credentials_popup(self):
-        QMessageBox.information(self.main_window.centralWidget(),
-                                BAD_CREDENTIALS_TITLE,
-                                BAD_CREDENTIALS_MESSAGE)
+        self.popup(ACCESS_DENIED_TITLE, BAD_CREDENTIALS_MESSAGE)
 
-    def redirect(self, view: View):
-        self.main_window.set_view(view)
+    def no_username_popup(self):
+        self.popup(ACCESS_DENIED_TITLE, NO_USERNAME_MESSAGE)
+
+    def no_password_popup(self):
+        self.popup(ACCESS_DENIED_TITLE, NO_PASSWORD_MESSAGE)
 
     def redirect_home_admin(self):
         self.redirect(HomeAdminView())
@@ -57,4 +58,3 @@ class LoginController(Controller):
 
     def redirect_home_utente(self):
         self.redirect(HomeUtenteView())
-

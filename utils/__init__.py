@@ -1,3 +1,4 @@
+import uuid
 from os import path
 import traceback
 from typing import Iterable, Dict
@@ -36,3 +37,13 @@ def check_password(password: str, stored_password: str) -> bool:
     password = password.encode("utf-8")
     is_matched = bcrypt.checkpw(password, stored_password.encode("utf-8"))
     return is_matched
+
+
+def get_label(label: str):
+    if (label is None) or (len(label) == 0):
+        return uuid.uuid4()
+    return label
+
+
+def is_empty(string: str) -> bool:
+    return (string is None) or (len(string) == 0)

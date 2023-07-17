@@ -1,18 +1,12 @@
-from typing import Optional, Dict
-
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout
 
-from abstract.model import Model
 from abstract.view import View
 from utils import get_style
 from view import INPUT_WIDTH, INPUT_HEIGHT
 
 
 class LoginView(View):
-    def __init__(self, models: Optional[Dict[str, Model]] = None):
-        super().__init__(models)
-
     def create_layout(self):
         # content
         username_label = QLabel("Username")
@@ -48,13 +42,16 @@ class LoginView(View):
         self.btn["back"].clicked.connect(self.go_back)
         self.btn["submit"].clicked.connect(self.send_login_data)
 
+    def __init__(self):
+        super().__init__()
+
     def attach_controllers(self):
         from app import controller_login
-        self.attach("", controller_login)  # TODO: fix this
+        self.attach(controller_login)
 
     def go_back(self):
         from .first import FirstView
-        self.main_window.set_view(FirstView())
+        self.redirect(FirstView())
 
     def get_login_data(self):
         return {"username": self.qle["username"].text(),

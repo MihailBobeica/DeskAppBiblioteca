@@ -1,8 +1,5 @@
-from typing import Optional, Dict, Type
-
 from PySide6.QtWidgets import QHBoxLayout
 
-from abstract.model import Model
 from abstract.view import View
 from component import Sidebar, Placeholder
 
@@ -24,5 +21,5 @@ class HomeAdminView(View):
     def connect_buttons(self):
         pass
 
-    def __init__(self, models: Optional[Dict[str, Type[Model]]] = None):
-        super().__init__(models)
+    def __init__(self):
+        super().__init__()

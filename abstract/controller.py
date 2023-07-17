@@ -1,3 +1,5 @@
+from PySide6.QtWidgets import QMessageBox
+
 from abstract.view import View
 
 
@@ -11,3 +13,8 @@ class Controller:
 
     def redirect(self, view: View) -> None:
         self.main_window.set_view(view)
+
+    def popup(self, title: str, message: str) -> None:
+        QMessageBox.information(self.main_window.centralWidget(),
+                                title,
+                                message)
