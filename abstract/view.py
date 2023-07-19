@@ -8,17 +8,18 @@ from utils import get_label
 
 
 class View(QWidget):
+    # protocol methods
     def attach(self, observer: Observer, label: Optional[str] = None) -> None:
         self.controllers[get_label(label)] = observer
 
     def detach(self, label: str) -> None:
         del self.controllers[label]
 
-    def notify(self, message: str, data: dict) -> None:
+    def notify(self, message: str, data: Optional[dict] = None) -> None:
         for controller in self.controllers.values():
             controller.receive_message(message, data)
 
-    def receive_message(self, message: str, data: dict) -> None:
+    def receive_message(self, message: str, data: Optional[dict] = None) -> None:
         pass
 
     @abstractmethod
@@ -52,4 +53,4 @@ class View(QWidget):
         self.main_window.set_view(view)
 
     def send_logout_request(self):
-        self.notify("logout", dict())
+        self.notify("logout")

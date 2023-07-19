@@ -7,6 +7,9 @@ from PySide6.QtWidgets import QPushButton, QLayout
 import bcrypt
 
 PATH_CSS = "src/css"
+ADMIN = "admin"
+OPERATORE = "operatore"
+UTENTE = "utente"
 
 
 def get_style(css_file: str) -> str:

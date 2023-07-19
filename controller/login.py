@@ -1,11 +1,14 @@
+from typing import Optional, Dict, Type
+
 from abstract.controller import Controller
+from abstract.model import Model
 from database import ADMIN, OPERATORE, UTENTE
-from model.utente import Utente
 from utils import check_password, is_empty
 from view.home_admin import HomeAdminView
 from view.home_operatore import HomeOperatoreView
 from view.home_utente import HomeUtenteView
 
+# TODO put this in utils
 ACCESS_DENIED_TITLE = "Accesso non riuscito"
 BAD_CREDENTIALS_MESSAGE = "Credenziali di accesso errate"
 NO_USERNAME_MESSAGE = "Non hai inserito l'username"
@@ -13,15 +16,15 @@ NO_PASSWORD_MESSAGE = "Non hai inserito la password"
 
 
 class LoginController(Controller):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, models: Optional[Dict[str, Type[Model]]] = None):
+        super().__init__(models)
 
-    def receive_message(self, message: str, data: dict):
+    def receive_message(self, message: str, data: Optional[dict] = None):
         if message == "login":
             self.login(data["username"], data["password"])
 
     def login(self, username: str, password: str) -> None:
-        utente = Utente.by_username(username)
+        utente = self.models["utente"].by_username(username)
         if is_empty(username):
             self.no_username_popup()
             return
