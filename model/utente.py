@@ -25,7 +25,3 @@ class Utente(Model):
         utente = db_session.query(DbUtente).filter_by(username=username).first()
         db_session.close()
         return utente
-
-    def seed_db(self, lista_dati: List[Dict[str, str]]):
-        for dati in lista_dati:
-            self.inserisci(dati)

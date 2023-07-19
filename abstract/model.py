@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from protocol.observer import Observer
 from utils import get_label
@@ -23,3 +23,7 @@ class Model:
     @abstractmethod
     def inserisci(self, dati: Dict[str, str]):
         pass
+
+    def seed_db(self, lista_dati: List[Dict[str, str]]):
+        for dati in lista_dati:
+            self.inserisci(dati)
