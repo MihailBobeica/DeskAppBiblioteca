@@ -6,7 +6,7 @@ from component import Sidebar, Placeholder
 
 class HomeAdminView(View):
     def create_layout(self):
-        sidebar = Sidebar()
+        sidebar = Sidebar(self)
         self.add_buttons(sidebar.add_buttons(("Option 1",
                                               "Option 2",
                                               "Option 3",

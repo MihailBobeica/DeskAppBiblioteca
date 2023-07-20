@@ -1,13 +1,13 @@
 from abc import abstractmethod
 from typing import Dict, Optional, Any
 
-from PySide6.QtWidgets import QWidget, QPushButton, QLineEdit
+from PySide6.QtWidgets import QPushButton, QLineEdit, QFrame
 
 from protocol.observer import Observer
 from utils import get_label
 
 
-class View(QWidget):
+class View(QFrame):
     # protocol methods
     def attach(self, observer: Observer, label: Optional[str] = None) -> None:
         self.controllers[get_label(label)] = observer
@@ -47,6 +47,8 @@ class View(QWidget):
         pass
 
     def add_buttons(self, btn: Dict[str, QPushButton]) -> None:
+        widget: QFrame() = self
+        print(widget.parentWidget())
         self.btn.update(btn)
 
     def redirect(self, view: Any) -> None:

@@ -30,6 +30,7 @@ class Libro(Base):
     titolo = Column(String)
     autore = Column(String)
     isbn = Column(String)
+    immagine = Column(String)
 
 
 class PrenotazionePosto(Base):

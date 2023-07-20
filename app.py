@@ -1,7 +1,8 @@
 from controller.first import FirstController
 from controller.login import LoginController
 from controller.logout import LogoutController
-from database.seed import UTENTI
+from database.seed import UTENTI, LIBRI
+from model.libro import Libro
 from model.utente import Utente
 from view.main import MainWindow
 
@@ -10,9 +11,11 @@ main_window = MainWindow()
 
 # instantiate all the models
 model_utente = Utente()
+model_libro = Libro()
 
 # seeding
 model_utente.seed_db(UTENTI)
+model_libro.seed_db(LIBRI)
 
 # instantiate all controllers
 controller_first = FirstController()

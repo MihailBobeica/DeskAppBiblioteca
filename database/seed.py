@@ -19,4 +19,5 @@ UTENTI = [{"nome": "Mario",
 
 LIBRI = [{"titolo": "Pensiero Positivo",
           "autore": "Marta Lowen",
-          "isbn": "isbn"}]
+          "isbn": "isbn",
+          "immagine": "pensiero_positivo.webp"}]

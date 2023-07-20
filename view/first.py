@@ -11,7 +11,7 @@ class FirstView(View):
 
     def create_layout(self):
         # content
-        sidebar = Sidebar()
+        sidebar = Sidebar(self)
         self.add_buttons(sidebar.add_buttons(("Login",)))
         catalogo = CatalogoComponent()
 

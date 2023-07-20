@@ -7,8 +7,8 @@ from utils import get_style, create_buttons
 
 
 class Sidebar(QFrame):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.setFixedWidth(200)
         self.setStyleSheet(get_style("sidebar"))
