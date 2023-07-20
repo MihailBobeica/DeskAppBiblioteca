@@ -11,8 +11,12 @@ UTENTI = [{"nome": "Mario",
            "username": "S002",
            "password": hash_password("operatore")},
           {"nome": "Dario",
-           "cognome": "Facchini",
+           "cognome": "Verdi",
            "ruolo": "utente",
            "username": "S003",
            "password": hash_password("utente")},
           ]
+
+LIBRI = [{"titolo": "Pensiero Positivo",
+          "autore": "Marta Lowen",
+          "isbn": "isbn"}]

@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
-from component import Sidebar, Placeholder
+from component import Sidebar
+from view.component.catalogo import CatalogoComponent
 
 
 class FirstView(View):
@@ -12,12 +13,12 @@ class FirstView(View):
         # content
         sidebar = Sidebar()
         self.add_buttons(sidebar.add_buttons(("Login",)))
-        content = Placeholder("Catalogo")
+        catalogo = CatalogoComponent()
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
-        layout.addWidget(content)
+        layout.addWidget(catalogo)
 
     def connect_buttons(self):
         from .login import LoginView
