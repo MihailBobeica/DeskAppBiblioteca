@@ -27,7 +27,7 @@ class Libro(Model):
     def __init__(self):
         super().__init__()
 
-    def get(self, n: int) -> list[Type[DbLibro]]:
+    def get(self, n: int = RESULTS_LIMIT) -> list[Type[DbLibro]]:
         db_session = Session()
         libri = db_session.query(DbLibro).limit(n).all()
         db_session.close()

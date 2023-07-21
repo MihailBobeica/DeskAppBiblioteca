@@ -48,7 +48,7 @@ class CatalogoComponent(View):
         grid_layout: QGridLayout = self.findChild(QGridLayout, GRID_LABEL)
 
         from app import model_libro
-        db_libri = model_libro.get(15)
+        db_libri = model_libro.get()
 
         for index, db_libro in enumerate(db_libri):
             row = index // CATALOG_COLUMNS
