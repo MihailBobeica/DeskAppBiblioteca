@@ -1,16 +1,19 @@
-import uuid
-from os import path
 import traceback
+import uuid
+from datetime import datetime
+from os import path
 from typing import Iterable, Dict
 
-from PySide6.QtWidgets import QPushButton, QLayout
 import bcrypt
+from PySide6.QtWidgets import QPushButton, QLayout
 
 PATH_CSS = "src/css"
 ADMIN = "admin"
 OPERATORE = "operatore"
 UTENTE = "utente"
 SIDEBAR_WIDTH = 200
+PATH_IMAGE = "src/img"
+CATALOG_COLUMNS = 3
 
 
 def get_style(css_file: str) -> str:
@@ -51,3 +54,19 @@ def get_label(label: str):
 
 def is_empty(string: str) -> bool:
     return (string is None) or (len(string) == 0)
+
+
+def to_year(year: str) -> datetime:
+    datetime_format = "%Y"
+    datetime_year = datetime.strptime(year, datetime_format)
+    return datetime_year
+
+
+def get_image_path(image: str) -> str:
+    return path.join(PATH_IMAGE, image)
+
+
+def label_autori(autori: str) -> str:
+    if "," in autori:
+        return f"Autori: {autori}"
+    return f"Autore: {autori}"

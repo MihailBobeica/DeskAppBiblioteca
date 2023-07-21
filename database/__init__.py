@@ -28,9 +28,14 @@ class Libro(Base):
 
     id = Column(Integer, primary_key=True)
     titolo = Column(String)
-    autore = Column(String)
-    isbn = Column(String)
+    autori = Column(String)
     immagine = Column(String)
+    editore = Column(String)
+    isbn = Column(String)
+    anno_edizione = Column(DateTime)
+    anno_pubblicazione = Column(DateTime)
+    disponibili = Column(Integer)
+    dati = Column(String)
 
 
 class PrenotazionePosto(Base):
