@@ -1,8 +1,11 @@
 from typing import Dict, Type
 
+from sqlalchemy import or_
+
 from abstract.model import Model
 from database import Session
 from database import Libro as DbLibro
+from utils import RESULTS_LIMIT
 
 
 class Libro(Model):
@@ -27,5 +30,14 @@ class Libro(Model):
     def get(self, n: int) -> list[Type[DbLibro]]:
         db_session = Session()
         libri = db_session.query(DbLibro).limit(n).all()
+        db_session.close()
         return libri
+
+    def search(self, text) -> list[Type[DbLibro]]:
+        db_session = Session()
+        libri = db_session.query(DbLibro).filter(or_(DbLibro.titolo.ilike(f"%{text}%"),
+                                                     DbLibro.autori.ilike(f"%{text}%"))).limit(RESULTS_LIMIT).all()
+        db_session.close()
+        return libri
+
 

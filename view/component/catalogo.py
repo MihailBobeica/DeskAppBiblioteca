@@ -2,17 +2,20 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout
 
 from abstract.view import View
-from utils import get_style, CATALOG_COLUMNS
+from utils import get_style, CATALOG_COLUMNS, is_empty
 from view.component.libro import LibroComponent
+
+
+GRID_LABEL = "grid"
 
 
 class CatalogoComponent(View):
     def create_layout(self) -> None:
         # content
         searchbar = QLineEdit()
+        searchbar.textChanged.connect(self.update_grid)
         searchbar.setPlaceholderText("Ricerca")
         searchbar.setStyleSheet(get_style("input"))
-
 
         # layout
         layout = QVBoxLayout(self)
@@ -27,6 +30,22 @@ class CatalogoComponent(View):
 
         # Create a grid layout for the content widget
         grid_layout = QGridLayout(content_widget)
+        grid_layout.setObjectName(GRID_LABEL)
+
+        self.default_grid()
+
+        layout.addWidget(scroll_area)
+
+        layout.setAlignment(Qt.AlignTop)
+
+    def connect_buttons(self) -> None:
+        pass
+
+    def __init__(self):
+        super().__init__()
+
+    def default_grid(self):
+        grid_layout: QGridLayout = self.findChild(QGridLayout, GRID_LABEL)
 
         from app import model_libro
         db_libri = model_libro.get(15)
@@ -37,13 +56,21 @@ class CatalogoComponent(View):
             libro = LibroComponent(db_libro)
             grid_layout.addWidget(libro, row, col)
 
-        # Set the content widget as the central widget
-        layout.addWidget(scroll_area)
+    def update_grid(self, text) -> None:
+        grid_layout: QGridLayout = self.findChild(QGridLayout, GRID_LABEL)
+        while grid_layout.count():
+            child = grid_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+        if is_empty(text):
+            self.default_grid()
+        else:
+            from app import model_libro
+            db_libri = model_libro.search(text)
 
-        layout.setAlignment(Qt.AlignTop)
+            for index, db_libro in enumerate(db_libri):
+                row = index // CATALOG_COLUMNS
+                col = index % CATALOG_COLUMNS
+                libro = LibroComponent(db_libro)
+                grid_layout.addWidget(libro, row, col)
 
-    def connect_buttons(self) -> None:
-        pass
-
-    def __init__(self):
-        super().__init__()

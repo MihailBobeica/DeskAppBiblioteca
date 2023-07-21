@@ -14,6 +14,7 @@ UTENTE = "utente"
 SIDEBAR_WIDTH = 200
 PATH_IMAGE = "src/img"
 CATALOG_COLUMNS = 3
+RESULTS_LIMIT = 15
 
 
 def get_style(css_file: str) -> str:
