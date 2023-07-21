@@ -8,7 +8,7 @@ from utils import get_style
 class CatalogoComponent(View):
     def create_layout(self) -> None:
         # content
-        self.qle["searchbar"] = searchbar = QLineEdit()
+        searchbar = QLineEdit()
         searchbar.setPlaceholderText("Ricerca")
         searchbar.setStyleSheet(get_style("input"))
 

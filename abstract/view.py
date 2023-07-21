@@ -1,10 +1,11 @@
 from abc import abstractmethod
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, Iterable, Type
 
-from PySide6.QtWidgets import QPushButton, QLineEdit, QFrame
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QPushButton, QLineEdit, QFrame, QWidget, QLayout
 
 from protocol.observer import Observer
-from utils import get_label
+from utils import get_label, get_style
 
 
 class View(QFrame):
@@ -27,7 +28,7 @@ class View(QFrame):
         pass
 
     @abstractmethod
-    def connect_buttons(self) -> None:
+    def connect_buttons(self):
         pass
 
     def __init__(self):
@@ -35,24 +36,35 @@ class View(QFrame):
         from app import main_window
         self.main_window = main_window
 
-        self.btn: Dict[str, QPushButton] = dict()
-        self.qle: Dict[str, QLineEdit] = dict()
-        self.controllers: Dict[str: Observer] = dict()
+        self.controllers: Dict[str, Observer] = dict()
+        self.attach_controllers()
 
         self.create_layout()
         self.connect_buttons()
-        self.attach_controllers()
 
     def attach_controllers(self) -> None:
         pass
-
-    def add_buttons(self, btn: Dict[str, QPushButton]) -> None:
-        widget: QFrame() = self
-        print(widget.parentWidget())
-        self.btn.update(btn)
 
     def redirect(self, view: Any) -> None:
         self.main_window.set_view(view)
 
     def send_logout_request(self):
         self.notify("logout")
+
+    def get_button(self, label) -> QPushButton:
+        button: QPushButton = self.findChild(QPushButton, label, Qt.FindChildrenRecursively)
+        return button
+
+    def get_line_edit(self, label) -> QLineEdit:
+        line_edit: QLineEdit = self.findChild(QLineEdit, label, Qt.FindChildrenRecursively)
+        return line_edit
+
+    def add_buttons(self, labels: Iterable[str], layout: Optional[QLayout] = None, style: Optional[str] = None):  # TODO move it to the sidebar
+        if not layout:
+            layout = self.layout()
+        for label in labels:
+            button = QPushButton(label)
+            button.setObjectName(label)
+            if style:
+                button.setStyleSheet(get_style(style))
+            layout.addWidget(button)

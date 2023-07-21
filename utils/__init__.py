@@ -10,6 +10,7 @@ PATH_CSS = "src/css"
 ADMIN = "admin"
 OPERATORE = "operatore"
 UTENTE = "utente"
+SIDEBAR_WIDTH = 200
 
 
 def get_style(css_file: str) -> str:
