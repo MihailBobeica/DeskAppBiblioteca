@@ -21,6 +21,7 @@ class CatalogoComponent(View):
         layout.addWidget(searchbar)
 
         scroll_area = QScrollArea(self)
+        scroll_area.setStyleSheet(get_style("catalogo"))
         scroll_area.setWidgetResizable(True)
 
         # Create a widget to hold the grid layout
