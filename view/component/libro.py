@@ -9,35 +9,32 @@ from utils import get_image_path, label_autori
 
 class LibroComponent(View):
     def create_layout(self) -> None:
-        # layout
-        layout = QHBoxLayout(self)
-
-        layout.setAlignment(Qt.AlignTop)
-
-    def connect_buttons(self) -> None:
-        pass
-
-    def __init__(self, db_libro: Libro):
-        super().__init__()
-
         self.setFixedSize(400, 240)
 
+        # content
+        # copertina
         image_label = QLabel(self)
-        pixmap = QPixmap(get_image_path(db_libro.immagine)).scaled(160, 240, aspectMode=Qt.KeepAspectRatio)
+        pixmap = QPixmap(get_image_path(self.info.immagine)).scaled(160, 240, aspectMode=Qt.KeepAspectRatio)
         image_label.setPixmap(pixmap)
-
-        label_title = QLabel(f"Titolo: {db_libro.titolo}")
+        # titolo
+        label_title = QLabel(f"Titolo: {self.info.titolo}")
         label_title.setWordWrap(True)
-        label_autor = QLabel(label_autori(db_libro.autori))
+        # autori
+        label_autor = QLabel(label_autori(self.info.autori))
         label_autor.setWordWrap(True)
-        label_editore = QLabel(f"Editore: {db_libro.editore}")
-        label_disponibili = QLabel(f"Copie disponibili: {db_libro.disponibili}")
-        label_dati = QLabel(f"Dati: {db_libro.dati}")
+        # editore
+        label_editore = QLabel(f"Editore: {self.info.editore}")
+        # copie disponibili
+        label_disponibili = QLabel(f"Copie disponibili: {self.info.disponibili}")
+        # dati generici
+        label_dati = QLabel(f"Dati: {self.info.dati}")
 
-        layout = self.layout()
+        # layout
+        layout = QHBoxLayout(self)
+        layout.setAlignment(Qt.AlignTop)
+
         v_layout = QVBoxLayout()
-        layout.addWidget(image_label)
-        layout.addLayout(v_layout)
+        v_layout.setAlignment(Qt.AlignTop)
 
         v_layout.addWidget(label_title)
         v_layout.addWidget(label_autor)
@@ -50,5 +47,17 @@ class LibroComponent(View):
         self.add_buttons(labels=("Visualizza",),
                          layout=v_layout)
 
-        v_layout.setAlignment(Qt.AlignTop)
+        layout.addWidget(image_label)
+        layout.addLayout(v_layout)
 
+    def connect_buttons(self) -> None:
+        button_visualizza = self.get_button("Visualizza")
+        button_visualizza.clicked.connect(self.visualizza)
+
+    def __init__(self, db_libro: Libro):
+        self.info = db_libro
+        super().__init__()
+
+    def visualizza(self):
+        from view.libro import LibroView
+        self.redirect(LibroView(self.info))

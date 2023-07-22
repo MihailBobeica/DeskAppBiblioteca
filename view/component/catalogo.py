@@ -5,7 +5,6 @@ from abstract.view import View
 from utils import get_style, CATALOG_COLUMNS, is_empty
 from view.component.libro import LibroComponent
 
-
 GRID_LABEL = "grid"
 
 
@@ -14,7 +13,7 @@ class CatalogoComponent(View):
         # content
         searchbar = QLineEdit()
         searchbar.textChanged.connect(self.update_grid)
-        searchbar.setPlaceholderText("Ricerca")
+        searchbar.setPlaceholderText("Ricerca per titolo o autore")
         searchbar.setStyleSheet(get_style("input"))
 
         # layout
@@ -73,4 +72,3 @@ class CatalogoComponent(View):
                 col = index % CATALOG_COLUMNS
                 libro = LibroComponent(db_libro)
                 grid_layout.addWidget(libro, row, col)
-

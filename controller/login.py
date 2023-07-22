@@ -18,6 +18,7 @@ NO_PASSWORD_MESSAGE = "Non hai inserito la password"
 class LoginController(Controller):
     def __init__(self, models: Optional[Dict[str, Type[Model]]] = None):
         super().__init__(models)
+        self.logged = False
 
     def receive_message(self, message: str, data: Optional[dict] = None):
         if message == "login":
@@ -55,9 +56,12 @@ class LoginController(Controller):
 
     def redirect_home_admin(self):
         self.redirect(HomeAdminView())
+        self.logged = True
 
     def redirect_home_operatore(self):
         self.redirect(HomeOperatoreView())
+        self.logged = True
 
     def redirect_home_utente(self):
         self.redirect(HomeUtenteView())
+        self.logged = True
