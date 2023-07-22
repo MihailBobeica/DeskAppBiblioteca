@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame
 
 from abstract.view import View
 from database import Libro
@@ -22,33 +22,33 @@ class LibroComponent(View):
         # autori
         label_autor = QLabel(label_autori(self.info.autori))
         label_autor.setWordWrap(True)
-        # editore
-        label_editore = QLabel(f"Editore: {self.info.editore}")
         # copie disponibili
         label_disponibili = QLabel(f"Copie disponibili: {self.info.disponibili}")
-        # dati generici
-        label_dati = QLabel(f"Dati: {self.info.dati}")
 
         # layout
         layout = QHBoxLayout(self)
         layout.setAlignment(Qt.AlignTop)
 
+        contenitore_dati = QFrame()
+        contenitore_dati.setFixedSize(180, 240)
+
         v_layout = QVBoxLayout()
         v_layout.setAlignment(Qt.AlignTop)
+        v_layout.setSpacing(8)
 
         v_layout.addWidget(label_title)
         v_layout.addWidget(label_autor)
-        v_layout.addWidget(label_editore)
         v_layout.addWidget(label_disponibili)
-        v_layout.addWidget(label_dati)
 
         v_layout.addStretch(1)
 
         self.add_buttons(labels=("Visualizza",),
                          layout=v_layout)
 
+        contenitore_dati.setLayout(v_layout)
+
         layout.addWidget(image_label)
-        layout.addLayout(v_layout)
+        layout.addWidget(contenitore_dati)
 
     def connect_buttons(self) -> None:
         button_visualizza = self.get_button("Visualizza")
