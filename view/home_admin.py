@@ -21,6 +21,8 @@ class HomeAdminView(View):
     def connect_buttons(self):
         logout_button = self.get_button("Logout")
         logout_button.clicked.connect(self.send_logout_request)
+        operatori_button = self.get_button("Option 1")
+        operatori_button.clicked.connect(self.gestione_operatori)
 
     def attach_controllers(self) -> None:
         from app import controller_logout
@@ -28,3 +30,8 @@ class HomeAdminView(View):
 
     def __init__(self):
         super().__init__()
+
+    def gestione_operatori(self):
+        from view.operatore import ProvaView
+        self.redirect(ProvaView())
+
