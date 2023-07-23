@@ -1,5 +1,5 @@
 from PySide6.QtCore import QFile
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox
 
 from abstract.view import View
 from view.component import SidebarComponent
@@ -70,8 +70,18 @@ class ProvaView(View):
         self.redirect(HomeAdminView())
 
     def invia(self):
-        gestione_operatore.crea_operatore(self,self.input1.text(),self.input2.text(),self.input3.text(),self.input6.text())
-        self.redirect(HomeAdminView())
+        if self.input1.text() and self.input2.text() and self.input3.text() and self.input6.text():
+            gestione_operatore.crea_operatore(self,self.input1.text(),self.input2.text(),self.input3.text(),self.input6.text())
+            self.redirect(HomeAdminView())
+        else:
+            alert_box = QMessageBox(self)
+            alert_box.setWindowTitle("Errore")
+            alert_box.setText("Devi fornire un valore per tutti i campi di input")
+            alert_box.setIcon(QMessageBox.Warning)
+            alert_box.addButton("Ok", QMessageBox.AcceptRole)
+            alert_box.exec()
+
+
 
 
 
