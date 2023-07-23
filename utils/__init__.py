@@ -71,3 +71,37 @@ def label_autori(autori: str) -> str:
     if "," in autori:
         return f"Autori: {autori}"
     return f"Autore: {autori}"
+
+
+class Auth:
+    user = None
+    logged = ""
+
+    @staticmethod
+    def logged_as_utente():
+        Auth.logged = UTENTE
+
+    @staticmethod
+    def logged_as_operatore():
+        Auth.logged = OPERATORE
+
+    @staticmethod
+    def logged_as_admin():
+        Auth.logged = ADMIN
+
+    @staticmethod
+    def is_logged_as_utente():
+        return Auth.logged == UTENTE
+
+    @staticmethod
+    def is_logged_as_operatore():
+        return Auth.logged == OPERATORE
+
+    @staticmethod
+    def is_logged_as_admin():
+        return Auth.logged == ADMIN
+
+    @staticmethod
+    def logout():
+        Auth.user = None
+        Auth.logged = ""

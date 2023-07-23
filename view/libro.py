@@ -78,4 +78,4 @@ class LibroView(View):
 
     def go_back(self):
         from .first import FirstView
-        self.redirect(FirstView())
+        self.redirect(FirstView())  # TODO è buggato, deve ritornare all'ultima schermata visitata
