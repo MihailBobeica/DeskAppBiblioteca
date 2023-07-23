@@ -4,8 +4,8 @@ from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBox
 from abstract.view import View
 from view.component import SidebarComponent
 from view.home_admin import HomeAdminView
-from controller.gestione_operatore import gestione_operatore
-
+from model.utente import Utente
+from utils import hash_password
 
 
 
@@ -71,7 +71,13 @@ class ProvaView(View):
 
     def invia(self):
         if self.input1.text() and self.input2.text() and self.input3.text() and self.input6.text():
-            gestione_operatore.crea_operatore(self,self.input1.text(),self.input2.text(),self.input3.text(),self.input6.text())
+            dati = {"username" : self.input1.text(),
+                    "nome" : self.input2.text(),
+                    "cognome" : self.input3.text(),
+                    "ruolo": "operatore",
+                    "password" : hash_password(self.input6.text())
+                    }
+            Utente.inserisci(self,dati)
             self.redirect(HomeAdminView())
         else:
             alert_box = QMessageBox(self)
