@@ -1,11 +1,11 @@
-from PySide6.QtCore import QFile
+
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox
 
 from abstract.view import View
-from view.component import SidebarComponent
 from view.home_admin import HomeAdminView
 from model.utente import Utente
 from utils import hash_password
+
 
 
 
