@@ -51,6 +51,9 @@ class View(QFrame):
     def send_logout_request(self):
         self.notify("logout")
 
+    def send_option_1(self):
+        self.notify("Option1")
+
     def get_button(self, label) -> QPushButton:
         button: QPushButton = self.findChild(QPushButton, label, Qt.FindChildrenRecursively)
         return button
