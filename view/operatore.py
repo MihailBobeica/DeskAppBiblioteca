@@ -9,9 +9,11 @@ from utils import hash_password
 
 
 
+
+
 class ProvaView(View):
     def create_layout(self) -> None:
-        self.setWindowTitle('Input Utente')
+        self.setWindowTitle('Crea operatore')
         layout = QVBoxLayout()
 
         grid_layout = QGridLayout()
@@ -60,6 +62,8 @@ class ProvaView(View):
         layout.addWidget(button_back)
 
         self.setLayout(layout)
+
+
 
     def __init__(self):
         super().__init__()

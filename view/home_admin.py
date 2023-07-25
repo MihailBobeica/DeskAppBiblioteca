@@ -9,6 +9,7 @@ class HomeAdminView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
         sidebar.add_buttons(labels=("Crea operatore",
+                                    "Elimina operatore",
                                     "Logout",),
                             style="button")
         content = Placeholder("Home admin")
@@ -21,8 +22,11 @@ class HomeAdminView(View):
     def connect_buttons(self):
         logout_button = self.get_button("Logout")
         logout_button.clicked.connect(self.send_logout_request)
-        operatori_button = self.get_button("Crea operatore")
-        operatori_button.clicked.connect(self.gestione_operatori)
+        inserisci_button = self.get_button("Crea operatore")
+        inserisci_button.clicked.connect(self.crea_operatore)
+        elimina_button = self.get_button("Elimina operatore")
+        elimina_button.clicked.connect(self.elimina_operatore)
+
 
     def attach_controllers(self) -> None:
         from app import controller_logout
@@ -31,7 +35,11 @@ class HomeAdminView(View):
     def __init__(self):
         super().__init__()
 
-    def gestione_operatori(self):
+    def crea_operatore(self):
         from view.operatore import ProvaView
         self.redirect(ProvaView())
+
+    def elimina_operatore(self):
+        from view.delete_operatore import DeleteOpView
+        self.redirect(DeleteOpView())
 
