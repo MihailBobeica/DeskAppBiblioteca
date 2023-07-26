@@ -1,15 +1,17 @@
-from PySide6.QtWidgets import QHBoxLayout
 
+from PySide6.QtWidgets import QHBoxLayout
+from view.ricerca_operatore import RicercaView
 from abstract.view import View
 from component import Placeholder
 from view.component import SidebarComponent
-
+from model.utente import Utente
 
 class HomeAdminView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
         sidebar.add_buttons(labels=("Crea operatore",
                                     "Elimina operatore",
+                                    "Modifica operatore",
                                     "Logout",),
                             style="button")
         content = Placeholder("Home admin")
@@ -26,6 +28,8 @@ class HomeAdminView(View):
         inserisci_button.clicked.connect(self.crea_operatore)
         elimina_button = self.get_button("Elimina operatore")
         elimina_button.clicked.connect(self.elimina_operatore)
+        modifica_button = self.get_button("Modifica operatore")
+        modifica_button.clicked.connect(self.modifica_operatore)
 
 
     def attach_controllers(self) -> None:
@@ -36,10 +40,13 @@ class HomeAdminView(View):
         super().__init__()
 
     def crea_operatore(self):
-        from view.operatore import ProvaView
+        from view.crea_operatore import ProvaView
         self.redirect(ProvaView())
 
     def elimina_operatore(self):
-        from view.delete_operatore import DeleteOpView
-        self.redirect(DeleteOpView())
+        self.redirect(RicercaView(metodo="elimina"))
+
+
+    def modifica_operatore(self):
+        self.redirect(RicercaView(metodo="modifica"))
 

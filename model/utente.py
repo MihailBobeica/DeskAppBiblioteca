@@ -36,6 +36,7 @@ class Utente(Model):
         if not(utente) or utente.ruolo!="operatore":
             from view.component.view_errore import view_errore
             view_errore.create_layout(self, "Errore", "L'operatore non è presente nel sistema")
+
         else:
             msg_box = QMessageBox()
             msg_box.setIcon(QMessageBox.Question)
@@ -50,6 +51,18 @@ class Utente(Model):
                 db_session.delete(utente)
                 db_session.commit()
                 db_session.close()
+
+    def modifica(self, dati: Dict[str, str],old_username):
+        db_session = Session()
+        utente = Utente.by_username(self, old_username)
+        utente.username = dati['username']
+        utente.nome = dati['nome']
+        utente.cognome = dati['cognome']
+        db_session.merge(utente)
+
+        db_session.commit()
+        db_session.close()
+
 
 
 

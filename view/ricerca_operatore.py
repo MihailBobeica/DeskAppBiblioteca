@@ -1,12 +1,11 @@
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
-
+from view.modifica_operatore import ModificaView
 from abstract.view import View
-from view.home_admin import HomeAdminView
 from model.utente import Utente
 
-class DeleteOpView(View):
+class RicercaView(View):
     def create_layout(self) -> None:
-        self.setWindowTitle('Elimina operatore')
+        self.setWindowTitle('Ricerca operatore')
         layout = QVBoxLayout()
 
         grid_layout = QGridLayout()
@@ -30,7 +29,8 @@ class DeleteOpView(View):
         self.setLayout(layout)
 
 
-    def __init__(self):
+    def __init__(self, metodo):
+        self.metodo = metodo
         super().__init__()
 
 
@@ -40,9 +40,14 @@ class DeleteOpView(View):
 
     def invia(self):
         if self.input1.text():
-            Utente.elimina(self,self.input1.text())
-            from .home_admin import HomeAdminView
-            self.redirect(HomeAdminView())
+            if self.metodo=="elimina":
+                Utente.elimina(self,self.input1.text())
+                from view.home_admin import HomeAdminView
+                self.redirect(HomeAdminView())
+            if self.metodo=="modifica":
+                utente = Utente.by_username(self,self.input1.text())
+                if utente and utente.ruolo=="operatore":
+                    self.redirect(ModificaView(utente))
         else:
             alert_box = QMessageBox(self)
             alert_box.setWindowTitle("Errore")
