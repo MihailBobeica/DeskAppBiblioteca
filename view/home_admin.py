@@ -12,6 +12,7 @@ class HomeAdminView(View):
         sidebar.add_buttons(labels=("Crea operatore",
                                     "Elimina operatore",
                                     "Modifica operatore",
+                                    "Visualizza operatore",
                                     "Logout",),
                             style="button")
         content = Placeholder("Home admin")
@@ -30,6 +31,8 @@ class HomeAdminView(View):
         elimina_button.clicked.connect(self.elimina_operatore)
         modifica_button = self.get_button("Modifica operatore")
         modifica_button.clicked.connect(self.modifica_operatore)
+        visualizza_button = self.get_button("Visualizza operatore")
+        visualizza_button.clicked.connect(self.visualizza_operatore)
 
 
     def attach_controllers(self) -> None:
@@ -50,3 +53,5 @@ class HomeAdminView(View):
     def modifica_operatore(self):
         self.redirect(RicercaView(metodo="modifica"))
 
+    def visualizza_operatore(self):
+        self.redirect(RicercaView(metodo="visualizza"))

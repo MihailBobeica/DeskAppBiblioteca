@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 from view.modifica_operatore import ModificaView
+from view.Visualizza_operatore import VisualizzaView
 from abstract.view import View
 from model.utente import Utente
 
@@ -48,6 +49,11 @@ class RicercaView(View):
                 utente = Utente.by_username(self,self.input1.text())
                 if utente and utente.ruolo=="operatore":
                     self.redirect(ModificaView(utente))
+            if self.metodo=="visualizza":
+                utente = Utente.by_username(self, self.input1.text())
+                if utente and utente.ruolo == "operatore":
+                    self.redirect(VisualizzaView(utente))
+
         else:
             alert_box = QMessageBox(self)
             alert_box.setWindowTitle("Errore")
