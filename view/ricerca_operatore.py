@@ -49,10 +49,17 @@ class RicercaView(View):
                 utente = Utente.by_username(self,self.input1.text())
                 if utente and utente.ruolo=="operatore":
                     self.redirect(ModificaView(utente))
+                else:
+                    from view.component.view_errore import view_errore
+                    view_errore.create_layout(self,"Errore","L'operatore non è presente nel sistema")
+
             if self.metodo=="visualizza":
                 utente = Utente.by_username(self, self.input1.text())
                 if utente and utente.ruolo == "operatore":
                     self.redirect(VisualizzaView(utente))
+                else:
+                    from view.component.view_errore import view_errore
+                    view_errore.create_layout(self, "Errore", "L'operatore non è presente nel sistema")
 
         else:
             alert_box = QMessageBox(self)
