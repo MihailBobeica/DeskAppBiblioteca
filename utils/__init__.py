@@ -15,6 +15,7 @@ SIDEBAR_WIDTH = 200
 PATH_IMAGE = "src/img"
 CATALOG_COLUMNS = 2
 RESULTS_LIMIT = 15
+POSTI = 20
 
 
 def get_style(css_file: str) -> str:

@@ -37,7 +37,18 @@ class Libro(Base):
     disponibili = Column(Integer)
     dati = Column(String)
 
+class Aula(Base):
+    __tablename__ = 'aule'
 
+    id = Column(Integer, primary_key=True)
+    nome = Column(String)
+
+class Posto(Base):
+    __tablename__ = 'posti'
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String)
+    aula= Column(String)
 class PrenotazionePosto(Base):
     __tablename__ = 'prenotazioni_posti'
 

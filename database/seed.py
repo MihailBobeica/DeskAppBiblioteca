@@ -63,3 +63,21 @@ LIBRI = [{"titolo": "Fisica. Vol. 1: Meccanica, termodinamica",
           "disponibili": 3,
           "dati": "332 p., ill., brossura"},
          ]
+AULE = [
+    {"nome": "Acquario_1"},
+    {"nome": "Acquario_2"},
+    {"nome": "Acquario_3"},
+    {"nome": "Salone"}
+
+]
+
+NUMERO_POSTI_PER_AULA = 20
+
+
+
+POSTI = []
+for aula in AULE:
+    nome_aula = aula["nome"]
+    for numero_posto in range(1, NUMERO_POSTI_PER_AULA + 1):
+        posto = {"nome": f"{numero_posto}{nome_aula}", "aula": nome_aula}
+        POSTI.append(posto)
