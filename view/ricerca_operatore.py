@@ -68,3 +68,4 @@ class RicercaView(View):
             alert_box.setIcon(QMessageBox.Warning)
             alert_box.addButton("Ok", QMessageBox.AcceptRole)
             alert_box.exec()
+

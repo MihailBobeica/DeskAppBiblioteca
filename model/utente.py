@@ -59,9 +59,10 @@ class Utente(Model):
         utente.nome = dati['nome']
         utente.cognome = dati['cognome']
         db_session.merge(utente)
-
         db_session.commit()
         db_session.close()
+
+
 
 
 
