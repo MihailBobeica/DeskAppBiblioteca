@@ -66,7 +66,7 @@ class InserisciView(View):
 
         layout.addLayout(grid_layout)
 
-        invia = QPushButton('Invia')
+        invia = QPushButton('Aggiungi libro')
         invia.clicked.connect(self.invia)
         layout.addWidget(invia)
 

@@ -69,3 +69,25 @@ class Libro(Model):
         db_session.close()
         return libro
 
+
+    def elimina(self, libro: DbLibro):
+        db_session = Session()
+        db_session.delete(libro)
+        db_session.commit()
+        db_session.close()
+
+    def modifica(self, dati: Dict[str, str], old_isbn):
+        db_session = Session()
+        libro = Libro.by_isbn(self, old_isbn)
+        libro.titolo = dati['titolo']
+        libro.autori = dati['autori']
+        libro.editore = dati['editore']
+        libro.anno_edizione = dati['anno_edizione']
+        libro.anno_pubblicazione = dati['anno_pubblicazione']
+        libro.disponibili = dati['disponibili']
+        libro.dati = dati['dati']
+        db_session.merge(libro)
+        db_session.commit()
+        db_session.close()
+
+

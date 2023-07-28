@@ -14,6 +14,7 @@ class HomeAdminView(View):
                                     "Modifica operatore",
                                     "Visualizza operatore",
                                     "Inserisci libro",
+                                    "Ricerca libro",
                                     "Logout",),
                             style="button")
         content = Placeholder("Home admin")
@@ -36,6 +37,8 @@ class HomeAdminView(View):
         visualizza_button.clicked.connect(self.visualizza_operatore)
         inserisci_libro_button = self.get_button("Inserisci libro")
         inserisci_libro_button.clicked.connect(self.inserisci_libro)
+        ricerca_libro_button = self.get_button("Ricerca libro")
+        ricerca_libro_button.clicked.connect(self.ricerca_libro)
 
 
     def attach_controllers(self) -> None:
@@ -62,3 +65,7 @@ class HomeAdminView(View):
     def inserisci_libro(self):
         from view.inserisci_libro import InserisciView
         self.redirect(InserisciView())
+
+    def ricerca_libro(self):
+        from view.gestione_libri_admin.catalogo_admin import CatalogoComponent
+        self.redirect(CatalogoComponent())
