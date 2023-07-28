@@ -3,6 +3,7 @@ from typing import Optional
 from PySide6.QtWidgets import QMessageBox
 
 from abstract.controller import Controller
+from utils import Auth
 
 LOGOUT_TITLE = "Logout"
 LOGOUT_MESSAGE = "Sei sicuro di voler uscire?"
@@ -17,8 +18,8 @@ class LogoutController(Controller):
             self.confirm_logout()
 
     def confirm_logout(self) -> None:
-        # TODO fix this
         response = self.confirm(LOGOUT_TITLE,
                                 LOGOUT_MESSAGE)
         if response == QMessageBox.StandardButton.Yes:
+            Auth.logout()
             self.logout()
