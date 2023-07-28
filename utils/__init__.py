@@ -17,6 +17,9 @@ CATALOG_COLUMNS = 2
 RESULTS_LIMIT = 15
 POSTI = 20
 
+BUTTON_BACK = "indietro"
+BUTTON_FORWARD = "avanti"
+
 
 def get_style(css_file: str) -> str:
     try:
@@ -65,7 +68,11 @@ def to_year(year: str) -> datetime:
 
 
 def get_image_path(image: str) -> str:
-    return path.join(PATH_IMAGE, image)
+    return path.join(path.join(PATH_IMAGE, "copertina"), image)
+
+
+def get_ui_image(image_name: str) -> str:
+    return path.join(path.join(PATH_IMAGE, "ui"), image_name)
 
 
 def label_autori(autori: str) -> str:
@@ -106,3 +113,13 @@ class Auth:
     def logout():
         Auth.user = None
         Auth.logged = ""
+
+
+ARROW_BACK_ICON: str = get_ui_image("arrow_back_icon.png")
+ARROW_FORWARD_ICON: str = get_ui_image("arrow_forward_icon.png")
+
+HISTORY_LIMIT = 10
+
+CONTENT = "main_content"
+
+APP_NAME = "App Gestione Biblioteca"

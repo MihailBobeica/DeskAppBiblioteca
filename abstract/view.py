@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from typing import Dict, Optional, Any, Iterable, Type
+from typing import Dict, Optional, Any, Iterable
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QPushButton, QLineEdit, QFrame, QWidget, QLayout
+from PySide6.QtWidgets import QPushButton, QLineEdit, QFrame, QLayout
 
 from protocol.observer import Observer
 from utils import get_label, get_style
@@ -27,7 +27,6 @@ class View(QFrame):
     def create_layout(self) -> None:
         pass
 
-    @abstractmethod
     def connect_buttons(self):
         pass
 
@@ -62,7 +61,7 @@ class View(QFrame):
         line_edit: QLineEdit = self.findChild(QLineEdit, label, Qt.FindChildrenRecursively)
         return line_edit
 
-    def add_buttons(self, labels: Iterable[str], layout: Optional[QLayout] = None, style: Optional[str] = None):  # TODO move it to the sidebar
+    def add_buttons(self, labels: Iterable[str], layout: Optional[QLayout] = None, style: Optional[str] = None):
         if not layout:
             layout = self.layout()
         for label in labels:

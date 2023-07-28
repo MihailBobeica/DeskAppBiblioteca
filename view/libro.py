@@ -10,13 +10,14 @@ from utils import get_image_path, label_autori
 class LibroView(View):
     def create_layout(self) -> None:
         # content
+
         # copertina
         image_label = QLabel()
         pixmap = QPixmap(get_image_path(self.info.immagine)).scaled(320, 480, aspectMode=Qt.KeepAspectRatio)
         image_label.setPixmap(pixmap)
         # font
         font = QFont()
-        font.setPointSize(14)
+        font.setPointSize(16)
         # titolo
         label_title = QLabel(f"Titolo: {self.info.titolo}")
         label_title.setWordWrap(True)
@@ -60,22 +61,12 @@ class LibroView(View):
         v_layout.addWidget(label_disponibili)
         v_layout.addWidget(label_dati)
         v_layout.addStretch(1)
-        self.add_buttons(labels=("Indietro",),
-                         layout=v_layout)
 
         contenitore_dati.setLayout(v_layout)
 
         layout.addWidget(image_label)
         layout.addWidget(contenitore_dati)
 
-    def connect_buttons(self):
-        button_back = self.get_button("Indietro")
-        button_back.clicked.connect(self.go_back)
-
     def __init__(self, db_libro: Libro):
         self.info = db_libro
         super().__init__()
-
-    def go_back(self):
-        from .first import FirstView
-        self.redirect(FirstView())  # TODO è buggato, deve ritornare all'ultima schermata visitata
