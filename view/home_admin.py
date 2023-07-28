@@ -14,7 +14,7 @@ class HomeAdminView(View):
                                     "Modifica operatore",
                                     "Visualizza operatore",
                                     "Inserisci libro",
-                                    "Ricerca libro",
+                                    "Gestione libri",
                                     "Logout",),
                             style="button")
         content = Placeholder("Home admin")
@@ -37,7 +37,7 @@ class HomeAdminView(View):
         visualizza_button.clicked.connect(self.visualizza_operatore)
         inserisci_libro_button = self.get_button("Inserisci libro")
         inserisci_libro_button.clicked.connect(self.inserisci_libro)
-        ricerca_libro_button = self.get_button("Ricerca libro")
+        ricerca_libro_button = self.get_button("Gestione libri")
         ricerca_libro_button.clicked.connect(self.ricerca_libro)
 
 

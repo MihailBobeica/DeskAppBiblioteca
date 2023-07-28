@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QFont
 from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QFrame, QLineEdit, QDateEdit, QSpinBox, QGridLayout, \
-    QMessageBox
+    QMessageBox, QPushButton
 from view.home_admin import HomeAdminView
 from abstract.view import View
 from database import Libro
@@ -58,12 +58,12 @@ class LibroView(View):
         self.input7.setText(self.info.dati)
 
         # layout
-        layout = QHBoxLayout(self)
+        '''layout = QHBoxLayout(self)
         layout.setAlignment(Qt.AlignCenter)
         #layout.setSpacing(50)
 
         contenitore_dati = QFrame()
-        contenitore_dati.setMaximumSize(320, 480)
+        contenitore_dati.setMaximumSize(320, 480)'''
 
         v_layout = QGridLayout()
         #v_layout.setSpacing(8)
@@ -83,23 +83,34 @@ class LibroView(View):
         v_layout.addWidget(self.input6,5,1)
         v_layout.addWidget(self.input7,6,1)
         #v_layout.addStretch(1)
-        self.add_buttons(labels=("Indietro",
+        '''self.add_buttons(labels=("Indietro",
                                  "Salva Modifiche",
                                  "Rimuovi"),
-                         layout=v_layout)
+                         layout=v_layout)'''
+        button_back = QPushButton("Indietro")
+        button_back.clicked.connect(self.go_back)
+        v_layout.addWidget(button_back,7,1)
+        button_modifica = QPushButton("Salva Modifiche")
+        button_modifica.clicked.connect(self.modifica)
+        v_layout.addWidget(button_modifica,8,1)
+        button_elimina = QPushButton("Rimuovi")
+        button_elimina.clicked.connect(self.elimina)
+        v_layout.addWidget(button_elimina,9,1)
 
-        contenitore_dati.setLayout(v_layout)
+
+        #contenitore_dati.setLayout(v_layout)
 
         #layout.addWidget(image_label)
-        layout.addWidget(contenitore_dati)
+        #layout.addWidget(contenitore_dati)
+        self.setLayout(v_layout)
 
-    def connect_buttons(self):
+    '''def connect_buttons(self):
         button_back = self.get_button("Indietro")
         button_back.clicked.connect(self.go_back)
         button_back = self.get_button("Salva Modifiche")
         button_back.clicked.connect(self.modifica)
         button_back = self.get_button("Rimuovi")
-        button_back.clicked.connect(self.elimina)
+        button_back.clicked.connect(self.elimina)'''
 
     def __init__(self, db_libro: Libro):
         self.info = db_libro
