@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 
 from abstract.view import View
 from utils import get_style
@@ -27,20 +27,19 @@ class LoginView(View):
         v_layout = QVBoxLayout()
         h_layout.addLayout(v_layout)
 
+        v_layout.addStretch()
         v_layout.addWidget(username_label)
         v_layout.addWidget(username_input)
         v_layout.addWidget(password_label)
         v_layout.addWidget(password_input)
         v_layout.addSpacing(40)
-        self.add_buttons(labels=("Login",
-                                 "Indietro"),
-                         layout=v_layout,)
+        self.add_buttons(labels=("Login",),
+                         layout=v_layout, )
+        v_layout.addStretch()
 
         h_layout.setAlignment(Qt.AlignCenter)
 
     def connect_buttons(self):
-        button_back = self.get_button("Indietro")
-        button_back.clicked.connect(self.go_back)
         button_submit = self.get_button("Login")
         button_submit.clicked.connect(self.send_login_data)
 
@@ -50,10 +49,6 @@ class LoginView(View):
     def attach_controllers(self):
         from app import controller_login
         self.attach(controller_login)
-
-    def go_back(self):
-        from .first import FirstView
-        self.redirect(FirstView())
 
     def get_login_data(self):
         line_edit_username = self.get_line_edit("username")

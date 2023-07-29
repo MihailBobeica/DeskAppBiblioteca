@@ -8,8 +8,8 @@ from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME, HOME_ICON, 
 from .first import FirstView
 
 
-def quick_alert(title: str, message: str, seconds: int = 3):
-    alert = QMessageBox()
+def quick_alert(parent, title: str, message: str, seconds: int = 3):
+    alert = QMessageBox(parent)
     alert.setIcon(QMessageBox.Information)
     alert.setWindowTitle(title)
     alert.setText(message)
@@ -114,16 +114,18 @@ class MainWindow(QMainWindow):
             self.set_view(last_view, navigate=True)
             return
 
-        quick_alert(title=QUICK_ALERT_GO_BACK_TITLE,
+        quick_alert(parent=self,
+                    title=QUICK_ALERT_GO_BACK_TITLE,
                     message=QUICK_ALERT_GO_BACK_MESSAGE)
 
     def go_home(self) -> None:
         this_view = self.get_this_view()
-        not_on_home_page = not isinstance(this_view, FirstView)
+        not_on_home_page = not isinstance(this_view, FirstView)  # TODO: change it to HomeView
         if not_on_home_page:
             self.set_view(FirstView())
             return
 
-        quick_alert(title=QUICK_ALERT_GO_HOME_TITLE,
+        quick_alert(parent=self,
+                    title=QUICK_ALERT_GO_HOME_TITLE,
                     message=QUICK_ALERT_GO_HOME_MESSAGE,
                     seconds=2)
