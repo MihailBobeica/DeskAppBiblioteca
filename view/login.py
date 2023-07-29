@@ -32,7 +32,7 @@ class LoginView(View):
         v_layout.addWidget(username_input)
         v_layout.addWidget(password_label)
         v_layout.addWidget(password_input)
-        v_layout.addSpacing(40)
+        v_layout.addSpacing(48)
         self.add_buttons(labels=("Login",),
                          layout=v_layout, )
         v_layout.addStretch()

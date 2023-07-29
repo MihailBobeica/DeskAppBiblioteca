@@ -86,28 +86,17 @@ class Auth:
     logged = ""
 
     @staticmethod
-    def logged_as_utente():
-        Auth.logged = UTENTE
+    def logged_as(user):  # TODO: add type hint
+        Auth.user = user
+        Auth.logged = user.ruolo
 
     @staticmethod
-    def logged_as_operatore():
-        Auth.logged = OPERATORE
+    def is_logged_as(ruolo: str):
+        return Auth.logged == ruolo
 
     @staticmethod
-    def logged_as_admin():
-        Auth.logged = ADMIN
-
-    @staticmethod
-    def is_logged_as_utente():
-        return Auth.logged == UTENTE
-
-    @staticmethod
-    def is_logged_as_operatore():
-        return Auth.logged == OPERATORE
-
-    @staticmethod
-    def is_logged_as_admin():
-        return Auth.logged == ADMIN
+    def is_logged() -> bool:
+        return Auth.user is not None
 
     @staticmethod
     def logout():

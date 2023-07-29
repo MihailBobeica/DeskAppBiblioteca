@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton
 from abstract import BoundedView
 from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME, HOME_ICON, QUICK_ALERT_GO_HOME_TITLE, \
     QUICK_ALERT_GO_HOME_MESSAGE, QUICK_ALERT_GO_BACK_TITLE, QUICK_ALERT_GO_BACK_MESSAGE
-from .first import FirstView
+from .homepage import HomePageView
 
 
 def quick_alert(parent, title: str, message: str, seconds: int = 3):
@@ -111,6 +111,10 @@ class MainWindow(QMainWindow):
     def go_back(self) -> None:
         if self.cronologia:
             last_view: BoundedView = self.cronologia.pop()
+            is_home_page = isinstance(last_view, HomePageView)
+            if is_home_page:
+                self.set_view(HomePageView(), navigate=True)
+                return
             self.set_view(last_view, navigate=True)
             return
 
@@ -120,9 +124,9 @@ class MainWindow(QMainWindow):
 
     def go_home(self) -> None:
         this_view = self.get_this_view()
-        not_on_home_page = not isinstance(this_view, FirstView)  # TODO: change it to HomeView
+        not_on_home_page = not isinstance(this_view, HomePageView)
         if not_on_home_page:
-            self.set_view(FirstView())
+            self.set_view(HomePageView())
             return
 
         quick_alert(parent=self,

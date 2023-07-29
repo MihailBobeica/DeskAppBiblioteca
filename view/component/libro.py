@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame
 
 from abstract.view import View
 from database import Libro
-from utils import get_image_path, label_autori, Auth
+from utils import get_image_path, label_autori, Auth, UTENTE
 
 
 class LibroComponent(View):
@@ -64,7 +64,7 @@ class LibroComponent(View):
         self.redirect(LibroView(self.info))
 
     def buttons_utente(self, layout):
-        if Auth.is_logged_as_utente():
+        if Auth.is_logged_as(UTENTE):
             if self.info.disponibili > 0:
                 labels = ("Prenota libro",)
             else:
