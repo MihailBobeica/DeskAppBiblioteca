@@ -124,3 +124,11 @@ HISTORY_LIMIT = 5
 CONTENT = "main_content"
 
 APP_NAME = "App Gestione Biblioteca"
+
+QUICK_ALERT_GO_HOME_TITLE = "Home page"
+QUICK_ALERT_GO_HOME_MESSAGE = "Sei già nella schermata principale."
+QUICK_ALERT_GO_BACK_TITLE = "Cronologia vuota"
+QUICK_ALERT_GO_BACK_MESSAGE = "La tua cronologia di navigazione" \
+                              "\nè attualmente vuota."
+
+

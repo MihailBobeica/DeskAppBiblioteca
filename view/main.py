@@ -3,8 +3,22 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton, QFrame, QMessageBox
 
 from abstract import BoundedView
-from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME, HOME_ICON
+from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME, HOME_ICON, QUICK_ALERT_GO_HOME_TITLE, \
+    QUICK_ALERT_GO_HOME_MESSAGE, QUICK_ALERT_GO_BACK_TITLE, QUICK_ALERT_GO_BACK_MESSAGE
 from .first import FirstView
+
+
+def quick_alert(title: str, message: str, seconds: int = 3):
+    alert = QMessageBox()
+    alert.setIcon(QMessageBox.Information)
+    alert.setWindowTitle(title)
+    alert.setText(message)
+
+    timer = QTimer()
+    timer.timeout.connect(alert.close)
+    timer.start(int(seconds * 1000))
+
+    alert.exec_()
 
 
 class MainWindow(QMainWindow):
@@ -68,9 +82,13 @@ class MainWindow(QMainWindow):
         self.index += increment
         return f"{CONTENT}_{self.index}"
 
-    def set_view(self, view: BoundedView, navigate: bool = False) -> None:
+    def get_this_view(self) -> BoundedView:
         this_view_name = self.get_view_name()
         this_view: BoundedView = self.findChild(QFrame, this_view_name, Qt.FindChildrenRecursively)
+        return this_view
+
+    def set_view(self, view: BoundedView, navigate: bool = False) -> None:
+        this_view = self.get_this_view()
         layout = self.centralWidget().layout()
 
         if this_view:
@@ -96,27 +114,16 @@ class MainWindow(QMainWindow):
             self.set_view(last_view, navigate=True)
             return
 
-        self.quick_alert(title="Cronologia vuota",
-                         message="La tua cronologia di navigazione\nè attualmente vuota")
+        quick_alert(title=QUICK_ALERT_GO_BACK_TITLE,
+                    message=QUICK_ALERT_GO_BACK_MESSAGE)
 
     def go_home(self) -> None:
-        this_view_name = self.get_view_name()
-        this_view: BoundedView = self.findChild(QFrame, this_view_name, Qt.FindChildrenRecursively)
+        this_view = self.get_this_view()
         not_on_home_page = not isinstance(this_view, FirstView)
         if not_on_home_page:
             self.set_view(FirstView())
             return
 
-        self.quick_alert("Home", "Sei già nella schermata principale.", 2)
-
-    def quick_alert(self, title: str, message: str, seconds: int = 3):
-        alert = QMessageBox()
-        alert.setIcon(QMessageBox.Information)
-        alert.setWindowTitle(title)
-        alert.setText(message)
-
-        timer = QTimer()
-        timer.timeout.connect(alert.close)
-        timer.start(int(seconds * 1000))
-
-        alert.exec_()
+        quick_alert(title=QUICK_ALERT_GO_HOME_TITLE,
+                    message=QUICK_ALERT_GO_HOME_MESSAGE,
+                    seconds=2)
