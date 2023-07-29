@@ -51,17 +51,28 @@ class Posto(Base):
     aula= Column(String)
 
 class PrenotazionePosto(Base):
-
     __tablename__ = 'prenotazioni_posti'
 
     id = Column(Integer, primary_key=True)
     data_prenotazione = Column(DateTime)
-    data_effettuazione = Column(DateTime)
     ora_inizio = Column(String)
     ora_fine = Column(String)
     ora_attivazione = Column(String)
-    disponibilita = Column(Boolean)
+    durata = Column(Integer)
     codice_posto = Column(String)
+    codice_utente = Column(String)
+
+class PrenotazioneAula(Base):
+        __tablename__ = 'prenotazioni_aule'
+
+        id = Column(Integer, primary_key=True)
+        data_prenotazione = Column(DateTime)
+        ora_inizio = Column(String)
+        ora_fine = Column(String)
+        ora_attivazione = Column(String)
+        durata = Column(Integer)
+        codice_aula = Column(String)
+        codice_utente = Column(String)
 
 
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle
