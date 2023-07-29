@@ -3,7 +3,8 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton, QFrame, QMessageBox
 
 from abstract import BoundedView
-from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME
+from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME, HOME_ICON
+from .first import FirstView
 
 
 class MainWindow(QMainWindow):
@@ -40,10 +41,10 @@ class MainWindow(QMainWindow):
         button_back.clicked.connect(self.go_back)
         button_back.setIcon(icon_back)
 
-        # icon_forward = QIcon(ARROW_FORWARD_ICON)
-        # button_forward = QPushButton()
-        # button_forward.setObjectName(BUTTON_FORWARD)
-        # button_forward.setIcon(icon_forward)
+        icon_home = QIcon(HOME_ICON)
+        button_home = QPushButton()
+        button_home.clicked.connect(self.go_home)
+        button_home.setIcon(icon_home)
 
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignTop)
@@ -53,7 +54,7 @@ class MainWindow(QMainWindow):
 
         h_layout.addStretch()
         h_layout.addWidget(button_back)
-        # h_layout.addWidget(button_forward)
+        h_layout.addWidget(button_home)
         h_layout.addStretch()
 
         buttons_container.setLayout(h_layout)
@@ -63,26 +64,29 @@ class MainWindow(QMainWindow):
         main_widget.setLayout(layout)
         self.setCentralWidget(main_widget)
 
-    def get_content_name(self, increment: int = 0) -> str:
+    def get_view_name(self, increment: int = 0) -> str:
         self.index += increment
         return f"{CONTENT}_{self.index}"
 
     def set_view(self, view: BoundedView, navigate: bool = False) -> None:
-        content_name = self.get_content_name()
-        content: BoundedView = self.findChild(QFrame, content_name, Qt.FindChildrenRecursively)
+        this_view_name = self.get_view_name()
+        this_view: BoundedView = self.findChild(QFrame, this_view_name, Qt.FindChildrenRecursively)
         layout = self.centralWidget().layout()
 
-        if content:
-            if not navigate:
-                self.cronologia.append(content)
+        if this_view:
+            if navigate:
+                this_view.deleteLater()
+            else:
+                self.cronologia.append(this_view)
                 if len(self.cronologia) > HISTORY_LIMIT:
-                    least_recently_used: BoundedView = self.cronologia.pop(0)
-                    least_recently_used.deleteLater()
-            content.hide()
-            layout.removeWidget(content)
+                    lru_view: BoundedView = self.cronologia.pop(0)
+                    lru_view.deleteLater()
 
-        content_name = self.get_content_name(increment=1)
-        view.setObjectName(content_name)
+            this_view.hide()
+            layout.removeWidget(this_view)
+
+        next_view_name = self.get_view_name(increment=1)
+        view.setObjectName(next_view_name)
         layout.insertWidget(0, view)
         view.show()
 
@@ -92,13 +96,27 @@ class MainWindow(QMainWindow):
             self.set_view(last_view, navigate=True)
             return
 
+        self.quick_alert(title="Cronologia vuota",
+                         message="La tua cronologia di navigazione\nè attualmente vuota")
+
+    def go_home(self) -> None:
+        this_view_name = self.get_view_name()
+        this_view: BoundedView = self.findChild(QFrame, this_view_name, Qt.FindChildrenRecursively)
+        not_on_home_page = not isinstance(this_view, FirstView)
+        if not_on_home_page:
+            self.set_view(FirstView())
+            return
+
+        self.quick_alert("Home", "Sei già nella schermata principale.", 2)
+
+    def quick_alert(self, title: str, message: str, seconds: int = 3):
         alert = QMessageBox()
         alert.setIcon(QMessageBox.Information)
-        alert.setWindowTitle("Cronologia vuota")
-        alert.setText("La tua cronologia di navigazione\nè attualmente vuota")
+        alert.setWindowTitle(title)
+        alert.setText(message)
 
         timer = QTimer()
         timer.timeout.connect(alert.close)
-        timer.start(3000)
+        timer.start(int(seconds * 1000))
 
         alert.exec_()

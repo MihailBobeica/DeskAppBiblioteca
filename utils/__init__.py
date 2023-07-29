@@ -117,8 +117,9 @@ class Auth:
 
 ARROW_BACK_ICON: str = get_ui_image("arrow_back_icon.png")
 ARROW_FORWARD_ICON: str = get_ui_image("arrow_forward_icon.png")
+HOME_ICON: str = get_ui_image("home_icon.png")
 
-HISTORY_LIMIT = 10
+HISTORY_LIMIT = 5
 
 CONTENT = "main_content"
 
