@@ -49,7 +49,9 @@ class Posto(Base):
     id = Column(Integer, primary_key=True)
     nome = Column(String)
     aula= Column(String)
+
 class PrenotazionePosto(Base):
+
     __tablename__ = 'prenotazioni_posti'
 
     id = Column(Integer, primary_key=True)

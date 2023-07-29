@@ -13,6 +13,9 @@ class ScegliAulaView(View):
         self.data_selezionata = data
         self.durata = durata
         self.popup_shown = False
+        self.dettaglio_aula_view = None
+        # Crea il layout delle aule solo all'inizializzazione della vista
+        self.create_layout()
 
     def create_layout(self):
         layout = QVBoxLayout(self)
@@ -34,6 +37,11 @@ class ScegliAulaView(View):
             # Connetti il segnale clicked del pulsante dell'opzione aula al metodo on_opzione_clicked
             opzione_button.clicked.connect(partial(self.on_opzione_clicked, aula))
 
+    def close_dettaglio_aula_view(self):
+        if self.dettaglio_aula_view:
+            self.dettaglio_aula_view.deleteLater()
+            self.dettaglio_aula_view = None
+
     def on_opzione_clicked(self, aula_data):
         if self.tipo_prenotazione == "prenota_aula" and not self.popup_shown:
             # Mostra il pop-up solo se il cliente ha scelto di prenotare un'aula e il pop-up non è stato mostrato ancora
@@ -41,15 +49,31 @@ class ScegliAulaView(View):
                                     f"Prenotazione effettuata per l'aula: {aula_data.nome}")
             self.popup_shown = True
         else:
-            # Altrimenti, apri la vista DettaglioAulaView
-            layout = self.layout()
-            if layout is not None:
-                while layout.count():
-                    item = layout.takeAt(0)
-                    widget = item.widget()
-                    if widget:
-                        widget.deleteLater()
+            if self.dettaglio_aula_view and self.dettaglio_aula_view.nome_aula == aula_data.nome:
+                # Se la vista DettaglioAulaView è già aperta per l'aula selezionata, chiudila
+                self.close_dettaglio_aula_view()
+            else:
+                # Rimuovi tutti i widget dal layout attuale
+                self.clear_layout()
 
-            # Crea una nuova istanza della vista DettaglioAulaView e passa il nome dell'aula selezionata
-            dettaglio_aula_view = DettaglioAulaView(aula_data.nome)
-            self.main_window.set_view(dettaglio_aula_view)
+                # Crea una nuova istanza della vista DettaglioAulaView e passa il nome dell'aula selezionata
+                self.dettaglio_aula_view = DettaglioAulaView(aula_data.nome)
+                self.dettaglio_aula_view.nome_aula = aula_data.nome
+
+                # Aggiungi la vista DettaglioAulaView al layout principale della ScegliAulaView
+                self.layout().addWidget(self.dettaglio_aula_view)
+
+    def clear_layout(self):
+        # Rimuovi tutti i widget dal layout
+        while self.layout().count():
+            item = self.layout().takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+    def update_aule_layout(self):
+        # Rimuovi tutti i widget dal layout attuale
+        self.clear_layout()
+
+        # Ricrea il layout delle aule
+        self.create_layout()

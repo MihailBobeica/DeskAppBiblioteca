@@ -14,6 +14,7 @@ class HomeUtenteView(View):
                                     "Libri prenotati",
                                     "Lista di osservazione",
                                     "Prenota posto",
+                                    "Lista di prenotazioni",
                                     "Sanzioni",
                                     "Info",
                                     "Logout"),
