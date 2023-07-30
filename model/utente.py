@@ -1,7 +1,7 @@
 from typing import Dict
 
 from PySide6.QtWidgets import QMessageBox
-
+from sqlalchemy import or_
 from abstract.model import Model
 from database import Session
 from database import Utente as DbUtente
@@ -62,9 +62,13 @@ class Utente(Model):
         db_session.commit()
         db_session.close()
 
-
-
-
+    def ricerca(self,input):
+        db_session = Session()
+        utenti = db_session.query(DbUtente).filter(or_(DbUtente.username.ilike(f"%{input}%"),
+                                                     DbUtente.nome.ilike(f"%{input}%"),
+                                                       DbUtente.cognome.ilike(f"%{input}%"))).all()
+        db_session.close()
+        return utenti
 
 
     def __init__(self):
