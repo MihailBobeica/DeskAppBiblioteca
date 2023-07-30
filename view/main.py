@@ -3,8 +3,9 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton, QFrame, QMessageBox
 
 from abstract import BoundedView
-from utils import ARROW_BACK_ICON, HISTORY_LIMIT, CONTENT, APP_NAME, HOME_ICON, QUICK_ALERT_GO_HOME_TITLE, \
-    QUICK_ALERT_GO_HOME_MESSAGE, QUICK_ALERT_GO_BACK_TITLE, QUICK_ALERT_GO_BACK_MESSAGE
+from utils.backend import HISTORY_LIMIT
+from utils.strings import *
+from utils.ui import ARROW_BACK_ICON, HOME_ICON
 from .homepage import HomePageView
 
 

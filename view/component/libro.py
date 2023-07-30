@@ -4,7 +4,9 @@ from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame
 
 from abstract.view import View
 from database import Libro
-from utils import get_image_path, label_autori, Auth, UTENTE
+from utils.ui import get_cover_image, label_autori
+from utils.auth import Auth
+from utils.strings import UTENTE
 
 
 class LibroComponent(View):
@@ -14,7 +16,7 @@ class LibroComponent(View):
         # content
         # copertina
         image_label = QLabel(self)
-        pixmap = QPixmap(get_image_path(self.info.immagine)).scaled(160, 240, aspectMode=Qt.KeepAspectRatio)
+        pixmap = QPixmap(get_cover_image(self.info.immagine)).scaled(160, 240, aspectMode=Qt.KeepAspectRatio)
         image_label.setPixmap(pixmap)
         # titolo
         label_title = QLabel(f"Titolo: {self.info.titolo}")

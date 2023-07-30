@@ -1,5 +1,5 @@
 from typing import Protocol, Optional
-from .observer import Observer
+from protocol.observer import Observer
 
 
 class Observable(Protocol):

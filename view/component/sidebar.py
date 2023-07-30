@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QVBoxLayout
 
 from abstract.view import View
-from utils import get_style, SIDEBAR_WIDTH
+from utils.ui import get_style, SIDEBAR_WIDTH
 
 
 class SidebarComponent(View):

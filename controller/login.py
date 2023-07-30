@@ -1,19 +1,14 @@
-from typing import Optional, Dict, Type
+from typing import Optional, Dict
 
-from abstract.controller import Controller
-from abstract.model import Model
-from utils import check_password, is_empty, Auth
+from abstract.controller import Controller, BoundedModel
+from utils.auth import Auth, check_password
+from utils.backend import is_empty
+from utils.strings import *
 from view.homepage import HomePageView
-
-# TODO put this in utils
-ACCESS_DENIED_TITLE = "Accesso non riuscito"
-BAD_CREDENTIALS_MESSAGE = "Credenziali di accesso errate."
-NO_USERNAME_MESSAGE = "Non hai inserito l'username."
-NO_PASSWORD_MESSAGE = "Non hai inserito la password."
 
 
 class LoginController(Controller):
-    def __init__(self, models: Optional[Dict[str, Type[Model]]] = None):
+    def __init__(self, models: Optional[Dict[str, BoundedModel]] = None):
         super().__init__(models)
 
     def receive_message(self, message: str, data: Optional[dict] = None):
@@ -35,10 +30,10 @@ class LoginController(Controller):
         self.redirect(HomePageView())
 
     def bad_credentials_popup(self):
-        self.popup(ACCESS_DENIED_TITLE, BAD_CREDENTIALS_MESSAGE)
+        self.alert(ACCESS_DENIED_TITLE, BAD_CREDENTIALS_MESSAGE)
 
     def no_username_popup(self):
-        self.popup(ACCESS_DENIED_TITLE, NO_USERNAME_MESSAGE)
+        self.alert(ACCESS_DENIED_TITLE, NO_USERNAME_MESSAGE)
 
     def no_password_popup(self):
-        self.popup(ACCESS_DENIED_TITLE, NO_PASSWORD_MESSAGE)
+        self.alert(ACCESS_DENIED_TITLE, NO_PASSWORD_MESSAGE)

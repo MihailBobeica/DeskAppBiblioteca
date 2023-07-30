@@ -1,10 +1,9 @@
-
 from PySide6.QtWidgets import QHBoxLayout
-from view.ricerca_operatore import RicercaView
+
 from abstract.view import View
-from component import Placeholder
 from view.component import SidebarComponent
-from model.utente import Utente
+from view.ricerca_operatore import RicercaView
+
 
 class HomeAdminView(View):
     def create_layout(self):
@@ -17,12 +16,10 @@ class HomeAdminView(View):
                                     "Gestione libri",
                                     "Logout",),
                             style="button")
-        content = Placeholder("Home admin")
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
-        layout.addWidget(content)
 
     def connect_buttons(self):
         logout_button = self.get_button("Logout")
@@ -40,7 +37,6 @@ class HomeAdminView(View):
         ricerca_libro_button = self.get_button("Gestione libri")
         ricerca_libro_button.clicked.connect(self.ricerca_libro)
 
-
     def attach_controllers(self) -> None:
         from app import controller_logout
         self.attach(controller_logout)
@@ -54,7 +50,6 @@ class HomeAdminView(View):
 
     def elimina_operatore(self):
         self.redirect(RicercaView(metodo="elimina"))
-
 
     def modifica_operatore(self):
         self.redirect(RicercaView(metodo="modifica"))

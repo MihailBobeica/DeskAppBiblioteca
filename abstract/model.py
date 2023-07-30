@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from typing import Dict, Optional, List
+from typing import Optional
 
-from protocol.observer import Observer
-from utils import get_label
+from protocol import Observer
+from utils.backend import get_label
 
 
 class Model:
@@ -18,12 +18,12 @@ class Model:
             view.receive_message(message, data)
 
     def __init__(self):
-        self.views: Dict[str, Observer] = dict()
+        self.views: dict[str, Observer] = dict()
 
     @abstractmethod
-    def inserisci(self, dati: Dict[str, str]):
+    def inserisci(self, dati: dict[str, str]):
         pass
 
-    def seed_db(self, lista_dati: List[Dict[str, str]]):
+    def seed_db(self, lista_dati: list[dict[str, str]]):
         for dati in lista_dati:
             self.inserisci(dati)

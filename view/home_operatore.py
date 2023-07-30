@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
-from component import Placeholder
 from view.component import SidebarComponent
 
 
@@ -11,12 +10,10 @@ class HomeOperatoreView(View):
         sidebar.add_buttons(labels=("Option 1",
                                     "Logout"),
                             style="button")
-        content = Placeholder("Home operatore")
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
-        layout.addWidget(content)
 
     def connect_buttons(self):
         logout_button = self.get_button("Logout")

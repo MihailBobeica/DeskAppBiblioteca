@@ -1,11 +1,12 @@
 from abc import abstractmethod
-from typing import Dict, Optional, Any, Iterable
+from typing import Optional, Any, Iterable
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QPushButton, QLineEdit, QFrame, QLayout
 
-from protocol.observer import Observer
-from utils import get_label, get_style
+from protocol import Observer
+from utils.backend import get_label
+from utils.ui import get_style
 
 
 class View(QFrame):
@@ -35,7 +36,7 @@ class View(QFrame):
         from app import main_window
         self.main_window = main_window
 
-        self.controllers: Dict[str, Observer] = dict()
+        self.controllers: dict[str, Observer] = dict()
         self.attach_controllers()
 
         self.create_layout()

@@ -8,7 +8,6 @@ from database import Utente as DbUtente
 
 
 class Utente(Model):
-
     def by_username(self, username):
         db_session = Session()
         utente = db_session.query(DbUtente).filter_by(username=username).first()
@@ -22,9 +21,9 @@ class Utente(Model):
                           ruolo=dati["ruolo"],
                           username=dati["username"],
                           password=dati["password"])
-        if Utente.by_username(self,utente.username):
+        if Utente.by_username(self, utente.username):
             from view.component.view_errore import view_errore
-            view_errore.create_layout(self,"Errore","L'operatore è già presente nel sistema")
+            view_errore.create_layout(self, "Errore", "L'operatore è già presente nel sistema")
         else:
             db_session.add(utente)
             db_session.commit()
@@ -33,7 +32,7 @@ class Utente(Model):
     def elimina(self, username):
         db_session = Session()
         utente = Utente.by_username(self, username)
-        if not(utente) or utente.ruolo!="operatore":
+        if not (utente) or utente.ruolo != "operatore":
             from view.component.view_errore import view_errore
             view_errore.create_layout(self, "Errore", "L'operatore non è presente nel sistema")
 
@@ -52,9 +51,9 @@ class Utente(Model):
                 db_session.commit()
                 db_session.close()
 
-    def modifica(self, dati: Dict[str, str],old_username):
+    def modifica(self, dati: Dict[str, str], old_username):
         db_session = Session()
-        utente = Utente.by_username(self, old_username)
+        utente = self.by_username(old_username)
         utente.username = dati['username']
         utente.nome = dati['nome']
         utente.cognome = dati['cognome']
@@ -62,12 +61,5 @@ class Utente(Model):
         db_session.commit()
         db_session.close()
 
-
-
-
-
-
     def __init__(self):
         super().__init__()
-
-

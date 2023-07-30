@@ -3,9 +3,9 @@ from typing import Dict, Type
 from sqlalchemy import or_
 
 from abstract.model import Model
-from database import Session
 from database import Libro as DbLibro
-from utils import RESULTS_LIMIT
+from database import Session
+from utils.ui import RESULTS_LIMIT
 
 
 class Libro(Model):
@@ -36,7 +36,7 @@ class Libro(Model):
                         anno_pubblicazione=dati["anno_pubblicazione"],
                         disponibili=dati["disponibili"],
                         dati=dati["dati"])
-        res = Libro.by_isbn(self,dati["isbn"])
+        res = Libro.by_isbn(self, dati["isbn"])
         if res:
             res.disponibili += int(dati["disponibili"])
             db_session.merge(res)
@@ -69,7 +69,6 @@ class Libro(Model):
         db_session.close()
         return libro
 
-
     def elimina(self, libro: DbLibro):
         db_session = Session()
         db_session.delete(libro)
@@ -89,5 +88,3 @@ class Libro(Model):
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
-
-

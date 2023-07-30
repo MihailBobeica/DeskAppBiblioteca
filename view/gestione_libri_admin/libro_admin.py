@@ -1,12 +1,13 @@
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap, QFont
-from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QFrame, QLineEdit, QDateEdit, QSpinBox, QGridLayout, \
+from datetime import datetime
+
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QLabel, QLineEdit, QDateEdit, QSpinBox, QGridLayout, \
     QMessageBox, QPushButton
-from view.home_admin import HomeAdminView
+
 from abstract.view import View
 from database import Libro
 from model.libro import Libro as model_libro
-from datetime import datetime
+from view.home_admin import HomeAdminView
 
 
 class LibroView(View):
@@ -66,42 +67,41 @@ class LibroView(View):
         contenitore_dati.setMaximumSize(320, 480)'''
 
         v_layout = QGridLayout()
-        #v_layout.setSpacing(8)
+        # v_layout.setSpacing(8)
 
-        v_layout.addWidget(label_title,0,0)
-        v_layout.addWidget(label_autor,1,0)
-        v_layout.addWidget(label_editore,4,0)
-        v_layout.addWidget(label_anno_edizione,2,0)
-        v_layout.addWidget(label_anno_pubblicazione,3,0)
-        v_layout.addWidget(label_disponibili,5,0)
-        v_layout.addWidget(label_dati,6,0)
-        v_layout.addWidget(self.input1,0,1)
-        v_layout.addWidget(self.input2,1,1)
-        v_layout.addWidget(self.input3,2,1)
-        v_layout.addWidget(self.input4,3,1)
-        v_layout.addWidget(self.input5,4,1)
-        v_layout.addWidget(self.input6,5,1)
-        v_layout.addWidget(self.input7,6,1)
-        #v_layout.addStretch(1)
+        v_layout.addWidget(label_title, 0, 0)
+        v_layout.addWidget(label_autor, 1, 0)
+        v_layout.addWidget(label_editore, 4, 0)
+        v_layout.addWidget(label_anno_edizione, 2, 0)
+        v_layout.addWidget(label_anno_pubblicazione, 3, 0)
+        v_layout.addWidget(label_disponibili, 5, 0)
+        v_layout.addWidget(label_dati, 6, 0)
+        v_layout.addWidget(self.input1, 0, 1)
+        v_layout.addWidget(self.input2, 1, 1)
+        v_layout.addWidget(self.input3, 2, 1)
+        v_layout.addWidget(self.input4, 3, 1)
+        v_layout.addWidget(self.input5, 4, 1)
+        v_layout.addWidget(self.input6, 5, 1)
+        v_layout.addWidget(self.input7, 6, 1)
+        # v_layout.addStretch(1)
         '''self.add_buttons(labels=("Indietro",
                                  "Salva Modifiche",
                                  "Rimuovi"),
                          layout=v_layout)'''
         button_back = QPushButton("Indietro")
         button_back.clicked.connect(self.go_back)
-        v_layout.addWidget(button_back,7,1)
+        v_layout.addWidget(button_back, 7, 1)
         button_modifica = QPushButton("Salva Modifiche")
         button_modifica.clicked.connect(self.modifica)
-        v_layout.addWidget(button_modifica,8,1)
+        v_layout.addWidget(button_modifica, 8, 1)
         button_elimina = QPushButton("Rimuovi")
         button_elimina.clicked.connect(self.elimina)
-        v_layout.addWidget(button_elimina,9,1)
+        v_layout.addWidget(button_elimina, 9, 1)
 
+        # contenitore_dati.setLayout(v_layout)
 
-        #contenitore_dati.setLayout(v_layout)
-
-        #layout.addWidget(image_label)
-        #layout.addWidget(contenitore_dati)
+        # layout.addWidget(image_label)
+        # layout.addWidget(contenitore_dati)
         self.setLayout(v_layout)
 
     '''def connect_buttons(self):
@@ -117,22 +117,20 @@ class LibroView(View):
         super().__init__()
 
     def go_back(self):
-
         self.redirect(HomeAdminView())
 
     def modifica(self):
         dati = {
-            "titolo" : self.input1.text(),
-            "autori" : self.input2.text(),
-            "anno_edizione" : datetime.strptime(self.input3.text(), '%d/%m/%Y'),
-            "anno_pubblicazione" : datetime.strptime(self.input4.text(), '%d/%m/%Y'),
-            "editore" : self.input5.text(),
+            "titolo": self.input1.text(),
+            "autori": self.input2.text(),
+            "anno_edizione": datetime.strptime(self.input3.text(), '%d/%m/%Y'),
+            "anno_pubblicazione": datetime.strptime(self.input4.text(), '%d/%m/%Y'),
+            "editore": self.input5.text(),
             "dati": self.input7.text(),
-            "disponibili" : self.input6.text()
+            "disponibili": self.input6.text()
         }
-        model_libro.modifica(self,dati,self.info.isbn)
+        model_libro.modifica(self, dati, self.info.isbn)
         self.redirect(HomeAdminView())
-
 
     def elimina(self):
         msg_box = QMessageBox()
@@ -143,7 +141,6 @@ class LibroView(View):
         msg_box.setDefaultButton(QMessageBox.Ok)
         response = msg_box.exec()
         if response == QMessageBox.Ok:
-            model_libro.elimina(self,self.info)
+            model_libro.elimina(self, self.info)
 
         self.redirect(HomeAdminView())
-
