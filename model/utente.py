@@ -1,7 +1,7 @@
 from typing import Dict
 
 from PySide6.QtWidgets import QMessageBox
-from sqlalchemy import or_
+from sqlalchemy import or_,and_
 from abstract.model import Model
 from database import Session
 from database import Utente as DbUtente
@@ -66,7 +66,8 @@ class Utente(Model):
         db_session = Session()
         utenti = db_session.query(DbUtente).filter(or_(DbUtente.username.ilike(f"%{input}%"),
                                                      DbUtente.nome.ilike(f"%{input}%"),
-                                                       DbUtente.cognome.ilike(f"%{input}%"))).all()
+                                                       DbUtente.cognome.ilike(f"%{input}%")),
+                                                   and_(DbUtente.ruolo=="utente")).all()
         db_session.close()
         return utenti
 
