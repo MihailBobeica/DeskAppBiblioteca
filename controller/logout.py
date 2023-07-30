@@ -22,3 +22,4 @@ class LogoutController(Controller):
         if response == QMessageBox.StandardButton.Yes:
             Auth.logout()
             self.redirect(HomePageView())
+            self.main_window.delete_history()
