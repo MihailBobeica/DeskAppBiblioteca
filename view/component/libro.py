@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame
 
 from abstract.view import View
 from database import Libro
-from utils.ui import get_cover_image, label_autori
+from utils.ui import get_cover_image, label_autori, BOX_WIDTH
 from utils.auth import Auth
 from utils.strings import UTENTE
 
@@ -32,7 +32,7 @@ class LibroComponent(View):
         layout.setAlignment(Qt.AlignTop)
 
         contenitore_dati = QFrame()
-        contenitore_dati.setFixedSize(180, 240)
+        contenitore_dati.setFixedSize(BOX_WIDTH, 240)
 
         v_layout = QVBoxLayout()
         v_layout.setAlignment(Qt.AlignTop)

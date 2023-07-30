@@ -1,8 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QFrame
 
 from abstract.view import View
-from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT
+from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT, BOX_WIDTH
 
 
 class LoginView(View):
@@ -23,6 +23,7 @@ class LoginView(View):
 
         # layout
         h_layout = QHBoxLayout(self)
+        h_layout.setAlignment(Qt.AlignCenter)
         v_layout = QVBoxLayout()
         h_layout.addLayout(v_layout)
 
@@ -31,12 +32,19 @@ class LoginView(View):
         v_layout.addWidget(username_input)
         v_layout.addWidget(password_label)
         v_layout.addWidget(password_input)
-        v_layout.addSpacing(48)
-        self.add_buttons(labels=("Login",),
-                         layout=v_layout, )
-        v_layout.addStretch()
 
-        h_layout.setAlignment(Qt.AlignCenter)
+        button_container = QFrame()
+        c_layout = QHBoxLayout()
+        c_layout.setAlignment(Qt.AlignCenter)
+
+        self.add_buttons(labels=("Login",),
+                         layout=c_layout)
+
+        button_container.setLayout(c_layout)
+
+        v_layout.addWidget(button_container)
+
+        v_layout.addStretch()
 
     def connect_buttons(self):
         button_submit = self.get_button("Login")
