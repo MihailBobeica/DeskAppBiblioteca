@@ -19,7 +19,7 @@ class Utente(Base):
     nome = Column(String)
     cognome = Column(String)
     ruolo = Column(Enum(ADMIN, OPERATORE, UTENTE))
-    username = Column(String)
+    username = Column(String, unique=True)
     password = Column(String)
 
 
@@ -31,7 +31,7 @@ class Libro(Base):
     autori = Column(String)
     immagine = Column(String)
     editore = Column(String)
-    isbn = Column(String)
+    isbn = Column(String, unique=True)
     anno_edizione = Column(DateTime)
     anno_pubblicazione = Column(DateTime)
     disponibili = Column(Integer)
@@ -84,9 +84,19 @@ class PrenotazioneLibro(Base):
     id = Column(Integer, primary_key=True)
     data_prenotazione = Column(DateTime)
     data_scadenza = Column(DateTime)
-    libro = Column(String, ForeignKey('libri.isbn'))
+    libro = Column(String, ForeignKey('libri.isbn', ondelete='CASCADE'))  #non funziona
     utente = Column(String, ForeignKey('utenti.username'))
+    codice = Column(String)
 
+class Prestito(Base):
+    __tablename__ = 'prestiti'
+    id = Column(Integer, primary_key=True)
+    data_inizio = Column(DateTime)
+    data_scadenza = Column(DateTime)
+    data_restituzione = Column(DateTime, nullable=True)
+    libro = Column(String, ForeignKey('libri.isbn', ondelete='CASCADE'))  # non funziona
+    utente = Column(String, ForeignKey('utenti.username'))
+    codice = Column(String)
 
 
 
