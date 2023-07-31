@@ -7,9 +7,10 @@ from database import PrenotazioneLibro as db_prenotazione_libro
 from database import Session
 from utils.auth import Auth
 from datetime import datetime,timedelta
-from database import Libro as db_libro
+from database import Libro as db_libro, Prestito as db_prestito
 from sqlalchemy import and_
 from view.component.view_errore import view_errore
+
 
 class PrenotazioneLibro(Model):
 
@@ -43,23 +44,27 @@ class PrenotazioneLibro(Model):
             pass
         else:
             db_session.add(prenotazione_libro)
-            print(prenotazione_libro.utente)
-            print(prenotazione_libro.data_prenotazione)
-            print(prenotazione_libro.data_scadenza)
-            print(prenotazione_libro.libro)
-            print(prenotazione_libro.codice)
+
+            libro = db_session.query(db_libro).filter_by(isbn=prenotazione_libro.libro).first()
+            libro.disponibili -=1
+            db_session.merge(libro)
             db_session.commit()
             db_session.close()
 
+    def ricerca(self, input=None):
+        db_session = Session()
+        if input:
+            pass
+        else:
+            prestiti = db_session.query(db_prenotazione_libro).filter_by(utente= Auth.user.username).all()
+            db_session.close()
+            return prestiti
 
     def __init__(self):
         super().__init__()
 
     def sospensione(self):
         pass
-
-
-
 
 
     def libro_non_disponibile(self):

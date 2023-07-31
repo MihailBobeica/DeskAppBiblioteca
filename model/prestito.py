@@ -19,4 +19,6 @@ class Prestito(Model):
                 db_session.add(prestito)
                 db_session.commit()
                 db_session.close()
+        else:
+            view_errore.create_layout(self, "ERRORE", "Prenotaione non trovata")
 

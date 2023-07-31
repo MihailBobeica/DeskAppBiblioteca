@@ -3,7 +3,7 @@
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton
 
 from abstract.view import View
-
+from view.home_operatore import HomeOperatoreView
 
 
 
@@ -31,4 +31,5 @@ class RegistraPrestito(View):
         if self.input1.text():
             from model.prestito import Prestito
             Prestito.inserisci(self,self.input1.text())
+            self.redirect(HomeOperatoreView())
 
