@@ -1,9 +1,9 @@
-from sqlalchemy import Column, Integer, String, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from utils.strings import ADMIN, OPERATORE, UTENTE
+from utils import ADMIN, OPERATORE, UTENTE
 
 db_engine = create_engine('sqlite:///./database/db.sqlite')
 
@@ -37,46 +37,42 @@ class Libro(Base):
     disponibili = Column(Integer)
     dati = Column(String)
 
-
 class Aula(Base):
     __tablename__ = 'aule'
 
     id = Column(Integer, primary_key=True)
     nome = Column(String)
 
-
 class Posto(Base):
     __tablename__ = 'posti'
 
     id = Column(Integer, primary_key=True)
     nome = Column(String)
-    aula = Column(String)
-
+    aula= Column(String)
 
 class PrenotazionePosto(Base):
     __tablename__ = 'prenotazioni_posti'
 
     id = Column(Integer, primary_key=True)
     data_prenotazione = Column(DateTime)
-    ora_inizio = Column(String)
-    ora_fine = Column(String)
-    ora_attivazione = Column(String)
+    ora_inizio = Column(DateTime)
+    ora_fine = Column(DateTime)
+    ora_attivazione = Column(DateTime)
     durata = Column(Integer)
     codice_posto = Column(String)
     codice_utente = Column(String)
 
-
 class PrenotazioneAula(Base):
-    __tablename__ = 'prenotazioni_aule'
+        __tablename__ = 'prenotazioni_aule'
 
-    id = Column(Integer, primary_key=True)
-    data_prenotazione = Column(DateTime)
-    ora_inizio = Column(String)
-    ora_fine = Column(String)
-    ora_attivazione = Column(String)
-    durata = Column(Integer)
-    codice_aula = Column(String)
-    codice_utente = Column(String)
+        id = Column(Integer, primary_key=True)
+        data_prenotazione = Column(DateTime)
+        ora_inizio = Column(DateTime)
+        ora_fine = Column(DateTime)
+        ora_attivazione = Column(DateTime)
+        durata = Column(Integer)
+        codice_aula = Column(String)
+        codice_utente = Column(String)
 
 
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle

@@ -6,6 +6,7 @@ from database import Session
 from utils.backend import POSTI_PER_AULA
 
 
+
 class prenotazione_aula(Model):
     def inserisci(self, dati: Dict[str, str]):
         db_session = Session()
