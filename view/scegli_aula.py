@@ -1,9 +1,12 @@
 from functools import partial
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QPushButton, QMessageBox
+
+from controller.gestione_prenotazione_posto import PrenotazioneController
 from database import Session
 from abstract.view import View
 from database import Aula
 from view.aula import DettaglioAulaView
+from datetime import datetime, timedelta
 
 
 class ScegliAulaView(View):
@@ -44,27 +47,52 @@ class ScegliAulaView(View):
 
     def on_opzione_clicked(self, aula_data):
         if self.tipo_prenotazione == "prenota_aula" and not self.popup_shown:
+            # Converti la data selezionata in un oggetto datetime
+            data_selezionata = datetime.strptime(self.data_selezionata, "%Y-%m-%d %H:%M")
+
+            # Converti la durata in un numero intero rappresentante le ore e moltiplicala per 60 per ottenere i minuti
+            durata_ore = int(self.durata)
+            durata_minuti = durata_ore * 60
+
+            # Calcola ora_inizio e ora_fine in base alla data selezionata e alla durata
+            ora_inizio = data_selezionata
+            ora_fine = data_selezionata + timedelta(minutes=durata_minuti)
+            # Ottieni l'username dell'utente loggato
+            prenotazione_controller = PrenotazioneController()
+            utente_id = prenotazione_controller.get_username_utente_loggato()
+
+            # Salva effettivamente la prenotazione nel database
+            prenotazione_controller = PrenotazioneController()
+            prenotazione_controller.crea_prenotazione_aula(
+                aula=aula_data.nome,
+                data=data_selezionata,
+                utente_id=utente_id,  # Sostituisci "ID_UTENTE" con l'ID dell'utente corrente
+                durata=durata_minuti,  # Salva la durata in minuti
+                ora_inizio=ora_inizio,
+                ora_fine=ora_fine
+            )
+
             # Mostra il pop-up solo se il cliente ha scelto di prenotare un'aula e il pop-up non è stato mostrato ancora
             QMessageBox.information(self, "Prenotazione effettuata",
                                     f"Prenotazione effettuata per l'aula: {aula_data.nome}")
             self.popup_shown = True
         else:
-            if self.dettaglio_aula_view and self.dettaglio_aula_view.nome_aula == aula_data.nome:
-                # Se la vista DettaglioAulaView è già aperta per l'aula selezionata, chiudila
-                self.close_dettaglio_aula_view()
-            else:
-                # Rimuovi tutti i widget dal layout attuale
-                self.clear_layout()
+            # Rimuovi tutti i widget dal layout attuale
+            self.clear_layout()
+            # Esegui lo split per ottenere solo la parte della data fino a "YYYY-MM-DD"
+            data_selezionata = self.data_selezionata.split(" ")[0]
 
-                # Crea una nuova istanza della vista DettaglioAulaView e passa il nome dell'aula selezionata
-                self.dettaglio_aula_view = DettaglioAulaView(aula_data.nome)
-                self.dettaglio_aula_view.nome_aula = aula_data.nome
+            # Crea una nuova istanza della vista DettaglioAulaView e passa il nome dell'aula selezionata
+            self.dettaglio_aula_view = DettaglioAulaView(aula_data.nome, data_selezionata, self.durata)
 
-                # Aggiungi la vista DettaglioAulaView al layout principale della ScegliAulaView
-                self.layout().addWidget(self.dettaglio_aula_view)
+            # Imposta la finestra principale come genitore della vista DettaglioAulaView
+            self.dettaglio_aula_view.main_window = self.main_window
+
+            # Aggiungi la vista DettaglioAulaView al layout principale della ScegliAulaView
+            self.main_window.set_view(self.dettaglio_aula_view)
 
     def clear_layout(self):
-        # Rimuovi tutti i widget dal layout
+        # Rimuovi tutti i widget dal layout principale
         while self.layout().count():
             item = self.layout().takeAt(0)
             widget = item.widget()

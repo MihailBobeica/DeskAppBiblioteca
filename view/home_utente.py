@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
+from controller.gestione_prenotazione_posto import PrenotazioneController
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 from view.lisat_prenotazioni import ListaPrenotazioniView
@@ -36,14 +37,15 @@ class HomeUtenteView(View):
     def attach_controllers(self) -> None:
         from app import controller_logout
         self.attach(controller_logout)
+        self.prenotazione_controller = PrenotazioneController()
 
     def show_prenota_schermata(self):
         scegli_prenotazione_view = ScegliPrenotazione()
         self.main_window.set_view(scegli_prenotazione_view)
 
     def show_lista_prenotazioni(self):
-            lista_prenotazioni_view = ListaPrenotazioniView()
-            self.main_window.set_view(lista_prenotazioni_view)
+        lista_prenotazioni_view = ListaPrenotazioniView(self.prenotazione_controller)
+        self.main_window.set_view(lista_prenotazioni_view)
 
     def __init__(self):
         super().__init__()

@@ -6,17 +6,18 @@ from database import PrenotazioneAula as DbPrenotazioneAula
 
 from utils import POSTI
 
+
 class prenotazione_aula(Model):
     def inserisci(self, dati: Dict[str, str]):
         db_session = Session()
         prenotazione = DbPrenotazioneAula(id=dati["id"],
-                                           aula=dati["aula"],
-                                           data=dati["data"],
-                                           utente_id=dati["utente_id"],
-                                           ora_inizio=dati["ora_inizio"],
-                                           ora_fine=dati["ora_fine"],
-                                           ora_attivazione=dati["ora_attivazione"],
-                                           durata=dati["durata"])
+                                          aula=dati["aula"],
+                                          data=dati["data"],
+                                          utente_id=dati["utente_id"],
+                                          ora_inizio=dati["ora_inizio"],
+                                          ora_fine=dati["ora_fine"],
+                                          ora_attivazione=dati["ora_attivazione"],
+                                          durata=dati["durata"])
 
         db_session.add(prenotazione)
         db_session.commit()
