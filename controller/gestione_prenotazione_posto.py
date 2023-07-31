@@ -5,7 +5,7 @@ from abstract.controller import Controller
 from database import PrenotazioneAula, PrenotazionePosto, Session
 from model.prenotazione_posto import prenotazione_posto
 from model.prenotazione_aula import prenotazione_aula
-from utils import Auth
+from utils.auth import Auth
 
 
 class PrenotazioneController(Controller):
