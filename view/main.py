@@ -135,5 +135,5 @@ class MainWindow(QMainWindow):
                     message=QUICK_ALERT_GO_HOME_MESSAGE,
                     seconds=2)
 
-    def delete_history(self):
+    def reset_history(self):
         self.cronologia = list()
