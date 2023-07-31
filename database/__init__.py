@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Enum, DateTime, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -77,6 +77,17 @@ class PrenotazioneAula(Base):
     durata = Column(Integer)
     codice_aula = Column(String)
     codice_utente = Column(String)
+
+class PrenotazioneLibro(Base):
+    __tablename__ = "prenotazioni_libri"
+
+    id = Column(Integer, primary_key=True)
+    data_prenotazione = Column(DateTime)
+    data_scadenza = Column(DateTime)
+    libro = Column(String, ForeignKey('libri.isbn'))
+    utente = Column(String, ForeignKey('utenti.username'))
+
+
 
 
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle

@@ -56,6 +56,8 @@ class LibroComponent(View):
     def connect_buttons(self) -> None:
         button_visualizza = self.get_button("Visualizza")
         button_visualizza.clicked.connect(self.visualizza)
+        if self.get_button("Prenota libro"):
+            self.get_button("Prenota libro").clicked.connect(self.prenota_libro)
 
     def __init__(self, db_libro: Libro):
         self.info = db_libro
@@ -73,3 +75,9 @@ class LibroComponent(View):
                 labels = ("Osserva libro",)
             self.add_buttons(labels=labels,
                              layout=layout)
+
+
+
+    def prenota_libro(self):
+        from model.prenotazione_libro import PrenotazioneLibro
+        PrenotazioneLibro.inserisci(self, self.info)

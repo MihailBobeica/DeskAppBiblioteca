@@ -7,6 +7,7 @@ from database import Session
 from database import Utente as DbUtente
 
 
+
 class Utente(Model):
     def by_username(self, username):
         db_session = Session()
@@ -70,6 +71,11 @@ class Utente(Model):
         db_session.close()
         return utenti
 
+    def visualizza_cronologia(self,username):
+        '''db_session = Session()
+        utente = Utente.by_username(self,username)
+        prenotazioni = db_session.
+        db_session.close()'''
 
     def __init__(self):
         super().__init__()
