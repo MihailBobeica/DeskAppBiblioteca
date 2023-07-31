@@ -1,9 +1,10 @@
 from typing import Dict, Type, List
 
 from abstract.model import Model
-from database import Session
 from database import PrenotazionePosto as DbPrenotazionePosto
-from utils import POSTI
+from database import Session
+from utils.backend import POSTI_PER_AULA
+
 
 class prenotazione_posto(Model):
     def inserisci(self, dati: Dict[str, str]):
@@ -21,7 +22,7 @@ class prenotazione_posto(Model):
         db_session.commit()
         db_session.close()
 
-    def get(self, n: int = POSTI) -> list[Type[DbPrenotazionePosto]]:
+    def get(self, n: int = POSTI_PER_AULA) -> list[Type[DbPrenotazionePosto]]:
         db_session = Session()
         prenotazioni = db_session.query(DbPrenotazionePosto).limit(n).all()
         db_session.close()

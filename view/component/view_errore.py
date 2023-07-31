@@ -1,3 +1,5 @@
+# TODO: eliminare
+
 from PySide6.QtWidgets import QMessageBox
 
 from abstract.view import View

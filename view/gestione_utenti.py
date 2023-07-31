@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QHBoxLayout
 from view.ricerca_operatore import RicercaView
 from abstract.view import View
-from component import Placeholder
 from view.component import SidebarComponent
 
 
@@ -12,12 +11,10 @@ class GestioneUtentiView(View):
                                     "Visualizza cronologia",
                                     "Logout",),
                             style="button")
-        content = Placeholder("Gestione utenti")
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
-        layout.addWidget(content)
 
 
 

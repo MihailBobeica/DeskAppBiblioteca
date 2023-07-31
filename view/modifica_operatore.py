@@ -3,7 +3,7 @@ from abstract.view import View
 from database import Utente as db_Utente
 from model.utente import Utente
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox
-from utils import hash_password
+from utils.auth import hash_password
 
 class ModificaView(View):
     def create_layout(self) -> None:

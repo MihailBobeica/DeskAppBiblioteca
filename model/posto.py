@@ -2,7 +2,8 @@ from abstract.model import Model
 from database import Session
 from database import Posto as DbPosto
 from typing import List, Type, Dict
-from utils import POSTI
+from utils.backend import POSTI_PER_AULA
+
 
 class Posto(Model):
     def inserisci(self, dati: Dict[str, str]):
@@ -13,7 +14,7 @@ class Posto(Model):
         db_session.commit()
         db_session.close()
 
-    def get_posti_by_aula(self, nome_aula: str, n: int = POSTI) -> List[Type[DbPosto]]:
+    def get_posti_by_aula(self, nome_aula: str, n: int = POSTI_PER_AULA) -> List[Type[DbPosto]]:
         # Ottiene una sessione per l'accesso al database
         db_session = Session()
 

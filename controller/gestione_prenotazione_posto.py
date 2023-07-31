@@ -1,8 +1,12 @@
+# TODO: da spostare nel model
+
+
 from abstract.controller import Controller
 from database import PrenotazioneAula, PrenotazionePosto, Session
 from model.prenotazione_posto import prenotazione_posto
 from model.prenotazione_aula import prenotazione_aula
 from utils import Auth
+
 
 class PrenotazioneController(Controller):
     def __init__(self):

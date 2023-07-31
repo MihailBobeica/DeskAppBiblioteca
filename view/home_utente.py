@@ -33,6 +33,8 @@ class HomeUtenteView(View):
         logout_button.clicked.connect(self.send_logout_request)
         self.get_button("Prenota posto").clicked.connect(self.show_prenota_schermata)
         self.get_button("Lista di prenotazioni").clicked.connect(self.show_lista_prenotazioni)
+        self.get_button("Libri prenotati").clicked.connect(self.libri_prenotati)
+
 
     def attach_controllers(self) -> None:
         from app import controller_logout
@@ -47,5 +49,15 @@ class HomeUtenteView(View):
         lista_prenotazioni_view = ListaPrenotazioniView(self.prenotazione_controller)
         self.main_window.set_view(lista_prenotazioni_view)
 
+    def libri_prenotati(self):
+        from model.prenotazione_libro import PrenotazioneLibro
+        prenotazioni = PrenotazioneLibro.ricerca(self)
+        from .libri_in_prestito import VisualizzaPrestiti
+        self.redirect(VisualizzaPrestiti(prenotazioni))
+
+
+
+
     def __init__(self):
         super().__init__()
+

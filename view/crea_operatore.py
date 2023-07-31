@@ -1,14 +1,9 @@
-
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QGridLayout, QMessageBox
 
 from abstract.view import View
-from view.home_admin import HomeAdminView
 from model.utente import Utente
-from utils import hash_password
-
-
-
-
+from utils.auth import hash_password
+from view.home_admin import HomeAdminView
 
 
 class ProvaView(View):
@@ -63,11 +58,8 @@ class ProvaView(View):
 
         self.setLayout(layout)
 
-
-
     def __init__(self):
         super().__init__()
-
 
     def go_back(self):
         from .home_admin import HomeAdminView
@@ -75,13 +67,13 @@ class ProvaView(View):
 
     def invia(self):
         if self.input1.text() and self.input2.text() and self.input3.text() and self.input6.text():
-            dati = {"username" : self.input1.text(),
-                    "nome" : self.input2.text(),
-                    "cognome" : self.input3.text(),
+            dati = {"username": self.input1.text(),
+                    "nome": self.input2.text(),
+                    "cognome": self.input3.text(),
                     "ruolo": "operatore",
-                    "password" : hash_password(self.input6.text())
+                    "password": hash_password(self.input6.text())
                     }
-            Utente.inserisci(self,dati)
+            Utente.inserisci(self, dati)
             self.redirect(HomeAdminView())
         else:
             alert_box = QMessageBox(self)
@@ -90,24 +82,3 @@ class ProvaView(View):
             alert_box.setIcon(QMessageBox.Warning)
             alert_box.addButton("Ok", QMessageBox.AcceptRole)
             alert_box.exec()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QVBoxLayout
 
 from abstract.view import View
-from utils import Auth, ADMIN, OPERATORE, UTENTE
+from utils.auth import Auth
+from utils.strings import ADMIN, OPERATORE, UTENTE
 from view.first import FirstView
 from view.home_admin import HomeAdminView
 from view.home_operatore import HomeOperatoreView

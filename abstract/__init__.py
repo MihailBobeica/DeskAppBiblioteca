@@ -1,1 +1,3 @@
-from .controller import BoundedModel, BoundedView
+from .controller import BoundedModel, BoundedView, Controller
+from .model import Model
+from .view import View

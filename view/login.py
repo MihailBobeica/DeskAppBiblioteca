@@ -2,8 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 
 from abstract.view import View
-from utils import get_style
-from view import INPUT_WIDTH, INPUT_HEIGHT
+from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT
 
 
 class LoginView(View):

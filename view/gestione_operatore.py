@@ -2,7 +2,6 @@
 from PySide6.QtWidgets import QHBoxLayout
 from view.ricerca_operatore import RicercaView
 from abstract.view import View
-from component import Placeholder
 from view.component import SidebarComponent
 
 class GestioneOperatori(View):
@@ -14,12 +13,10 @@ class GestioneOperatori(View):
                                     "Visualizza operatore",
                                     "Logout",),
                             style="button")
-        content = Placeholder("Gestione operatori")
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
-        layout.addWidget(content)
 
     def connect_buttons(self):
         logout_button = self.get_button("Logout")

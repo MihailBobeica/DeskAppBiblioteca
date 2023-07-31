@@ -1,3 +1,4 @@
+# TODO: da eliminare
 import pickle
 
 def inserisci_libro(data):

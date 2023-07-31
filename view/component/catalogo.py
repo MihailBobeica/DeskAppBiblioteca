@@ -2,7 +2,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout
 
 from abstract.view import View
-from utils import get_style, CATALOG_COLUMNS, is_empty
+from utils.backend import is_empty
+from utils.ui import get_style, CATALOG_COLUMNS
 from view.component.libro import LibroComponent
 
 GRID_LABEL = "grid"

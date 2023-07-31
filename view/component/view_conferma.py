@@ -1,10 +1,12 @@
+# TODO: eliminare
+
 from PySide6.QtWidgets import QMessageBox
 
 from abstract.view import View
 
 
 class view_conferma(View):
-    def create_layout(self,title,message) -> None:
+    def create_layout(self, title, message) -> None:
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Question)
         msg_box.setText(message)
