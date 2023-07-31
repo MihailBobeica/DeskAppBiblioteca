@@ -1,5 +1,7 @@
-from PySide6.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QPushButton
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QMessageBox
 from abstract.view import View
+from controller.gestione_prenotazione_posto import PrenotazioneController
+
 
 class VisualizzaPrenotazioneView(View):
     def __init__(self, prenotazione):
@@ -38,9 +40,21 @@ class VisualizzaPrenotazioneView(View):
         button_layout.addWidget(cancella_button)
 
     def on_modifica_clicked(self):
+
+
         
         print("Pulsante Modifica cliccato!")
 
     def on_cancella_clicked(self):
+        # Chiedi conferma all'utente prima di procedere con la cancellazione
+        conferma_cancellazione = QMessageBox.question(self, "Conferma cancellazione",
+                                                      "Sei sicuro di voler cancellare questa prenotazione?",
+                                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
-        print("Pulsante Cancella cliccato!")
+        if conferma_cancellazione == QMessageBox.Yes:
+            # Chiamare il metodo del controller per cancellare la prenotazione
+            prenotazione_controller = PrenotazioneController()
+            prenotazione_controller.cancella_prenotazione_aula(self.prenotazione.id)
+
+            # Chiudi la finestra di visualizzazione della prenotazione dopo la cancellazione
+            self.close()

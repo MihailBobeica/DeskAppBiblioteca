@@ -70,3 +70,19 @@ class PrenotazioneController(Controller):
 
     def get_username_utente_loggato(self):
         return Auth.user.username if Auth.user else None
+
+    def cancella_prenotazione_aula(self, prenotazione_id):
+        db_session = Session()
+        prenotazione_aula = db_session.query(PrenotazioneAula).get(prenotazione_id)
+        if prenotazione_aula:
+            db_session.delete(prenotazione_aula)
+            db_session.commit()
+        db_session.close()
+
+    def cancella_prenotazione_posto(self, prenotazione_id):
+        db_session = Session()
+        prenotazione_posto = db_session.query(PrenotazionePosto).get(prenotazione_id)
+        if prenotazione_posto:
+            db_session.delete(prenotazione_posto)
+            db_session.commit()
+        db_session.close()
