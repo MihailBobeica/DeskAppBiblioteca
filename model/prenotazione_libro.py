@@ -1,78 +1,71 @@
-import uuid
+from datetime import datetime, timedelta
 
-from PySide6.QtWidgets import QApplication, QMessageBox
+from sqlalchemy import and_
 
 from abstract.model import Model
-from database import PrenotazioneLibro as db_prenotazione_libro
+from database import Libro as DbLibro, Utente as DbUtente
+from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Session
 from utils.auth import Auth
-from datetime import datetime,timedelta
-from database import Libro as db_libro, Prestito as db_prestito
-from sqlalchemy import and_
-from view.component.view_errore import view_errore
+from utils.backend import DURATA_PRENOTAZIONE, get_codice, MAX_PRENOTAZIONI
 
 
 class PrenotazioneLibro(Model):
+    def __init__(self):
+        super().__init__()
 
-    def max_prenotazioni_singolo(self, prenotazione: db_prenotazione_libro):
+    def raggiunto_limite(self, utente: DbUtente) -> bool:
         db_session = Session()
-        num = db_session.query(db_prenotazione_libro).filter(and_(db_prenotazione_libro.utente == prenotazione.utente, db_prenotazione_libro.libro == prenotazione.libro )).count()
+        prenotazioni = db_session.query(DbPrenotazioneLibro).filter_by(utente=utente.id).count()
         db_session.close()
-        if num>=1:
-            view_errore.create_layout(self,"ERRORE", "Hai già effettuato una prenotazione per questo libro")
-            return True
-        else :
-            return False
+        return prenotazioni >= MAX_PRENOTAZIONI
 
-
-    def max_prenotazioni(self, prenotazione: db_prenotazione_libro):
+    def gia_effettuata(self, utente: DbUtente, libro: DbLibro):
         db_session = Session()
-        num = db_session.query(db_prenotazione_libro).filter_by(utente=prenotazione.utente).count()
-        if num>=3:
-            view_errore.create_layout(self,"ERRORE","hai già effettuato il massimo numero(3) di prenotazioni")
-            return True
+        effettuata = db_session.query(DbPrenotazioneLibro).filter(
+            and_(DbPrenotazioneLibro.utente == utente.id,
+                 DbPrenotazioneLibro.libro == libro.id)).first()
+        db_session.close()
+        return effettuata is not None
 
-
-
-    def inserisci(self, libro : db_libro):
+    def inserisci(self, libro: DbLibro) -> None:
         db_session = Session()
-        prenotazione_libro = db_prenotazione_libro(libro = libro.isbn, utente = Auth.user.username, data_prenotazione = datetime.now(), data_scadenza = datetime.now() + timedelta(days=3), codice=str(uuid.uuid4())[:10])
 
-        if PrenotazioneLibro.max_prenotazioni_singolo(self,prenotazione_libro):
-            pass
-        if PrenotazioneLibro.max_prenotazioni(self,prenotazione_libro):
-            pass
-        else:
-            db_session.add(prenotazione_libro)
+        libro_id = libro.id
+        user_id = Auth.user.id
+        data_prenotazione = datetime.now()
+        data_scadenza = data_prenotazione + timedelta(days=DURATA_PRENOTAZIONE)
+        codice = get_codice()
 
-            libro = db_session.query(db_libro).filter_by(isbn=prenotazione_libro.libro).first()
-            libro.disponibili -=1
-            db_session.merge(libro)
-            db_session.commit()
-            db_session.close()
+        prenotazione_libro = DbPrenotazioneLibro(libro=libro_id,
+                                                 utente=user_id,
+                                                 data_prenotazione=data_prenotazione,
+                                                 data_scadenza=data_scadenza,
+                                                 codice=codice)
+        db_session.add(prenotazione_libro)
+        # aggiorna la disponibilità del libro
+        libro.disponibili -= 1
+        db_session.merge(libro)
+        db_session.commit()
+        db_session.close()
 
     def ricerca(self, input=None):
         db_session = Session()
         if input:
             pass
         else:
-            prestiti = db_session.query(db_prenotazione_libro).filter_by(utente= Auth.user.username).all()
+            prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente=Auth.user.username).all()
             db_session.close()
             return prestiti
 
-    def __init__(self):
-        super().__init__()
-
     def sospensione(self):
         pass
-
 
     def libro_non_disponibile(self):
         pass
 
     def by_codice(self, codice):
         db_session = Session()
-        prestiti = db_session.query(db_prenotazione_libro).filter_by(codice = codice).first()
+        prestiti = db_session.query(DbPrenotazioneLibro).filter_by(codice=codice).first()
         db_session.close()
         return prestiti
-

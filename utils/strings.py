@@ -23,5 +23,13 @@ BAD_CREDENTIALS_MESSAGE = "Credenziali di accesso errate."
 NO_USERNAME_MESSAGE = "Non hai inserito l'username."
 NO_PASSWORD_MESSAGE = "Non hai inserito la password."
 
+ALERT_PRENOTAZIONE_NEGATA_TITLE = "Prenotazione non riuscita"
+ALERT_UTENTE_SANZIONATO_MESSAGE = "Al momento, risulti sospeso." \
+                                  "\nPer maggiori informazioni," \
+                                  "\nvisita l'area `Sospensioni`."
+ALERT_MAX_PRENOTAZIONI_MESSAGE = "Hai già effettuato il numero massimo" \
+                                 "\ndi prenotazioni."
+ALERT_LIBRO_GIA_PRENOTATO_MESSAGE = "Hai già prenotato questo libro."
+
 OBJECT_NAME_CATALOGO = "catalogo"
 OBJECT_NAME_GRID = "grid"

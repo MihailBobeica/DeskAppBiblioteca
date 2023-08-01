@@ -1,6 +1,7 @@
 
 from controller import FirstController, LoginController, LogoutController, CatalogoController
 from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI
+from model import PrenotazioneLibro
 from model.aula import Aula
 from model.libro import Libro
 from model.posto import Posto
@@ -16,6 +17,7 @@ model_utente = Utente()
 model_libro = Libro()
 model_aula = Aula()
 model_posto = Posto()
+model_prenotazione_libro = PrenotazioneLibro()
 
 # seeding
 model_utente.seed_db(UTENTI)
@@ -25,7 +27,8 @@ model_aula.seed_db(AULE)
 model_posto.seed_db(POSTI)
 
 # instantiate all controllers
-controller_catalogo = CatalogoController({"libri": model_libro})
+controller_catalogo = CatalogoController({"libri": model_libro,
+                                          "prenotazioni_libri": model_prenotazione_libro})
 controller_first = FirstController({"libri": model_libro})
 controller_login = LoginController({"utente": model_utente})
 controller_logout = LogoutController()

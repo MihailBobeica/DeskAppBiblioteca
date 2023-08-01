@@ -17,7 +17,7 @@ def check_password(password: str, stored_password: str) -> bool:
 
 
 class Auth:
-    user = None
+    user: DbUtente = None
     logged = ""
 
     @staticmethod

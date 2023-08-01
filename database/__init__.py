@@ -80,15 +80,18 @@ class PrenotazioneAula(Base):
     codice_aula = Column(String)
     codice_utente = Column(String)
 
+
 class PrenotazioneLibro(Base):
     __tablename__ = 'prenotazioni_libri'
 
     id = Column(Integer, primary_key=True)
     data_prenotazione = Column(DateTime)
     data_scadenza = Column(DateTime)
-    utente = Column(String, ForeignKey('utenti.username'))
-    libro = Column(String, ForeignKey('libri.isbn', ondelete="CASCADE"))
     codice = Column(String)
+
+    utente = Column(String, ForeignKey('utenti.id'))
+    libro = Column(String, ForeignKey('libri.id', ondelete="CASCADE"))
+
 
 class Prestito(Base):
     __tablename__ = 'prestiti'
@@ -100,8 +103,6 @@ class Prestito(Base):
     utente = Column(String, ForeignKey('utenti.username'))
     libro = Column(String, ForeignKey('libri.isbn', ondelete="CASCADE"))
     codice = Column(String)
-
-
 
 
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle
