@@ -1,5 +1,6 @@
 from utils.auth import hash_password
 from utils.backend import to_year, POSTI_PER_AULA
+from datetime import datetime
 
 UTENTI = [
     {"nome": "Mario",
@@ -79,3 +80,13 @@ for aula in AULE:
     for numero_posto in range(1, POSTI_PER_AULA + 1):
         posto = {"nome": f"{numero_posto}{nome_aula}", "aula": nome_aula}
         POSTI.append(posto)
+
+PRESTITI = [
+    {"data_inizio" : datetime.strptime('2023-08-01', '%Y-%m-%d'),
+    "data_scadenza": datetime.strptime('2023-08-22', '%Y-%m-%d'),
+    "data_restituzione" : None,
+    "utente": "S003",
+    "libro" : "0471958697",
+    "codice" : "1234567890"
+}
+]

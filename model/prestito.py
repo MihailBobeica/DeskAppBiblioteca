@@ -22,3 +22,16 @@ class Prestito(Model):
         else:
             view_errore.create_layout(self, "ERRORE", "Prenotaione non trovata")
 
+
+    def restituzione(self, prestito):
+        db_session = Session()
+        prestito.data_restituzione = datetime.now()
+        db_session.merge(prestito)
+        db_session.commit()
+        db_session.close()
+
+    def by_utente(self, username):
+        db_session = Session()
+        prestiti = db_session.query(db_prestito).filter_by(utente=username).all()
+        db_session.close()
+        return prestiti

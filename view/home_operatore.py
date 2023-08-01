@@ -8,6 +8,7 @@ class HomeOperatoreView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
         sidebar.add_buttons(labels=("Registra prestito",
+                                    "Registra restituzione",
                                     "Logout"),
                             style="button")
 
@@ -20,6 +21,8 @@ class HomeOperatoreView(View):
         logout_button.clicked.connect(self.send_logout_request)
         prestito_button = self.get_button("Registra prestito")
         prestito_button.clicked.connect(self.ricerca_prestito)
+        restituzione_button = self.get_button("Registra restituzione")
+        restituzione_button.clicked.connect(self.ricerca_utente)
 
 
     def attach_controllers(self) -> None:
@@ -32,3 +35,24 @@ class HomeOperatoreView(View):
     def ricerca_prestito(self):
         from view.registra_prestito import RegistraPrestito
         self.redirect(RegistraPrestito())
+
+    def ricerca_utente(self):
+        from view.restituzione.ricerca_utente_restituzione import Prova
+        self.redirect(Prova())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
