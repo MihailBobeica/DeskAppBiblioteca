@@ -1,11 +1,9 @@
 from abc import abstractmethod
-from typing import Type, TYPE_CHECKING
+from typing import Type
 
-from utils.backend import is_empty
-
-from model.libro import Libro
 from database import Libro as DbLibro
-# if TYPE_CHECKING:
+from model.libro import Libro
+from utils.backend import is_empty
 
 
 class CercaLibriStrategy:

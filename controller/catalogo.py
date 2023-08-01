@@ -1,10 +1,8 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 
 from abstract import Controller, BoundedModel
-
-if TYPE_CHECKING:
-    from view.component.catalogo import CatalogoComponent
-    from model.libro import Libro
+from model.libro import Libro
+from view.component.catalogo import CatalogoComponent
 
 
 class CatalogoController(Controller):
