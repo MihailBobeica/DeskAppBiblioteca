@@ -42,7 +42,7 @@ class VisualizzaPrenotazioneView(View):
     def on_modifica_clicked(self):
 
 
-        
+
         print("Pulsante Modifica cliccato!")
 
     def on_cancella_clicked(self):

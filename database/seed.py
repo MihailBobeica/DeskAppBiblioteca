@@ -96,3 +96,25 @@ PRESTITI = [
 
     }
 ]
+PRENOTAZIONI_AULE = [
+    {
+        "id":"1",
+        "data_prenotazione": datetime(2023, 8, 1),
+        "ora_inizio": datetime(2023, 8, 1, 21, 24),
+        "ora_fine": datetime(2023, 8, 1, 23, 24),
+        "ora_attivazione": None,
+        "durata": 120,
+        "codice_aula": "Acquario_1",
+        "codice_utente": "S001"
+    },
+    {
+        "id":"2",
+        "data_prenotazione": datetime(2023, 8, 1),
+        "ora_inizio": datetime(2023, 8, 1, 21, 24),
+        "ora_fine": datetime(2023, 8, 1, 23, 24),
+        "ora_attivazione": None,
+        "durata": 120,
+        "codice_aula": "Acquario_2",
+        "codice_utente": "S002"
+    }
+]
