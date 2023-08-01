@@ -1,6 +1,8 @@
 import threading
 from datetime import timedelta, datetime
 
+from sqlalchemy import null
+
 from abstract.controller import Controller
 from database import PrenotazioneAula, PrenotazionePosto, Session
 from model.prenotazione_posto import prenotazione_posto
@@ -48,17 +50,19 @@ class PrenotazioneController(Controller):
         db_session.commit()
         db_session.close()
 
-    def get_all_prenotazioni_aula(self):
+    def get_all_prenotazioni_aula_senza_attivazione(self):
         db_session = Session()
-        prenotazioni_aula = db_session.query(PrenotazioneAula).all()
+        prenotazioni_aula_senza_attivazione = db_session.query(PrenotazioneAula).filter(
+            PrenotazioneAula.ora_attivazione == null()).all()
         db_session.close()
-        return prenotazioni_aula
+        return prenotazioni_aula_senza_attivazione
 
-    def get_all_prenotazioni_posto(self):
+    def get_all_prenotazioni_posto_senza_attivazione(self):
         db_session = Session()
-        prenotazioni_posto = db_session.query(PrenotazionePosto).all()
+        prenotazioni_posto_senza_attivazione = db_session.query(PrenotazionePosto).filter(
+            PrenotazionePosto.ora_attivazione == null()).all()
         db_session.close()
-        return prenotazioni_posto
+        return prenotazioni_posto_senza_attivazione
 
     def by_utente(self, codice_utente):
         db_session = Session()
