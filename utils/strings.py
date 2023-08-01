@@ -22,3 +22,6 @@ ACCESS_DENIED_TITLE = "Accesso non riuscito"
 BAD_CREDENTIALS_MESSAGE = "Credenziali di accesso errate."
 NO_USERNAME_MESSAGE = "Non hai inserito l'username."
 NO_PASSWORD_MESSAGE = "Non hai inserito la password."
+
+OBJECT_NAME_CATALOGO = "catalogo"
+OBJECT_NAME_GRID = "grid"

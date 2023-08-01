@@ -1,4 +1,5 @@
-from controller import FirstController, LoginController, LogoutController
+
+from controller import FirstController, LoginController, LogoutController, CatalogoController
 from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI
 from model.aula import Aula
 from model.libro import Libro
@@ -15,16 +16,16 @@ model_utente = Utente()
 model_libro = Libro()
 model_aula = Aula()
 model_posto = Posto()
-model_prestito = Prestito()
+
 # seeding
 model_utente.seed_db(UTENTI)
 
 model_libro.seed_db(LIBRI)
 model_aula.seed_db(AULE)
 model_posto.seed_db(POSTI)
-model_prestito.seed_db(PRESTITI)
 
 # instantiate all controllers
-controller_first = FirstController()
+controller_catalogo = CatalogoController({"libri": model_libro})
+controller_first = FirstController({"libri": model_libro})
 controller_login = LoginController({"utente": model_utente})
 controller_logout = LogoutController()
