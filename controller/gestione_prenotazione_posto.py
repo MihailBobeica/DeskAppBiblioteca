@@ -22,6 +22,10 @@ class PrenotazioneController(Controller):
         thread = threading.Thread(target=self.cancella_prenotazioni_scadute_thread)
         thread.start()
 
+        # Avvia il thread per la cancellazione delle prenotazioni scadute in base all'ora di fine
+        thread_ora_fine = threading.Thread(target=self.cancella_prenotazioni_scadute_per_ora_fine)
+        thread_ora_fine.start()
+
     def crea_prenotazione_aula(self, aula, data, utente_id, durata, ora_inizio, ora_fine):
         db_session = Session()
         prenotazione_aula = PrenotazioneAula(
@@ -154,3 +158,25 @@ class PrenotazioneController(Controller):
                 prenotazione_posto.ora_attivazione = datetime.now()
                 db_session.commit()
             db_session.close()
+
+    def cancella_prenotazioni_scadute_per_ora_fine(self):
+        db_session = Session()
+
+        # Cancellazione delle prenotazioni delle aule in base all'ora di fine
+        prenotazioni_aula_scadute = db_session.query(PrenotazioneAula).filter(
+            PrenotazioneAula.ora_fine <= datetime.now()
+        ).all()
+
+        for prenotazione_aula in prenotazioni_aula_scadute:
+            db_session.delete(prenotazione_aula)
+
+        # Cancellazione delle prenotazioni dei posti in base all'ora di fine
+        prenotazioni_posto_scadute = db_session.query(PrenotazionePosto).filter(
+            PrenotazionePosto.ora_fine <= datetime.now()
+        ).all()
+
+        for prenotazione_posto in prenotazioni_posto_scadute:
+            db_session.delete(prenotazione_posto)
+
+        db_session.commit()
+        db_session.close()

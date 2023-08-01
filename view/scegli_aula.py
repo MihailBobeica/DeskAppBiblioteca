@@ -8,6 +8,8 @@ from database import Aula
 from view.aula import DettaglioAulaView
 from datetime import datetime, timedelta
 
+from view.lisat_prenotazioni import ListaPrenotazioniView
+
 
 class ScegliAulaView(View):
     def __init__(self, tipo_prenotazione, data, durata):
@@ -76,6 +78,8 @@ class ScegliAulaView(View):
             QMessageBox.information(self, "Prenotazione effettuata",
                                     f"Prenotazione effettuata per l'aula: {aula_data.nome}")
             self.popup_shown = True
+            lista_prenotazioni_view = ListaPrenotazioniView(prenotazione_controller, self.main_window)
+            self.main_window.set_view(lista_prenotazioni_view)
         else:
             # Rimuovi tutti i widget dal layout attuale
             self.clear_layout()

@@ -20,16 +20,21 @@ class ListaPrenotazioniView(View):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        # Mostra le prenotazioni dell'utente nella vista come pulsanti
-        for prenotazione in prenotazioni_aula:
-            button = QPushButton(f"Aula: {prenotazione.codice_aula} - Data: {prenotazione.data_prenotazione}")
-            button.clicked.connect(self.create_apri_prenotazione_closure(prenotazione))
-            layout.addWidget(button)
+        # Se non ci sono prenotazioni, mostra la scritta "Non ci sono Prenotazioni"
+        if not prenotazioni_aula and not prenotazioni_posto:
+            label = QLabel("Non ci sono prenotazioni!")
+            layout.addWidget(label)
+        else:
+            # Mostra le prenotazioni dell'utente nella vista come pulsanti
+            for prenotazione in prenotazioni_aula:
+                button = QPushButton(f"Aula: {prenotazione.codice_aula} - Data: {prenotazione.data_prenotazione}")
+                button.clicked.connect(self.create_apri_prenotazione_closure(prenotazione))
+                layout.addWidget(button)
 
-        for prenotazione in prenotazioni_posto:
-            button = QPushButton(f"Posto: {prenotazione.codice_posto} - Data: {prenotazione.data_prenotazione}")
-            button.clicked.connect(self.create_apri_prenotazione_closure(prenotazione))
-            layout.addWidget(button)
+            for prenotazione in prenotazioni_posto:
+                button = QPushButton(f"Posto: {prenotazione.codice_posto} - Data: {prenotazione.data_prenotazione}")
+                button.clicked.connect(self.create_apri_prenotazione_closure(prenotazione))
+                layout.addWidget(button)
 
     def create_apri_prenotazione_closure(self, prenotazione):
         def apri_prenotazione():
