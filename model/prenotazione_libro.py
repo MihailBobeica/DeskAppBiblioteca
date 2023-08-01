@@ -69,3 +69,10 @@ class PrenotazioneLibro(Model):
 
     def libro_non_disponibile(self):
         pass
+
+    def by_codice(self, codice):
+        db_session = Session()
+        prestiti = db_session.query(db_prenotazione_libro).filter_by(codice = codice).first()
+        db_session.close()
+        return prestiti
+

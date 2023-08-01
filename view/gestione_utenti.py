@@ -41,4 +41,5 @@ class GestioneUtentiView(View):
         self.redirect(VisualizzaUtente())
 
     def visualizza_cronologia(self):
-        pass
+        from.ricerca_utente import RicercaView
+        self.redirect(RicercaView())

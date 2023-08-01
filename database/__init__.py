@@ -1,8 +1,10 @@
+import uuid
+
 from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+from datetime import datetime, timedelta
 from utils.strings import ADMIN, OPERATORE, UTENTE
 
 db_engine = create_engine('sqlite:///./database/db.sqlite')

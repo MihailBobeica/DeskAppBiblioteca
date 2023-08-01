@@ -1,7 +1,7 @@
 
 
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton
-
+from utils.auth import Auth
 from abstract.view import View
 from view.home_operatore import HomeOperatoreView
 
@@ -29,7 +29,10 @@ class RegistraPrestito(View):
 
     def invia(self):
         if self.input1.text():
+            from model.prenotazione_libro import PrenotazioneLibro
+            prenotazione = PrenotazioneLibro.by_codice(self,self.input1.text())
+            dati = {"utente" : prenotazione.utente, "libro" : prenotazione.libro}
             from model.prestito import Prestito
-            Prestito.inserisci(self,self.input1.text())
+            Prestito.inserisci(self,dati)
             self.redirect(HomeOperatoreView())
 

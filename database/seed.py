@@ -82,11 +82,17 @@ for aula in AULE:
         POSTI.append(posto)
 
 PRESTITI = [
-    {"data_inizio" : datetime.strptime('2023-08-01', '%Y-%m-%d'),
-    "data_scadenza": datetime.strptime('2023-08-22', '%Y-%m-%d'),
+    {
     "data_restituzione" : None,
     "utente": "S003",
     "libro" : "0471958697",
     "codice" : "1234567890"
-}
+}, {
+
+    "data_restituzione" : None,
+    "utente": "S003",
+    "libro" : "0306406152",
+    "codice" : "0123456789"
+
+    }
 ]

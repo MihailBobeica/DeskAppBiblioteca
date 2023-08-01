@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QHBoxLayout
-
+from utils.auth import Auth
 from abstract.view import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 from view.lisat_prenotazioni import ListaPrenotazioniView
 from view.scegli_prenotazione import ScegliPrenotazione
-
+from model.prestito import Prestito
 
 class HomeUtenteView(View):
     def create_layout(self):
@@ -17,6 +17,7 @@ class HomeUtenteView(View):
                                     "Lista di osservazione",
                                     "Prenota posto",
                                     "Lista di prenotazioni",
+                                    "Visualizza cronologia",
                                     "Sanzioni",
                                     "Info",
                                     "Logout"),
@@ -34,6 +35,8 @@ class HomeUtenteView(View):
         self.get_button("Prenota posto").clicked.connect(self.show_prenota_schermata)
         self.get_button("Lista di prenotazioni").clicked.connect(self.show_lista_prenotazioni)
         self.get_button("Libri prenotati").clicked.connect(self.libri_prenotati)
+        self.get_button("Libri in prestito").clicked.connect(self.libri_in_prestito)
+        self.get_button("Visualizza cronologia").clicked.connect(self.visualizza_cronologia)
 
 
     def attach_controllers(self) -> None:
@@ -52,9 +55,19 @@ class HomeUtenteView(View):
     def libri_prenotati(self):
         from model.prenotazione_libro import PrenotazioneLibro
         prenotazioni = PrenotazioneLibro.ricerca(self)
-        from .libri_in_prestito import VisualizzaPrestiti
-        self.redirect(VisualizzaPrestiti(prenotazioni))
+        from .libri_prenotati import VisualizzaPrenotazioni
+        self.redirect(VisualizzaPrenotazioni(prenotazioni))
 
+    def libri_in_prestito(self):
+
+        libri = Prestito.by_utente(self,Auth.user.username)
+        from .libri_in_prestito import VisualizzaPrestiti
+        self.redirect(VisualizzaPrestiti(libri))
+
+    def visualizza_cronologia(self):
+        libri = Prestito.by_utente(self,Auth.user.username)
+        from .visualizza_cronologia import VisualizzaCronologia
+        self.redirect(VisualizzaCronologia(libri))
 
 
 

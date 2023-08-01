@@ -3,7 +3,7 @@ from database import PrenotazioneLibro as db_prenotazioni
 from abstract.view import View
 from model.utente import Utente
 
-class VisualizzaPrestiti(View):
+class VisualizzaPrenotazioni(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout()
         grid_layout = QGridLayout()
@@ -13,9 +13,8 @@ class VisualizzaPrestiti(View):
 
         for res in self.results:
             item = QListWidgetItem("Utente: "+res.utente)
-            item2 = QListWidgetItem("Data inizio: " + str(res.data_inizio))
+            item2 = QListWidgetItem("Data prenotazione: " + str(res.data_prenotazione))
             item3 = QListWidgetItem("Data scadenza: " + str(res.data_scadenza))
-            item7 = QListWidgetItem("Data restituzione: " + str(res.data_restituzione))
             item4 = QListWidgetItem("Libro: "+ res.libro)
             item5 = QListWidgetItem("Codice: "+res.codice)
             item6 = QListWidgetItem("")
@@ -33,3 +32,8 @@ class VisualizzaPrestiti(View):
     def __init__(self, results):
         self.results = results
         super().__init__()
+
+
+
+
+

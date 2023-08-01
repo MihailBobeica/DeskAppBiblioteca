@@ -5,6 +5,8 @@ from model.utente import Utente
 from PySide6.QtCore import Qt
 from view.home_operatore import HomeOperatoreView
 
+
+
 class Restituzione(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout(self)
@@ -39,7 +41,6 @@ class Restituzione(View):
     def on_label_clicked(self, event, prestito):
         from model.prestito import Prestito
         Prestito.restituzione(self,prestito)
-        print(prestito.data_restituzione)
         self.redirect(HomeOperatoreView())
 
 
