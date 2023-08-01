@@ -13,7 +13,6 @@ class CatalogoComponent(View):
     def create_layout(self) -> None:
         # content
         searchbar = QLineEdit()
-        searchbar.setObjectName("searchbar")
         searchbar.textChanged.connect(self.search)
         searchbar.setPlaceholderText("Ricerca per titolo o autore")
         searchbar.setStyleSheet(get_style("input"))
@@ -37,24 +36,24 @@ class CatalogoComponent(View):
 
         layout.setAlignment(Qt.AlignTop)
 
-        self.search("")
-
     def __init__(self, cerca_libri_strategy: CercaLibriStrategy):
         self.grid_layout: Optional[QGridLayout] = None
         self.cerca_libri_strategy = cerca_libri_strategy
 
         super().__init__()
 
-    def attach_controllers(self):
+        self.search()
+
+    def attach_controllers(self) -> None:
         from app import controller_catalogo
         self.attach(controller_catalogo)
 
-    def search(self, text):
+    def search(self, text: Optional[str] = None) -> None:
         self.notify(message="search",
                     data={"catalogo": self,
                           "text": text})
 
-    def load_grid(self, db_libri):
+    def load_grid(self, db_libri) -> None:
         while self.grid_layout.count():
             child = self.grid_layout.takeAt(0)
             if child.widget():

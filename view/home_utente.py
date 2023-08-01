@@ -1,4 +1,6 @@
 from PySide6.QtWidgets import QHBoxLayout
+
+from strategy import CercaLibriCatalogo
 from utils.auth import Auth
 from abstract.view import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
@@ -22,7 +24,7 @@ class HomeUtenteView(View):
                                     "Info",
                                     "Logout"),
                             style="button")
-        catalogo = CatalogoComponent()
+        catalogo = CatalogoComponent(CercaLibriCatalogo())
 
         # layout
         layout = QHBoxLayout(self)
