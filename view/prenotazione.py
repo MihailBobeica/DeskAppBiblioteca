@@ -6,6 +6,7 @@ from controller.gestione_prenotazione_posto import PrenotazioneController
 class VisualizzaPrenotazioneView(View):
     def __init__(self, prenotazione):
         super().__init__()
+        self.prenotazione = prenotazione  # Salva la prenotazione come attributo
 
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -40,9 +41,6 @@ class VisualizzaPrenotazioneView(View):
         button_layout.addWidget(cancella_button)
 
     def on_modifica_clicked(self):
-
-
-        
         print("Pulsante Modifica cliccato!")
 
     def on_cancella_clicked(self):
@@ -56,5 +54,9 @@ class VisualizzaPrenotazioneView(View):
             prenotazione_controller = PrenotazioneController()
             prenotazione_controller.cancella_prenotazione_aula(self.prenotazione.id)
 
-            # Chiudi la finestra di visualizzazione della prenotazione dopo la cancellazione
-            self.close()
+            # Importa la classe ListaPrenotazioniView qui all'interno della funzione on_cancella_clicked
+            from view.lisat_prenotazioni import ListaPrenotazioniView
+
+            # Dopo aver cancellato la prenotazione, vai alla vista ListaPrenotazioniView
+            lista_prenotazioni_view = ListaPrenotazioniView(prenotazione_controller, self.main_window)
+            self.main_window.set_view(lista_prenotazioni_view)

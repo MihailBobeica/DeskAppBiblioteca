@@ -11,9 +11,9 @@ class prenotazione_aula(Model):
     def inserisci(self, dati: Dict[str, str]):
         db_session = Session()
         prenotazione = DbPrenotazioneAula(id=dati["id"],
-                                          aula=dati["aula"],
-                                          data=dati["data"],
-                                          utente_id=dati["utente_id"],
+                                          codice_aula=dati["codice_aula"],
+                                          data_prenotazione=dati["data_prenotazione"],
+                                          codice_utente=dati["codice_utente"],
                                           ora_inizio=dati["ora_inizio"],
                                           ora_fine=dati["ora_fine"],
                                           ora_attivazione=dati["ora_attivazione"],
