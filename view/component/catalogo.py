@@ -1,19 +1,20 @@
+from typing import Optional
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout
 
 from abstract.view import View
-from utils.backend import is_empty
+from strategy.search import CercaLibriStrategy
 from utils.ui import get_style, CATALOG_COLUMNS
 from view.component.libro import LibroComponent
-
-GRID_LABEL = "grid"
 
 
 class CatalogoComponent(View):
     def create_layout(self) -> None:
         # content
         searchbar = QLineEdit()
-        searchbar.textChanged.connect(self.update_grid)
+        searchbar.setObjectName("searchbar")
+        searchbar.textChanged.connect(self.search)
         searchbar.setPlaceholderText("Ricerca per titolo o autore")
         searchbar.setStyleSheet(get_style("input"))
 
@@ -30,47 +31,37 @@ class CatalogoComponent(View):
         scroll_area.setWidget(content_widget)
 
         # Create a grid layout for the content widget
-        grid_layout = QGridLayout(content_widget)
-        grid_layout.setObjectName(GRID_LABEL)
-
-        self.default_grid()
+        self.grid_layout = QGridLayout(content_widget)
 
         layout.addWidget(scroll_area)
 
         layout.setAlignment(Qt.AlignTop)
 
-    def connect_buttons(self) -> None:
-        pass
+        self.search("")
 
-    def __init__(self):
+    def __init__(self, cerca_libri_strategy: CercaLibriStrategy):
+        self.grid_layout: Optional[QGridLayout] = None
+        self.cerca_libri_strategy = cerca_libri_strategy
+
         super().__init__()
 
-    def default_grid(self):
-        grid_layout: QGridLayout = self.findChild(QGridLayout, GRID_LABEL)
+    def attach_controllers(self):
+        from app import controller_catalogo
+        self.attach(controller_catalogo)
 
-        from app import model_libro
-        db_libri = model_libro.get()
+    def search(self, text):
+        self.notify(message="search",
+                    data={"catalogo": self,
+                          "text": text})
+
+    def load_grid(self, db_libri):
+        while self.grid_layout.count():
+            child = self.grid_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
 
         for index, db_libro in enumerate(db_libri):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
             libro = LibroComponent(db_libro)
-            grid_layout.addWidget(libro, row, col)
-
-    def update_grid(self, text) -> None:
-        grid_layout: QGridLayout = self.findChild(QGridLayout, GRID_LABEL)
-        while grid_layout.count():
-            child = grid_layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
-        if is_empty(text):
-            self.default_grid()
-        else:
-            from app import model_libro
-            db_libri = model_libro.search(text)
-
-            for index, db_libro in enumerate(db_libri):
-                row = index // CATALOG_COLUMNS
-                col = index % CATALOG_COLUMNS
-                libro = LibroComponent(db_libro)
-                grid_layout.addWidget(libro, row, col)
+            self.grid_layout.addWidget(libro, row, col)

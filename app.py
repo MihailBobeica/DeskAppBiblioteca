@@ -1,4 +1,4 @@
-from controller import FirstController, LoginController, LogoutController
+from controller import FirstController, LoginController, LogoutController, CatalogoController
 from database.seed import UTENTI, LIBRI, AULE, POSTI
 from model.aula import Aula
 from model.libro import Libro
@@ -23,6 +23,7 @@ model_aula.seed_db(AULE)
 model_posto.seed_db(POSTI)
 
 # instantiate all controllers
-controller_first = FirstController()
+controller_catalogo = CatalogoController({"libri": model_libro})
+controller_first = FirstController({"libri": model_libro})
 controller_login = LoginController({"utente": model_utente})
 controller_logout = LogoutController()

@@ -1,8 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QFrame
+from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
 
 from abstract.view import View
-from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT, BOX_WIDTH
+from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT
 
 
 class LoginView(View):
@@ -21,6 +21,9 @@ class LoginView(View):
         password_input.setStyleSheet(get_style("input"))
         password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
+        button_submit = QPushButton("Login")
+        button_submit.clicked.connect(self.send_login_data)
+
         # layout
         h_layout = QHBoxLayout(self)
         h_layout.setAlignment(Qt.AlignCenter)
@@ -37,18 +40,13 @@ class LoginView(View):
         c_layout = QHBoxLayout()
         c_layout.setAlignment(Qt.AlignCenter)
 
-        self.add_buttons(labels=("Login",),
-                         layout=c_layout)
+        c_layout.addWidget(button_submit)
 
         button_container.setLayout(c_layout)
 
         v_layout.addWidget(button_container)
 
         v_layout.addStretch()
-
-    def connect_buttons(self):
-        button_submit = self.get_button("Login")
-        button_submit.clicked.connect(self.send_login_data)
 
     def __init__(self):
         super().__init__()

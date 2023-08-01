@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
+from strategy import CercaLibriCatalogo
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 
@@ -14,7 +15,7 @@ class FirstView(View):
         sidebar = SidebarComponent()
         sidebar.add_buttons(labels=("Login",),
                             style="button")
-        catalogo = CatalogoComponent()
+        catalogo = CatalogoComponent(CercaLibriCatalogo())
 
         # layout
         layout = QHBoxLayout(self)

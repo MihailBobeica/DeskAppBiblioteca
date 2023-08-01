@@ -114,6 +114,7 @@ class MainWindow(QMainWindow):
             last_view: BoundedView = self.cronologia.pop()
             is_home_page = isinstance(last_view, HomePageView)
             if is_home_page:
+                last_view.deleteLater()
                 self.set_view(HomePageView(), navigate=True)
                 return
             self.set_view(last_view, navigate=True)

@@ -1,4 +1,4 @@
-from typing import Optional, Dict
+from typing import Optional
 
 from abstract.controller import Controller, BoundedModel
 from utils.auth import Auth, check_password
@@ -8,7 +8,7 @@ from view.homepage import HomePageView
 
 
 class LoginController(Controller):
-    def __init__(self, models: Optional[Dict[str, BoundedModel]] = None):
+    def __init__(self, models: Optional[dict[str, BoundedModel]] = None):
         super().__init__(models)
 
     def receive_message(self, message: str, data: Optional[dict] = None):
