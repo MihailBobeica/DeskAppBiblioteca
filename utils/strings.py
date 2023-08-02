@@ -33,3 +33,8 @@ ALERT_LIBRO_GIA_PRENOTATO_MESSAGE = "Hai già prenotato questo libro."
 
 OBJECT_NAME_CATALOGO = "catalogo"
 OBJECT_NAME_GRID = "grid"
+
+CONFIRM_PRENOTAZIONE_LIBRO_TITLE = "Conferma prenotazione libro"
+CONFIRM_PRENOTAZIONE_LIBRO_MESSAGE = "Vuoi davvero prenotare il seguente libro?" \
+                                     "\nTitolo: {}"
+

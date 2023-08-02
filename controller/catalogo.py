@@ -1,11 +1,14 @@
 from typing import Optional
 
+from PySide6.QtWidgets import QMessageBox
+
 from abstract import Controller, BoundedModel
 from database import Libro as DbLibro
 from model import Libro, PrenotazioneLibro
 from utils.auth import Auth
 from utils.strings import *
 from view.component.catalogo import CatalogoComponent
+from view.libri_prenotati import LibriPrenotatiView
 from view.libro import LibroView
 
 
@@ -42,12 +45,6 @@ class CatalogoController(Controller):
                 self.alert(title=ALERT_PRENOTAZIONE_NEGATA_TITLE,
                            message=ALERT_UTENTE_SANZIONATO_MESSAGE)
                 return
-            # check se l'utente non ha fatto il numero massimo di prenotazioni
-            has_max_prenotazioni = model_prenotazione_libro.raggiunto_limite(utente=Auth.user)
-            if has_max_prenotazioni:
-                self.alert(title=ALERT_PRENOTAZIONE_NEGATA_TITLE,
-                           message=ALERT_MAX_PRENOTAZIONI_MESSAGE)
-                return
             # check se l'utente ha già prenotato questo libro
             has_already_this_prenotazione = model_prenotazione_libro.gia_effettuata(utente=Auth.user,
                                                                                     libro=db_libro)
@@ -55,12 +52,20 @@ class CatalogoController(Controller):
                 self.alert(title=ALERT_PRENOTAZIONE_NEGATA_TITLE,
                            message=ALERT_LIBRO_GIA_PRENOTATO_MESSAGE)
                 return
+            # check se l'utente non ha fatto il numero massimo di prenotazioni
+            has_max_prenotazioni = model_prenotazione_libro.raggiunto_limite(utente=Auth.user)
+            if has_max_prenotazioni:
+                self.alert(title=ALERT_PRENOTAZIONE_NEGATA_TITLE,
+                           message=ALERT_MAX_PRENOTAZIONI_MESSAGE)
+                return
             # il controllo della disponibilità del libro è stato già fatto
 
             # aggiungi prenotazione
-            model_prenotazione_libro.inserisci(db_libro)
-            # TODO redirect alla vista prenotazioni
-            print("LOG prenotazione effettuata con successo!")
+            response = self.confirm(title=CONFIRM_PRENOTAZIONE_LIBRO_TITLE,
+                                    message=CONFIRM_PRENOTAZIONE_LIBRO_MESSAGE.format(db_libro.titolo))
+            if response == QMessageBox.StandardButton.Yes:
+                model_prenotazione_libro.inserisci(db_libro)
+                self.redirect(LibriPrenotatiView())
 
     def message_osserva_libro(self, message: str, data: Optional[dict] = None):
         if message == "osserva_libro":

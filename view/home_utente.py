@@ -6,6 +6,7 @@ from abstract.view import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
+from view.libri_prenotati import LibriPrenotatiView
 from view.lisat_prenotazioni import ListaPrenotazioniView
 from view.scegli_prenotazione import ScegliPrenotazione
 from model.prestito import Prestito
@@ -44,7 +45,7 @@ class HomeUtenteView(View):
     def attach_controllers(self) -> None:
         from app import controller_logout
         self.attach(controller_logout)
-        self.prenotazione_controller = PrenotazioneController()
+        # self.prenotazione_controller = PrenotazioneController() # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
     def show_prenota_schermata(self):
         scegli_prenotazione_view = ScegliPrenotazione()
@@ -55,10 +56,11 @@ class HomeUtenteView(View):
         self.main_window.set_view(lista_prenotazioni_view)
 
     def libri_prenotati(self):
-        from model.prenotazione_libro import PrenotazioneLibro
-        prenotazioni = PrenotazioneLibro.ricerca(self)
-        from .libri_prenotati import VisualizzaPrenotazioni
-        self.redirect(VisualizzaPrenotazioni(prenotazioni))
+        self.redirect(LibriPrenotatiView())
+        # from model.prenotazione_libro import PrenotazioneLibro
+        # prenotazioni = PrenotazioneLibro.ricerca(self)
+        # from .libri_prenotati import VisualizzaPrenotazioni
+        # self.redirect(VisualizzaPrenotazioni(prenotazioni))
 
     def libri_in_prestito(self):
 

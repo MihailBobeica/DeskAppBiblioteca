@@ -1,10 +1,13 @@
 from typing import Dict, Type
 
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 from abstract.model import Model
 from database import Libro as DbLibro
+from database import Utente as DbUtente
+from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Session
+from utils.auth import Auth
 from utils.ui import RESULTS_LIMIT
 
 
@@ -56,12 +59,28 @@ class Libro(Model):
         db_session.close()
         return libri
 
+    def get_prenotati(self, utente: DbUtente) -> list[Type[DbLibro]]:
+        db_session = Session()
+        libri_prenotati = db_session.query(DbLibro).join(DbPrenotazioneLibro).filter(
+            DbPrenotazioneLibro.utente_id == utente.id).all()
+        db_session.close()
+        return libri_prenotati
+
     def search(self, text) -> list[Type[DbLibro]]:
         db_session = Session()
         libri = db_session.query(DbLibro).filter(or_(DbLibro.titolo.ilike(f"%{text}%"),
                                                      DbLibro.autori.ilike(f"%{text}%"))).limit(RESULTS_LIMIT).all()
         db_session.close()
         return libri
+
+    def search_prenotati(self, utente: DbUtente, text: str) -> list[Type[DbLibro]]:
+        db_session = Session()
+        libri_prenotati = db_session.query(DbLibro).join(DbPrenotazioneLibro).filter(
+            and_(DbPrenotazioneLibro.utente_id == utente.id,
+                 or_(DbLibro.titolo.ilike(f"%{text}%"),
+                     DbLibro.autori.ilike(f"%{text}%")))).all()
+        db_session.close()
+        return libri_prenotati
 
     def by_isbn(self, isbn):
         db_session = Session()
@@ -88,4 +107,3 @@ class Libro(Model):
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
-

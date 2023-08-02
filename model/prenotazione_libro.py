@@ -16,15 +16,15 @@ class PrenotazioneLibro(Model):
 
     def raggiunto_limite(self, utente: DbUtente) -> bool:
         db_session = Session()
-        prenotazioni = db_session.query(DbPrenotazioneLibro).filter_by(utente=utente.id).count()
+        prenotazioni = db_session.query(DbPrenotazioneLibro).filter_by(utente_id=utente.id).count()
         db_session.close()
         return prenotazioni >= MAX_PRENOTAZIONI
 
     def gia_effettuata(self, utente: DbUtente, libro: DbLibro):
         db_session = Session()
         effettuata = db_session.query(DbPrenotazioneLibro).filter(
-            and_(DbPrenotazioneLibro.utente == utente.id,
-                 DbPrenotazioneLibro.libro == libro.id)).first()
+            and_(DbPrenotazioneLibro.utente_id == utente.id,
+                 DbPrenotazioneLibro.libro_id == libro.id)).first()
         db_session.close()
         return effettuata is not None
 
@@ -37,8 +37,8 @@ class PrenotazioneLibro(Model):
         data_scadenza = data_prenotazione + timedelta(days=DURATA_PRENOTAZIONE)
         codice = get_codice()
 
-        prenotazione_libro = DbPrenotazioneLibro(libro=libro_id,
-                                                 utente=user_id,
+        prenotazione_libro = DbPrenotazioneLibro(libro_id=libro_id,
+                                                 utente_id=user_id,
                                                  data_prenotazione=data_prenotazione,
                                                  data_scadenza=data_scadenza,
                                                  codice=codice)

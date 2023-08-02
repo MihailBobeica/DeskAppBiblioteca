@@ -1,12 +1,15 @@
+from typing import Optional
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
 
 from abstract import View
 from database import Libro
-from utils.ui import get_cover_image, label_autori, BOX_WIDTH
 from utils.auth import Auth
+from utils.backend import CATALOGO_PRENOTAZIONI
 from utils.strings import UTENTE, OPERATORE, ADMIN
+from utils.ui import get_cover_image, label_autori, BOX_WIDTH
 
 
 class LibroComponent(View):
@@ -40,7 +43,8 @@ class LibroComponent(View):
 
         v_layout.addWidget(label_title)
         v_layout.addWidget(label_autor)
-        v_layout.addWidget(label_disponibili)
+        if self.context != CATALOGO_PRENOTAZIONI:
+            v_layout.addWidget(label_disponibili)
 
         v_layout.addStretch(1)
 
@@ -48,14 +52,19 @@ class LibroComponent(View):
         button_visualizza.clicked.connect(self.send_visualizza_libro_request)
 
         if Auth.is_logged_as(UTENTE):
-            if self.db_libro.disponibili > 0:
-                button_prenota = QPushButton("Prenota libro")
-                button_prenota.clicked.connect(self.send_prenota_libro_request)
-                v_layout.addWidget(button_prenota)
+            if self.context == CATALOGO_PRENOTAZIONI:
+                button_dettagli_prenotazione = QPushButton("Dettagli prenotazione")
+                button_dettagli_prenotazione.clicked.connect(self.send_visualizza_dettagli_prenotazione_request)
+                v_layout.addWidget(button_dettagli_prenotazione)
             else:
-                button_osserva = QPushButton("Osserva libro")
-                button_osserva.clicked.connect(self.send_osserva_libro_request)
-                v_layout.addWidget(button_osserva)
+                if self.db_libro.disponibili > 0:
+                    button_prenota = QPushButton("Prenota libro")
+                    button_prenota.clicked.connect(self.send_prenota_libro_request)
+                    v_layout.addWidget(button_prenota)
+                else:
+                    button_osserva = QPushButton("Osserva libro")
+                    button_osserva.clicked.connect(self.send_osserva_libro_request)
+                    v_layout.addWidget(button_osserva)
         elif Auth.is_logged_as(OPERATORE):
             pass
         elif Auth.is_logged_as(ADMIN):
@@ -68,14 +77,9 @@ class LibroComponent(View):
         layout.addWidget(image_label)
         layout.addWidget(contenitore_dati)
 
-    # def connect_buttons(self) -> None:
-    #     button_visualizza = self.get_button("Visualizza")
-    #     button_visualizza.clicked.connect(self.visualizza)
-    #     if self.get_button("Prenota libro"):
-    #         self.get_button("Prenota libro").clicked.connect(self.prenota_libro)
-
-    def __init__(self, db_libro: Libro):
+    def __init__(self, db_libro: Libro, context: Optional[str] = None):
         self.db_libro = db_libro
+        self.context = context
         super().__init__()
 
     def attach_controllers(self) -> None:
@@ -94,12 +98,5 @@ class LibroComponent(View):
         self.notify(message="osserva_libro",
                     data={"libro": self.db_libro})
 
-    # def visualizza(self):
-    #     from view.libro import LibroView
-    #     self.redirect(LibroView(self.info))
-    #
-    #
-    #
-    # def prenota_libro(self):
-    #     from model.prenotazione_libro import PrenotazioneLibro
-    #     PrenotazioneLibro.inserisci(self, self.info)
+    def send_visualizza_dettagli_prenotazione_request(self):
+        pass

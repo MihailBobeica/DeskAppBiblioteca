@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, ForeignKey
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
 from utils.strings import ADMIN, OPERATORE, UTENTE
@@ -89,8 +89,12 @@ class PrenotazioneLibro(Base):
     data_scadenza = Column(DateTime)
     codice = Column(String)
 
-    utente = Column(String, ForeignKey('utenti.id'))
-    libro = Column(String, ForeignKey('libri.id', ondelete="CASCADE"))
+    utente_id = Column(String, ForeignKey('utenti.id'))
+    libro_id = Column(String, ForeignKey('libri.id', ondelete="CASCADE"))
+
+    utente = relationship("Utente")
+    libro = relationship("Libro")
+
 
 
 class Prestito(Base):

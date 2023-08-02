@@ -5,6 +5,8 @@ HISTORY_LIMIT = 5
 POSTI_PER_AULA = 20
 DURATA_PRENOTAZIONE = 3  # in giorni
 MAX_PRENOTAZIONI = 3
+CATALOGO = "catalogo"
+CATALOGO_PRENOTAZIONI = "catalogo_prenotazioni"
 
 
 def is_empty(string: str) -> bool:

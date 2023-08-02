@@ -36,9 +36,10 @@ class CatalogoComponent(View):
 
         layout.setAlignment(Qt.AlignTop)
 
-    def __init__(self, cerca_libri_strategy: CercaLibriStrategy):
-        self.grid_layout: Optional[QGridLayout] = None
+    def __init__(self, cerca_libri_strategy: CercaLibriStrategy, context: Optional[str] = None):
         self.cerca_libri_strategy = cerca_libri_strategy
+        self.context = context
+        self.grid_layout: Optional[QGridLayout] = None
 
         super().__init__()
 
@@ -62,5 +63,5 @@ class CatalogoComponent(View):
         for index, db_libro in enumerate(db_libri):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
-            libro = LibroComponent(db_libro)
+            libro = LibroComponent(db_libro, self.context)
             self.grid_layout.addWidget(libro, row, col)

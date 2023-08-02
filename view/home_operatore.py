@@ -32,7 +32,7 @@ class HomeOperatoreView(View):
     def attach_controllers(self) -> None:
         from app import controller_logout
         self.attach(controller_logout)
-        self.prenotazione_controller = PrenotazioneController()
+        # self.prenotazione_controller = PrenotazioneController() # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
     def __init__(self):
         super().__init__()
