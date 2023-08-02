@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
-from view.modifica_operatore import ModificaView
-from view.Visualizza_operatore import VisualizzaView
+
 from abstract.view import View
 from model.utente import Utente
 
@@ -30,7 +29,7 @@ class RicercaView(View):
         self.setLayout(layout)
 
 
-    def __init__(self, metodo):
+    '''def __init__(self, metodo):
         self.metodo = metodo
         super().__init__()
 
@@ -67,5 +66,5 @@ class RicercaView(View):
             alert_box.setText("Devi fornire un valore per tutti i campi di input")
             alert_box.setIcon(QMessageBox.Warning)
             alert_box.addButton("Ok", QMessageBox.AcceptRole)
-            alert_box.exec()
+            alert_box.exec()'''
 

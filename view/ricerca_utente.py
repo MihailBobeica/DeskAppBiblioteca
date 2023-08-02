@@ -1,6 +1,4 @@
-from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
-from view.modifica_operatore import ModificaView
-from view.Visualizza_operatore import VisualizzaView
+from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton
 from abstract.view import View
 from model.utente import Utente
 
