@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
-
+from typing import Dict
 from abstract.view import View
 from model.utente import Utente
 
@@ -22,23 +22,21 @@ class RicercaView(View):
         invia.clicked.connect(self.invia)
         layout.addWidget(invia)
 
-        button_back = QPushButton('Indietro')
-        button_back.clicked.connect(self.go_back)
-        layout.addWidget(button_back)
-
         self.setLayout(layout)
 
+    def attach_controllers(self) -> None:
+        from app import controller_crud_operatore
+        self.attach(controller_crud_operatore)
 
-    '''def __init__(self, metodo):
-        self.metodo = metodo
+    def __init__(self, metodo: Dict):
+        self.metodo = metodo["metodo"]
         super().__init__()
 
-
-    def go_back(self):
-        from .home_admin import HomeAdminView
-        self.redirect(HomeAdminView())
-
     def invia(self):
+        self.notify(message="trova_operatore" , data={"input":self.input1.text(), "metodo" : self.metodo})
+
+
+    '''def invia(self):
         if self.input1.text():
             if self.metodo=="elimina":
                 Utente.elimina(self,self.input1.text())

@@ -7,7 +7,6 @@ from view.home_admin import HomeAdminView
 from model.libro import Libro
 
 
-
 class InserisciView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Inserisci libro')
@@ -70,41 +69,17 @@ class InserisciView(View):
         invia.clicked.connect(self.invia)
         layout.addWidget(invia)
 
-        button_back = QPushButton('Indietro')
-        button_back.clicked.connect(self.go_back)
-        layout.addWidget(button_back)
 
         self.setLayout(layout)
 
 
+    def attach_controllers(self) -> None:
+        from app import controller_gestione_libri
+        self.attach(controller_gestione_libri)
 
     def __init__(self):
         super().__init__()
 
 
-    def go_back(self):
-        from .home_admin import HomeAdminView
-        self.redirect(HomeAdminView())
-
     def invia(self):
-        if self.input2.text() and self.input3.text() and self.input3.text() and self.input5.text()and self.input6.text()and self.input7.text() and self.input8.text() and self.input9.text():
-            dati = {"titolo" : self.input2.text(),
-                    "autori" : self.input3.text(),
-                    "editore" : self.input4.text(),
-                    "isbn": self.input5.text(),
-                    "anno_edizione":  datetime.strptime(self.input6.text(), '%d/%m/%Y'),
-                    "anno_pubblicazione": datetime.strptime(self.input7.text(), '%d/%m/%Y'),
-                    "disponibili": self.input8.text(),
-                    "dati": self.input9.text(),
-                    "immagine" : "prova"
-
-                    }
-            Libro.inserisci2(self,dati)
-            self.redirect(HomeAdminView())
-        else:
-            alert_box = QMessageBox(self)
-            alert_box.setWindowTitle("Errore")
-            alert_box.setText("Devi fornire un valore per tutti i campi di input")
-            alert_box.setIcon(QMessageBox.Warning)
-            alert_box.addButton("Ok", QMessageBox.AcceptRole)
-            alert_box.exec()
+        self.notify(message="inserisci_libro", data={"titolo" : self.input2.text(),"autori" : self.input3.text(), "editore": self.input4.text(), "isbn" : self.input5.text(), "disponibili" :self.input8.text(), "dati":self.input9.text(), "anno_edizione":datetime.strptime(self.input6.date().toString('yyyy-MM-dd'), '%Y-%m-%d'),"anno_pubblicazione":datetime.strptime(self.input7.date().toString('yyyy-MM-dd'), '%Y-%m-%d'), "immagine":"prova"})

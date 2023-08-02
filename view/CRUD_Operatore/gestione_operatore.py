@@ -18,7 +18,7 @@ class GestioneOperatori(View):
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
 
-    '''def connect_buttons(self):
+    def connect_buttons(self):
         logout_button = self.get_button("Logout")
         logout_button.clicked.connect(self.send_logout_request)
         inserisci_button = self.get_button("Crea operatore")
@@ -32,23 +32,25 @@ class GestioneOperatori(View):
 
 
     def attach_controllers(self) -> None:
-        from app import controller_logout
+        from app import controller_logout,controller_crud_operatore
         self.attach(controller_logout)
+        self.attach(controller_crud_operatore)
 
     def __init__(self):
         super().__init__()
 
     def crea_operatore(self):
-        from view.crea_operatore import ProvaView
-        self.redirect(ProvaView())
+        self.notify(message="crea_operatore")
+
 
     def elimina_operatore(self):
-        self.redirect(RicercaView(metodo="elimina"))
+        #self.redirect(RicercaView(metodo="elimina"))
+        self.notify(message="elimina_operatore", data={"metodo" : "elimina"})
 
     def modifica_operatore(self):
-        self.redirect(RicercaView(metodo="modifica"))
+        self.notify(message="modifica_operatore", data={"metodo" : "modifica"})
 
     def visualizza_operatore(self):
-        self.redirect(RicercaView(metodo="visualizza"))'''
+        self.notify(message="visualizza_operatore", data={"metodo" : "visualizza"})
 
 
