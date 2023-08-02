@@ -30,27 +30,11 @@ class Utente(Model):
             db_session.commit()
             db_session.close()
 
-    def elimina(self, username):
+    def elimina(self, utente:DbUtente):
         db_session = Session()
-        utente = Utente.by_username(self, username)
-        if not (utente) or utente.ruolo != "operatore":
-            from view.component.view_errore import view_errore
-            view_errore.create_layout(self, "Errore", "L'operatore non è presente nel sistema")
-
-        else:
-            msg_box = QMessageBox()
-            msg_box.setIcon(QMessageBox.Question)
-            msg_box.setText("Sei sicuro di voler eliminare l'operatore?")
-            msg_box.setWindowTitle("Conferma")
-            msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-            msg_box.setDefaultButton(QMessageBox.Ok)
-
-            # Esegui la finestra di dialogo e attendi la risposta dell'utente
-            response = msg_box.exec()
-            if response == QMessageBox.Ok:
-                db_session.delete(utente)
-                db_session.commit()
-                db_session.close()
+        db_session.delete(utente)
+        db_session.commit()
+        db_session.close()
 
     def modifica(self, dati: Dict[str, str]):
         db_session = Session()
