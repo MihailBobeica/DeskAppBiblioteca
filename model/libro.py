@@ -1,18 +1,15 @@
-from typing import Dict, Type
-
 from sqlalchemy import or_, and_
 
 from abstract.model import Model
 from database import Libro as DbLibro
-from database import Utente as DbUtente
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Session
-from utils.auth import Auth
+from database import Utente as DbUtente
 from utils.ui import RESULTS_LIMIT
 
 
 class Libro(Model):
-    def inserisci(self, dati: Dict[str, str]):
+    def inserisci(self, dati: dict[str, str]):
         db_session = Session()
         libro = DbLibro(titolo=dati["titolo"],
                         autori=dati["autori"],
@@ -28,7 +25,7 @@ class Libro(Model):
         db_session.commit()
         db_session.close()
 
-    def inserisci2(self, dati: Dict[str, str]):
+    def inserisci2(self, dati: dict[str, str]):
         db_session = Session()
         libro = DbLibro(titolo=dati["titolo"],
                         autori=dati["autori"],
@@ -53,27 +50,27 @@ class Libro(Model):
     def __init__(self):
         super().__init__()
 
-    def get(self, n: int = RESULTS_LIMIT) -> list[Type[DbLibro]]:
+    def get(self, n: int = RESULTS_LIMIT) -> list[DbLibro]:
         db_session = Session()
         libri = db_session.query(DbLibro).limit(n).all()
         db_session.close()
         return libri
 
-    def get_prenotati(self, utente: DbUtente) -> list[Type[DbLibro]]:
+    def get_prenotati(self, utente: DbUtente) -> list[DbLibro]:
         db_session = Session()
         libri_prenotati = db_session.query(DbLibro).join(DbPrenotazioneLibro).filter(
             DbPrenotazioneLibro.utente_id == utente.id).all()
         db_session.close()
         return libri_prenotati
 
-    def search(self, text) -> list[Type[DbLibro]]:
+    def search(self, text) -> list[DbLibro]:
         db_session = Session()
         libri = db_session.query(DbLibro).filter(or_(DbLibro.titolo.ilike(f"%{text}%"),
                                                      DbLibro.autori.ilike(f"%{text}%"))).limit(RESULTS_LIMIT).all()
         db_session.close()
         return libri
 
-    def search_prenotati(self, utente: DbUtente, text: str) -> list[Type[DbLibro]]:
+    def search_prenotati(self, utente: DbUtente, text: str) -> list[DbLibro]:
         db_session = Session()
         libri_prenotati = db_session.query(DbLibro).join(DbPrenotazioneLibro).filter(
             and_(DbPrenotazioneLibro.utente_id == utente.id,
@@ -94,7 +91,7 @@ class Libro(Model):
         db_session.commit()
         db_session.close()
 
-    def modifica(self, dati: Dict[str, str], old_isbn):
+    def modifica(self, dati: dict[str, str], old_isbn):
         db_session = Session()
         libro = Libro.by_isbn(self, old_isbn)
         libro.titolo = dati['titolo']

@@ -4,10 +4,12 @@ from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller, BoundedModel
 from database import Libro as DbLibro
+from database import PrenotazioneLibro as DbPrenotazioneLibro
 from model import Libro, PrenotazioneLibro
 from utils.auth import Auth
 from utils.strings import *
 from view.component.catalogo import CatalogoComponent
+from view.dettagli_prenotazione_libro import DettagliPrenotazioneLibroView
 from view.libri_prenotati import LibriPrenotatiView
 from view.libro import LibroView
 
@@ -21,6 +23,7 @@ class CatalogoController(Controller):
         self.message_visualizza_libro(message, data)
         self.message_prenota_libro(message, data)
         self.message_osserva_libro(message, data)
+        self.message_visualizza_dettagli_prenotazione(message, data)
 
     def message_search(self, message: str, data: Optional[dict] = None):
         if message == "search":
@@ -32,12 +35,12 @@ class CatalogoController(Controller):
 
     def message_visualizza_libro(self, message: str, data: Optional[dict] = None):
         if message == "visualizza_libro":
-            db_libro: DbLibro = data["libro"]
-            self.redirect(LibroView(db_libro))
+            libro: DbLibro = data["libro"]
+            self.redirect(LibroView(libro))
 
     def message_prenota_libro(self, message: str, data: Optional[dict] = None):
         if message == "prenota_libro":
-            db_libro: DbLibro = data["libro"]
+            libro: DbLibro = data["libro"]
             model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
             # check se l'utente non è sanzionato
             is_sanzionato = False  # TODO
@@ -47,7 +50,7 @@ class CatalogoController(Controller):
                 return
             # check se l'utente ha già prenotato questo libro
             has_already_this_prenotazione = model_prenotazione_libro.gia_effettuata(utente=Auth.user,
-                                                                                    libro=db_libro)
+                                                                                    libro=libro)
             if has_already_this_prenotazione:
                 self.alert(title=ALERT_PRENOTAZIONE_NEGATA_TITLE,
                            message=ALERT_LIBRO_GIA_PRENOTATO_MESSAGE)
@@ -62,11 +65,20 @@ class CatalogoController(Controller):
 
             # aggiungi prenotazione
             response = self.confirm(title=CONFIRM_PRENOTAZIONE_LIBRO_TITLE,
-                                    message=CONFIRM_PRENOTAZIONE_LIBRO_MESSAGE.format(db_libro.titolo))
+                                    message=CONFIRM_PRENOTAZIONE_LIBRO_MESSAGE.format(libro.titolo))
             if response == QMessageBox.StandardButton.Yes:
-                model_prenotazione_libro.inserisci(db_libro)
+                model_prenotazione_libro.inserisci(libro)
                 self.redirect(LibriPrenotatiView())
 
     def message_osserva_libro(self, message: str, data: Optional[dict] = None):
         if message == "osserva_libro":
             pass
+
+    def message_visualizza_dettagli_prenotazione(self, message: str, data: Optional[dict] = None):
+        if message == "visualizza_dettagli_prenotazione":
+            libro: DbLibro = data["libro"]
+            model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
+            prenotazione_libro: DbPrenotazioneLibro = model_prenotazione_libro.by_utente_and_libro(utente=Auth.user,
+                                                                                                   libro=libro)
+            self.redirect(DettagliPrenotazioneLibroView(libro=libro,
+                                                        prenotazione_libro=prenotazione_libro))

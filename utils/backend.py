@@ -7,6 +7,7 @@ DURATA_PRENOTAZIONE = 3  # in giorni
 MAX_PRENOTAZIONI = 3
 CATALOGO = "catalogo"
 CATALOGO_PRENOTAZIONI = "catalogo_prenotazioni"
+DATE_FORMAT = "%d %B %Y %H:00"
 
 
 def is_empty(string: str) -> bool:

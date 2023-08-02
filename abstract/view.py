@@ -17,9 +17,6 @@ class View(QFrame):
     def detach(self, label: str) -> None:
         del self.controllers[label]
 
-    def detach_all(self) -> None:
-        del self.controllers
-
     def notify(self, message: str, data: Optional[dict] = None) -> None:
         for controller in self.controllers.values():
             controller.receive_message(message, data)
@@ -74,6 +71,3 @@ class View(QFrame):
             if style:
                 button.setStyleSheet(get_style(style))
             layout.addWidget(button)
-
-    def __del__(self):
-        self.detach_all()

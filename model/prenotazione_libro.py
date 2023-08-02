@@ -20,12 +20,17 @@ class PrenotazioneLibro(Model):
         db_session.close()
         return prenotazioni >= MAX_PRENOTAZIONI
 
-    def gia_effettuata(self, utente: DbUtente, libro: DbLibro):
+    def by_utente_and_libro(self, utente: DbUtente, libro: DbLibro) -> DbPrenotazioneLibro:
         db_session = Session()
         effettuata = db_session.query(DbPrenotazioneLibro).filter(
             and_(DbPrenotazioneLibro.utente_id == utente.id,
                  DbPrenotazioneLibro.libro_id == libro.id)).first()
         db_session.close()
+        return effettuata
+
+    def gia_effettuata(self, utente: DbUtente, libro: DbLibro) -> bool:
+        effettuata = self.by_utente_and_libro(utente=utente,
+                                              libro=libro)
         return effettuata is not None
 
     def inserisci(self, libro: DbLibro) -> None:

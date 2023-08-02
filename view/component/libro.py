@@ -99,4 +99,5 @@ class LibroComponent(View):
                     data={"libro": self.db_libro})
 
     def send_visualizza_dettagli_prenotazione_request(self):
-        pass
+        self.notify(message="visualizza_dettagli_prenotazione",
+                    data={"libro": self.db_libro})
