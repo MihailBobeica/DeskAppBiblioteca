@@ -1,5 +1,5 @@
 
-from controller import FirstController, LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri
+from controller import FirstController, LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti
 from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI
 from model import PrenotazioneLibro
 from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI, PRENOTAZIONI_AULE
@@ -38,3 +38,4 @@ controller_logout = LogoutController()
 controller_gestione_operatori = AdminController.Gestione_Op_Controller()
 controller_crud_operatore = gestione_operatore.CRUD_operatore()
 controller_gestione_libri = gestione_libri.GestioneLibriController()
+controller_gestione_utenti = gestione_utenti.GestioneUtentiController()

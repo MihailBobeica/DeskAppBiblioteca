@@ -24,6 +24,9 @@ class RicercaView(View):
 
         self.setLayout(layout)
 
+    def attach_controllers(self) -> None:
+        from app import  controller_gestione_utenti
+        self.attach(controller_gestione_utenti)
 
     def __init__(self):
         super().__init__()
@@ -31,10 +34,4 @@ class RicercaView(View):
 
 
     def invia(self):
-        if self.input1.text():
-            utente = Utente.by_username(self,self.input1.text())
-            if utente:
-                from model.prestito import Prestito
-                libri = Prestito.by_utente(self,utente.username)
-                from .visualizza_cronologia import VisualizzaCronologia
-                self.redirect(VisualizzaCronologia(libri))
+        self.notify(message="trova_utente", data={"username": self.input1.text()})

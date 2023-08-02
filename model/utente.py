@@ -5,6 +5,7 @@ from sqlalchemy import or_,and_
 from abstract.model import Model
 from database import Session
 from database import Utente as DbUtente
+from database import Prestito
 
 
 
@@ -54,11 +55,11 @@ class Utente(Model):
         db_session.close()
         return utenti
 
-    def visualizza_cronologia(self,username):
-        '''db_session = Session()
-        utente = Utente.by_username(self,username)
-        prenotazioni = db_session.
-        db_session.close()'''
+    def visualizza_cronologia(self,utente : DbUtente):
+        db_session = Session()
+        prestiti = db_session.query(Prestito).filter_by(utente=utente.username).all()
+        db_session.close()
+        return prestiti
 
     def __init__(self):
         super().__init__()

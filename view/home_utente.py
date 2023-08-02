@@ -3,7 +3,6 @@ from PySide6.QtWidgets import QHBoxLayout
 from strategy import CercaLibriCatalogo
 from utils.auth import Auth
 from abstract.view import View
-from controller.gestione_prenotazione_posto import PrenotazioneController
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 from view.libri_prenotati import LibriPrenotatiView
@@ -70,7 +69,7 @@ class HomeUtenteView(View):
 
     def visualizza_cronologia(self):
         libri = Prestito.by_utente(self,Auth.user.username)
-        from .visualizza_cronologia import VisualizzaCronologia
+        from view.Gestione_utente.visualizza_cronologia import VisualizzaCronologia
         self.redirect(VisualizzaCronologia(libri))
 
 
