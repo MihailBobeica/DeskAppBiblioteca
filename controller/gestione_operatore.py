@@ -5,6 +5,8 @@ from view.CRUD_Operatore.crea_operatore import ProvaView
 from view.CRUD_Operatore.ricerca_operatore import RicercaView
 from view.CRUD_Operatore.modifica_operatore import ModificaView
 from view.CRUD_Operatore.Visualizza_operatore import VisualizzaView
+from model.utente import Utente
+from view.home_admin import HomeAdminView
 
 class CRUD_operatore(Controller):
     def __init__(self):
@@ -20,5 +22,15 @@ class CRUD_operatore(Controller):
         elif message == "visualizza_operatore":
             self.redirect(RicercaView({"metodo" : "visualizza"}))
         elif message == "trova_operatore":
-            pass
-
+            if data["metodo"] == "elimina":
+                Utente.elimina(self,data["input"])
+                self.redirect(HomeAdminView())
+            elif data["metodo"] == "modifica":
+                utente = Utente.by_username(self,data["input"])
+                self.redirect(ModificaView(utente))
+            elif data["metodo"] == "visualizza":
+                utente = Utente.by_username(self,data["input"])
+                self.redirect(VisualizzaView(utente))
+        elif message == "salva_modifiche":
+            Utente.modifica(self,data,)
+            self.redirect(HomeAdminView())

@@ -52,10 +52,9 @@ class Utente(Model):
                 db_session.commit()
                 db_session.close()
 
-    def modifica(self, dati: Dict[str, str], old_username):
+    def modifica(self, dati: Dict[str, str]):
         db_session = Session()
-        utente = self.by_username(old_username)
-        utente.username = dati['username']
+        utente = Utente.by_username(self,dati['username'])
         utente.nome = dati['nome']
         utente.cognome = dati['cognome']
         db_session.merge(utente)
