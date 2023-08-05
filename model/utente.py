@@ -5,6 +5,7 @@ from sqlalchemy import or_,and_
 from abstract.model import Model
 from database import Session
 from database import Utente as DbUtente
+from database import Prestito
 
 
 
@@ -30,32 +31,15 @@ class Utente(Model):
             db_session.commit()
             db_session.close()
 
-    def elimina(self, username):
+    def elimina(self, utente:DbUtente):
         db_session = Session()
-        utente = Utente.by_username(self, username)
-        if not (utente) or utente.ruolo != "operatore":
-            from view.component.view_errore import view_errore
-            view_errore.create_layout(self, "Errore", "L'operatore non è presente nel sistema")
+        db_session.delete(utente)
+        db_session.commit()
+        db_session.close()
 
-        else:
-            msg_box = QMessageBox()
-            msg_box.setIcon(QMessageBox.Question)
-            msg_box.setText("Sei sicuro di voler eliminare l'operatore?")
-            msg_box.setWindowTitle("Conferma")
-            msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-            msg_box.setDefaultButton(QMessageBox.Ok)
-
-            # Esegui la finestra di dialogo e attendi la risposta dell'utente
-            response = msg_box.exec()
-            if response == QMessageBox.Ok:
-                db_session.delete(utente)
-                db_session.commit()
-                db_session.close()
-
-    def modifica(self, dati: Dict[str, str], old_username):
+    def modifica(self, dati: Dict[str, str]):
         db_session = Session()
-        utente = self.by_username(old_username)
-        utente.username = dati['username']
+        utente = Utente.by_username(self,dati['username'])
         utente.nome = dati['nome']
         utente.cognome = dati['cognome']
         db_session.merge(utente)
@@ -71,11 +55,11 @@ class Utente(Model):
         db_session.close()
         return utenti
 
-    def visualizza_cronologia(self,username):
-        '''db_session = Session()
-        utente = Utente.by_username(self,username)
-        prenotazioni = db_session.
-        db_session.close()'''
+    def visualizza_cronologia(self,utente : DbUtente):
+        db_session = Session()
+        prestiti = db_session.query(Prestito).filter_by(utente=utente.username).all()
+        db_session.close()
+        return prestiti
 
     def __init__(self):
         super().__init__()

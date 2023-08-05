@@ -3,7 +3,7 @@ from typing import Optional
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QFont
 from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QFrame, QPushButton
-
+from .component.view_conferma import view_conferma
 from abstract.view import View
 from database import Libro as DbLibro
 from utils.auth import Auth

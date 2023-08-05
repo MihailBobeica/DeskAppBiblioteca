@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import QHBoxLayout
-from view.ricerca_operatore import RicercaView
 from abstract.view import View
 from view.component import SidebarComponent
 
@@ -30,16 +29,15 @@ class GestioneUtentiView(View):
 
 
     def attach_controllers(self) -> None:
-        from app import controller_logout
+        from app import controller_logout, controller_gestione_utenti
         self.attach(controller_logout)
+        self.attach(controller_gestione_utenti)
 
     def __init__(self):
         super().__init__()
 
     def visualizza_utente(self):
-        from .visualizza_utente import VisualizzaUtente
-        self.redirect(VisualizzaUtente())
+        self.notify(message = "visualizza_utente")
 
     def visualizza_cronologia(self):
-        from.ricerca_utente import RicercaView
-        self.redirect(RicercaView())
+        self.notify(message="ricerca_utente")

@@ -97,7 +97,7 @@ class PrenotazioneLibro(Model):
         if input:
             pass
         else:
-            prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente=Auth.user.username).all()
+            prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente=Auth.user.id).all()
             db_session.close()
             return prestiti
 

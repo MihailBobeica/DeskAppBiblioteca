@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QHBoxLayout
-
+from typing import Optional
 from abstract.view import View
 from view.component import SidebarComponent
 
@@ -31,24 +31,22 @@ class HomeAdminView(View):
         gestione_utenti_button.clicked.connect(self.gestione_utenti)
 
     def attach_controllers(self) -> None:
-        from app import controller_logout
+        from app import controller_logout,controller_gestione_operatori
         self.attach(controller_logout)
+        self.attach(controller_gestione_operatori)
 
     def __init__(self):
         super().__init__()
 
-    def gestione_operatori(self):
-        from view.gestione_operatore import GestioneOperatori
-        self.redirect(GestioneOperatori())
+    def gestione_operatori(self, text: Optional[str] = None) -> None:
+        self.notify(message="gestione_operatori")
+
 
     def inserisci_libro(self):
-        from view.inserisci_libro import InserisciView
-        self.redirect(InserisciView())
+        self.notify(message="inserisci_libro")
 
     def ricerca_libro(self):
-        from view.gestione_libri_admin.catalogo_admin import CatalogoComponent
-        self.redirect(CatalogoComponent())
+        self.notify(message="ricerca_libro")
 
     def gestione_utenti(self):
-        from view.gestione_utenti import GestioneUtentiView
-        self.redirect(GestioneUtentiView())
+        self.notify(message="gestione_utenti")

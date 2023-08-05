@@ -13,11 +13,11 @@ class ModificaView(View):
         grid_layout = QGridLayout()
 
         # Prima riga
-        label1 = QLabel('username:')
+        '''label1 = QLabel('username:')
         self.input1 = QLineEdit()
         self.input1.setText(self.utente.username)
         grid_layout.addWidget(label1, 0, 0)
-        grid_layout.addWidget(self.input1, 0, 1)
+        grid_layout.addWidget(self.input1, 0, 1)'''
 
         # Seconda riga
         label2 = QLabel('nome:')
@@ -45,29 +45,27 @@ class ModificaView(View):
         invia.clicked.connect(self.invia)
         layout.addWidget(invia)
 
-        button_back = QPushButton('Indietro')
-        button_back.clicked.connect(self.go_back)
-        layout.addWidget(button_back)
 
         self.setLayout(layout)
+
+    def attach_controllers(self) -> None:
+        from app import controller_crud_operatore
+        self.attach(controller_crud_operatore)
 
     def __init__(self, db_utente: db_Utente):
         self.utente = db_utente
         super().__init__()
 
-    def go_back(self):
-        from view.home_admin import HomeAdminView
-        self.redirect(HomeAdminView())
+
 
     def invia(self):
-        if self.input1.text() and self.input2.text() and self.input3.text() :
-            dati = {"username" : self.input1.text(),
+        if  self.input2.text() and self.input3.text() :
+            dati = {
+                    "username" : self.utente.username,
                     "nome" : self.input2.text(),
                     "cognome" : self.input3.text()
                     }
-            Utente.modifica(self,dati,self.utente.username)
-            from view.home_admin import HomeAdminView
-            self.redirect(HomeAdminView())
+            self.notify(message="salva_modifiche", data=dati)
         else:
             alert_box = QMessageBox(self)
             alert_box.setWindowTitle("Errore")
