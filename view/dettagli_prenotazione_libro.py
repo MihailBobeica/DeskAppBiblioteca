@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont, QPixmap
-from PySide6.QtWidgets import QHBoxLayout, QFrame, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QHBoxLayout, QFrame, QVBoxLayout, QLabel, QPushButton
 
 from abstract import View
 from database import Libro as DbLibro
@@ -29,11 +29,15 @@ class DettagliPrenotazioneLibroView(View):
         label_autor.setFont(font)
         # data prenotazione
         label_data_prenotazione = QLabel(
-            f"Data prenotazione:\n{self.prenotazione_libro.data_prenotazione.strftime(DATE_FORMAT)}")
+            f"Data prenotazione:\n{self.prenotazione.data_prenotazione.strftime(DATE_FORMAT)}")
         label_data_prenotazione.setFont(font)
         # data scadenza prenotazione
-        label_data_scadenza = QLabel(f"Data scadenza prenotazione:\n{self.prenotazione_libro.data_scadenza.strftime(DATE_FORMAT)}")
+        label_data_scadenza = QLabel(
+            f"Data scadenza prenotazione:\n{self.prenotazione.data_scadenza.strftime(DATE_FORMAT)}")
         label_data_scadenza.setFont(font)
+        # codice prenotazione
+        label_codice = QLabel(f"Codice prenotazione:\n{self.prenotazione.codice}")
+        label_codice.setFont(font)
 
         # layout
         layout = QHBoxLayout(self)
@@ -50,14 +54,29 @@ class DettagliPrenotazioneLibroView(View):
         v_layout.addWidget(label_autor)
         v_layout.addWidget(label_data_prenotazione)
         v_layout.addWidget(label_data_scadenza)
+        v_layout.addWidget(label_codice)
         v_layout.addStretch(1)
+
+        button_cancella_prenotazione = QPushButton("Cancella prenotazione")
+        button_cancella_prenotazione.clicked.connect(self.send_cancella_prenotazione_request)
+        v_layout.addWidget(button_cancella_prenotazione)
 
         contenitore_dati.setLayout(v_layout)
 
         layout.addWidget(image_label)
         layout.addWidget(contenitore_dati)
 
-    def __init__(self, libro: DbLibro, prenotazione_libro: DbPrenotazioneLibro):
+    def __init__(self, libro: DbLibro, prenotazione: DbPrenotazioneLibro):
         self.libro = libro
-        self.prenotazione_libro = prenotazione_libro
+        self.prenotazione = prenotazione
         super().__init__()
+
+    def attach_controllers(self) -> None:
+        from app import controller_catalogo
+        self.attach(controller_catalogo)
+
+    def send_cancella_prenotazione_request(self):
+        self.notify(message="cancella_prenotazione",
+                    data={"libro": self.libro,
+                          "prenotazione": self.prenotazione,
+                          "contesto": "dettagli"})

@@ -1,3 +1,5 @@
+from typing import Type
+
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton, QFrame, QMessageBox
@@ -108,16 +110,20 @@ class MainWindow(QMainWindow):
         view.setObjectName(next_view_name)
         layout.insertWidget(0, view)
         view.show()
+        self.update_view(type(view))
+
+    def replace(self, view: BoundedView):
+        self.set_view(view, navigate=True)
+
+    def update_view(self, view: Type[BoundedView]):
+        for index, v in enumerate(self.cronologia):
+            if isinstance(v, view):
+                self.cronologia[index] = view()
 
     def go_back(self) -> None:
         if self.cronologia:
             last_view: BoundedView = self.cronologia.pop()
-            is_home_page = isinstance(last_view, HomePageView)
-            if is_home_page:
-                last_view.deleteLater()
-                self.set_view(HomePageView(), navigate=True)
-                return
-            self.set_view(last_view, navigate=True)
+            self.replace(last_view)
             return
 
         quick_alert(parent=self,

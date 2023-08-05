@@ -87,6 +87,7 @@ class PrenotazioneLibro(Base):
     id = Column(Integer, primary_key=True)
     data_prenotazione = Column(DateTime)
     data_scadenza = Column(DateTime)
+    data_cancellazione = Column(DateTime, nullable=True)
     codice = Column(String)
 
     utente_id = Column(String, ForeignKey('utenti.id'))

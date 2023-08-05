@@ -38,3 +38,10 @@ CONFIRM_PRENOTAZIONE_LIBRO_TITLE = "Conferma prenotazione libro"
 CONFIRM_PRENOTAZIONE_LIBRO_MESSAGE = "Vuoi davvero prenotare il seguente libro?" \
                                      "\nTitolo: {}"
 
+CANCELLA_PRENOTAZIONE_TITLE = "Cancella prenotazione libro"
+CONFIRM_CANCELLA_PRENOTAZIONE_MESSAGE = "Sei sicuro di voler cancellare la" \
+                                        "\nprenotazione per il seguente libro:" \
+                                        "\nTitolo: {}"
+
+CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE = "La cancellazione della prenotazione" \
+                                              "\ndel libro è stata portata a termine."

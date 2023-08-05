@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout
 
 from abstract.view import View
-from strategy.search import CercaLibriStrategy
+from strategy.search import RicercaStrategy
 from utils.ui import get_style, CATALOG_COLUMNS
 from view.component.libro import LibroComponent
 
@@ -36,8 +36,8 @@ class CatalogoComponent(View):
 
         layout.setAlignment(Qt.AlignTop)
 
-    def __init__(self, cerca_libri_strategy: CercaLibriStrategy, context: Optional[str] = None):
-        self.cerca_libri_strategy = cerca_libri_strategy
+    def __init__(self, search_strategy: RicercaStrategy, context: Optional[str] = None):
+        self.search_strategy = search_strategy
         self.context = context
         self.grid_layout: Optional[QGridLayout] = None
 
@@ -54,14 +54,14 @@ class CatalogoComponent(View):
                     data={"catalogo": self,
                           "text": text})
 
-    def load_grid(self, db_libri) -> None:
+    def load_grid(self, data_list: list[dict[str, object]]) -> None:
         while self.grid_layout.count():
             child = self.grid_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
-        for index, db_libro in enumerate(db_libri):
+        for index, data in enumerate(data_list):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
-            libro = LibroComponent(db_libro, self.context)
+            libro = LibroComponent(data, self.context)
             self.grid_layout.addWidget(libro, row, col)

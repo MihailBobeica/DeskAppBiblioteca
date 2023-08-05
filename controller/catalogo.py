@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller, BoundedModel
 from database import Libro as DbLibro
 from database import PrenotazioneLibro as DbPrenotazioneLibro
-from model import Libro, PrenotazioneLibro
+from model import PrenotazioneLibro
 from utils.auth import Auth
 from utils.strings import *
 from view.component.catalogo import CatalogoComponent
@@ -24,19 +24,20 @@ class CatalogoController(Controller):
         self.message_prenota_libro(message, data)
         self.message_osserva_libro(message, data)
         self.message_visualizza_dettagli_prenotazione(message, data)
+        self.message_cancella_prenotazione(message, data)
 
     def message_search(self, message: str, data: Optional[dict] = None):
         if message == "search":
             catalogo: CatalogoComponent = data["catalogo"]
             text = data["text"]
-            model_libro: Libro = self.models["libri"]
-            db_libri = catalogo.cerca_libri_strategy.search(model_libro, text)
-            catalogo.load_grid(db_libri)
+            data_list = catalogo.search_strategy.search(self.models, text)
+            catalogo.load_grid(data_list)
 
     def message_visualizza_libro(self, message: str, data: Optional[dict] = None):
         if message == "visualizza_libro":
             libro: DbLibro = data["libro"]
-            self.redirect(LibroView(libro))
+            context: str = data["context"]
+            self.redirect(LibroView(libro, context=context))
 
     def message_prenota_libro(self, message: str, data: Optional[dict] = None):
         if message == "prenota_libro":
@@ -77,8 +78,24 @@ class CatalogoController(Controller):
     def message_visualizza_dettagli_prenotazione(self, message: str, data: Optional[dict] = None):
         if message == "visualizza_dettagli_prenotazione":
             libro: DbLibro = data["libro"]
-            model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
-            prenotazione_libro: DbPrenotazioneLibro = model_prenotazione_libro.by_utente_and_libro(utente=Auth.user,
-                                                                                                   libro=libro)
+            prenotazione: DbPrenotazioneLibro = data["prenotazione"]
             self.redirect(DettagliPrenotazioneLibroView(libro=libro,
-                                                        prenotazione_libro=prenotazione_libro))
+                                                        prenotazione=prenotazione))
+
+    def message_cancella_prenotazione(self, message: str, data: Optional[dict] = None):
+        if message == "cancella_prenotazione":
+            libro: DbLibro = data["libro"]
+            prenotazione: DbPrenotazioneLibro = data["prenotazione"]
+            contesto = data["contesto"]
+            response = self.confirm(title=CANCELLA_PRENOTAZIONE_TITLE,
+                                    message=CONFIRM_CANCELLA_PRENOTAZIONE_MESSAGE.format(libro.titolo))
+            if response == QMessageBox.StandardButton.Yes:
+                model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
+                model_prenotazione_libro.cancella(prenotazione)
+                self.update_view(LibriPrenotatiView)
+                if contesto == "dettagli":
+                    self.go_back()
+                if contesto == "catalogo":
+                    self.replace(LibriPrenotatiView())
+                self.alert(title=CANCELLA_PRENOTAZIONE_TITLE,
+                           message=CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE)

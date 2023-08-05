@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 from abstract.model import Model
 from database import Libro as DbLibro, Utente as DbUtente
@@ -14,24 +14,52 @@ class PrenotazioneLibro(Model):
     def __init__(self):
         super().__init__()
 
+    def query_prenotazioni_valide(self, utente: DbUtente):
+        db_session = Session()
+        query = db_session.query(DbPrenotazioneLibro).filter(
+            and_(DbPrenotazioneLibro.utente_id == utente.id,
+                 DbPrenotazioneLibro.data_cancellazione == None,
+                 DbPrenotazioneLibro.data_scadenza > datetime.now())
+        )
+        db_session.close()
+        return query
+
+    def valide(self, utente: DbUtente) -> list[DbPrenotazioneLibro]:
+        db_session = Session()
+        query_prenotazioni_valide = self.query_prenotazioni_valide(utente=utente)
+        prenotazioni_valide: list[DbPrenotazioneLibro] = query_prenotazioni_valide.all()
+        db_session.close()
+        return prenotazioni_valide
+
+    def ricerca_valide(self, utente: DbUtente, text: str) -> list[DbPrenotazioneLibro]:
+        db_session = Session()
+        query_prenotazioni_valide = self.query_prenotazioni_valide(utente=utente)
+        query_ricerca_prenotazioni_valide = query_prenotazioni_valide.join(DbLibro).filter(
+            or_(DbLibro.titolo.ilike(f"%{text}%"),
+                DbLibro.autori.ilike(f"%{text}%"))
+        )
+        prenotazioni_valide: list[DbPrenotazioneLibro] = query_ricerca_prenotazioni_valide.all()
+        db_session.close()
+        return prenotazioni_valide
+
     def raggiunto_limite(self, utente: DbUtente) -> bool:
         db_session = Session()
-        prenotazioni = db_session.query(DbPrenotazioneLibro).filter_by(utente_id=utente.id).count()
+        query_prenotazioni_valide = self.query_prenotazioni_valide(utente=utente)
+        numero_prenotazioni_valide = query_prenotazioni_valide.count()
         db_session.close()
-        return prenotazioni >= MAX_PRENOTAZIONI
-
-    def by_utente_and_libro(self, utente: DbUtente, libro: DbLibro) -> DbPrenotazioneLibro:
-        db_session = Session()
-        effettuata = db_session.query(DbPrenotazioneLibro).filter(
-            and_(DbPrenotazioneLibro.utente_id == utente.id,
-                 DbPrenotazioneLibro.libro_id == libro.id)).first()
-        db_session.close()
-        return effettuata
+        return numero_prenotazioni_valide >= MAX_PRENOTAZIONI
 
     def gia_effettuata(self, utente: DbUtente, libro: DbLibro) -> bool:
-        effettuata = self.by_utente_and_libro(utente=utente,
-                                              libro=libro)
-        return effettuata is not None
+        db_session = Session()
+        query_prenotazioni_valide = self.query_prenotazioni_valide(utente=utente)
+        query_prenotazione_effettuata = query_prenotazioni_valide.filter(
+            DbPrenotazioneLibro.libro_id == libro.id
+        )
+        prenotazione_effettuata = query_prenotazione_effettuata.all()
+        db_session.close()
+        t = len(prenotazione_effettuata)
+        assert t <= 1
+        return t == 1
 
     def inserisci(self, libro: DbLibro) -> None:
         db_session = Session()
@@ -51,6 +79,16 @@ class PrenotazioneLibro(Model):
         # aggiorna la disponibilità del libro
         libro.disponibili -= 1
         db_session.merge(libro)
+        db_session.commit()
+        db_session.close()
+
+    def cancella(self, prenotazione: DbPrenotazioneLibro) -> None:
+        db_session = Session()
+        prenotazione.data_cancellazione = datetime.now()
+        libro: DbLibro = prenotazione.libro
+        libro.disponibili += 1
+        db_session.merge(libro)
+        db_session.merge(prenotazione)
         db_session.commit()
         db_session.close()
 

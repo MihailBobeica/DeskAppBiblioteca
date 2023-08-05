@@ -4,6 +4,7 @@ from strategy import CercaLibriCatalogo
 from utils.auth import Auth
 from abstract.view import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
+from utils.backend import CONTEXT_CATALOGO
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 from view.libri_prenotati import LibriPrenotatiView
@@ -25,7 +26,7 @@ class HomeUtenteView(View):
                                     "Info",
                                     "Logout"),
                             style="button")
-        catalogo = CatalogoComponent(CercaLibriCatalogo())
+        catalogo = CatalogoComponent(CercaLibriCatalogo(), context=CONTEXT_CATALOGO)
 
         # layout
         layout = QHBoxLayout(self)

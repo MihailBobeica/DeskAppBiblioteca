@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import or_, and_
 
 from abstract.model import Model
@@ -56,12 +58,11 @@ class Libro(Model):
         db_session.close()
         return libri
 
-    def get_prenotati(self, utente: DbUtente) -> list[DbLibro]:
+    def by_prenotazione(self, prenotazione: DbPrenotazioneLibro) -> DbLibro:
         db_session = Session()
-        libri_prenotati = db_session.query(DbLibro).join(DbPrenotazioneLibro).filter(
-            DbPrenotazioneLibro.utente_id == utente.id).all()
+        libro = prenotazione.libro
         db_session.close()
-        return libri_prenotati
+        return libro
 
     def search(self, text) -> list[DbLibro]:
         db_session = Session()
@@ -69,15 +70,6 @@ class Libro(Model):
                                                      DbLibro.autori.ilike(f"%{text}%"))).limit(RESULTS_LIMIT).all()
         db_session.close()
         return libri
-
-    def search_prenotati(self, utente: DbUtente, text: str) -> list[DbLibro]:
-        db_session = Session()
-        libri_prenotati = db_session.query(DbLibro).join(DbPrenotazioneLibro).filter(
-            and_(DbPrenotazioneLibro.utente_id == utente.id,
-                 or_(DbLibro.titolo.ilike(f"%{text}%"),
-                     DbLibro.autori.ilike(f"%{text}%")))).all()
-        db_session.close()
-        return libri_prenotati
 
     def by_isbn(self, isbn):
         db_session = Session()
