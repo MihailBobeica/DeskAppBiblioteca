@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QPushButton, QMessageBox
+
+from abstract import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
 from model.posto import Posto
 
-class DettaglioAulaView(QWidget):
+class DettaglioAulaView(View):
     def __init__(self, nome_aula, data_selezionata, durata):
-        super().__init__()
         self.nome_aula = nome_aula
         self.data_selezionata = data_selezionata
         self.durata = durata
-        self.create_layout()
+        super().__init__()
 
     def create_layout(self):
         layout = QVBoxLayout(self)

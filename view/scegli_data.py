@@ -1,6 +1,9 @@
+from datetime import datetime, timedelta
+
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QPushButton, QCalendarWidget, QComboBox, QMessageBox, QTimeEdit
 from PySide6.QtCore import QDate, Qt, QTime
 from abstract.view import View
+from controller.gestione_prenotazione_posto import PrenotazioneController
 from view.scegli_aula import ScegliAulaView
 
 class ScegliDataView(View):
@@ -53,6 +56,7 @@ class ScegliDataView(View):
         selected_date = date.toString("dd/MM/yyyy")
         self.selected_date_label.setText("Data selezionata: " + selected_date)
 
+
     def on_submit_clicked(self):
         selected_date = self.calendar_widget.selectedDate()
         selected_time = self.time_edit.time()
@@ -66,7 +70,29 @@ class ScegliDataView(View):
         self.durata = durata
 
         if self.data_selezionata and self.durata:
-            scegli_aula_view = ScegliAulaView(self.tipo_prenotazione, self.data_selezionata, self.durata)
-            self.main_window.set_view(scegli_aula_view)
+
+            # Converti la data selezionata in un oggetto datetime
+            data_selezionata = datetime.strptime(self.data_selezionata, "%Y-%m-%d %H:%M")
+
+            # Converti la durata in un numero intero rappresentante le ore e moltiplicala per 60 per ottenere i minuti
+            durata_ore = int(self.durata)
+            durata_minuti = durata_ore * 60
+
+            # Calcola ora_inizio e ora_fine in base alla data selezionata e alla durata
+            ora_inizio = data_selezionata
+            ora_fine = data_selezionata + timedelta(minutes=durata_minuti)
+
+            prenotazione_controller = PrenotazioneController()
+            utente_id = prenotazione_controller.get_username_utente_loggato()
+
+            # Verifica se l'utente loggato ha già una prenotazione
+            has_prenotazione = prenotazione_controller.has_prenotazione_in_fascia_oraria(utente_id, data_selezionata, ora_inizio, ora_fine)
+
+            if has_prenotazione:
+                QMessageBox.warning(self, "Attenzione", "Hai già una prenotazione per questa fascia oraria e data.")
+            else:
+                scegli_aula_view = ScegliAulaView(self.tipo_prenotazione, self.data_selezionata, self.durata)
+                self.main_window.set_view(scegli_aula_view)
         else:
             QMessageBox.warning(self, "Attenzione", "Devi selezionare una data e una durata.")
+

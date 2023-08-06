@@ -13,10 +13,10 @@ from view.lisat_prenotazioni import ListaPrenotazioniView
 
 class ScegliAulaView(View):
     def __init__(self, tipo_prenotazione, data, durata):
-        super().__init__()
         self.tipo_prenotazione = tipo_prenotazione
         self.data_selezionata = data
         self.durata = durata
+        super().__init__()
         self.popup_shown = False
         self.dettaglio_aula_view = None
         # Crea il layout delle aule solo all'inizializzazione della vista
@@ -32,6 +32,8 @@ class ScegliAulaView(View):
         db_session = Session()
         aule = db_session.query(Aula).all()
         db_session.close()
+
+
 
         # Aggiungi i pulsanti delle opzioni aula dinamicamente
         for aula in aule:
