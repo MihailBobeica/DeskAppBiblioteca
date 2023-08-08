@@ -2,11 +2,12 @@ from typing import Optional
 
 from abstract.controller import Controller, BoundedModel
 from utils.auth import Auth, check_password
-from utils.backend import is_empty
+from utils.backend import is_empty, REQUEST_GO_TO_LOGIN
 from utils.strings import *
-from view.home_admin import HomeAdminView
-from view.home_operatore import HomeOperatoreView
-from view.home_utente import HomeUtenteView
+from view.auth import LoginView
+from view.homepage.admin import HomeAdminView
+from view.homepage.operatore import HomeOperatoreView
+from view.homepage.utente import HomeUtenteView
 
 
 class LoginController(Controller):
@@ -16,6 +17,11 @@ class LoginController(Controller):
     def receive_message(self, message: str, data: Optional[dict] = None):
         if message == "login":
             self.login(data["username"], data["password"])
+        elif message == REQUEST_GO_TO_LOGIN:
+            self.go_to_login()
+
+    def go_to_login(self):
+        self.redirect(LoginView())
 
     def login(self, username: str, password: str) -> None:
         user = self.models["utente"].by_username(username)

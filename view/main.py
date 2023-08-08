@@ -8,7 +8,7 @@ from abstract import BoundedView
 from utils.backend import HISTORY_LIMIT
 from utils.strings import *
 from utils.ui import ARROW_BACK_ICON, HOME_ICON
-from .homepage import HomePageView
+from view.homepage import HomeGuestView
 
 
 def quick_alert(parent, title: str, message: str, seconds: int = 3):
@@ -133,16 +133,16 @@ class MainWindow(QMainWindow):
 
     def go_home(self) -> None:
         return
-        this_view = self.get_this_view()
-        not_on_home_page = not isinstance(this_view, HomePageView)
-        if not_on_home_page:
-            self.set_view(HomePageView())
-            return
-
-        quick_alert(parent=self,
-                    title=QUICK_ALERT_GO_HOME_TITLE,
-                    message=QUICK_ALERT_GO_HOME_MESSAGE,
-                    seconds=2)
+        # this_view = self.get_this_view()
+        # not_on_home_page = not isinstance(this_view, HomePageView)
+        # if not_on_home_page:
+        #     self.set_view(HomePageView())
+        #     return
+        #
+        # quick_alert(parent=self,
+        #             title=QUICK_ALERT_GO_HOME_TITLE,
+        #             message=QUICK_ALERT_GO_HOME_MESSAGE,
+        #             seconds=2)
 
     def reset_history(self):
         self.cronologia = list()

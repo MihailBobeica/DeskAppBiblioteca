@@ -1,14 +1,13 @@
 from PySide6.QtWidgets import QMessageBox
 
-from abstract import Controller, BoundedModel
+from abstract import Controller
 from typing import Optional
-from view.CRUD_Operatore.gestione_operatore import GestioneOperatori
 from view.CRUD_Operatore.crea_operatore import ProvaView
 from view.CRUD_Operatore.ricerca_operatore import RicercaView
 from view.CRUD_Operatore.modifica_operatore import ModificaView
 from view.CRUD_Operatore.Visualizza_operatore import VisualizzaView
 from model.utente import Utente
-from view.home_admin import HomeAdminView
+from view.homepage.admin import HomeAdminView
 from view.component.view_errore import view_errore
 
 class CRUD_operatore(Controller):

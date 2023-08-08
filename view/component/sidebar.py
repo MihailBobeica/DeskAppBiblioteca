@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QVBoxLayout, QPushButton
 
 from abstract.view import View
 from utils.ui import get_style, SIDEBAR_WIDTH
@@ -15,8 +15,13 @@ class SidebarComponent(View):
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignTop)
 
-    def connect_buttons(self) -> None:
-        pass
-
     def __init__(self):
+        self.button: dict[str, QPushButton] = dict()
         super().__init__()
+
+    def set_buttons(self, labels: tuple[str, ...]):
+        layout = self.layout()
+        for label in labels:
+            button = self.button[label] = QPushButton(label)
+            button.setStyleSheet(get_style("button"))
+            layout.addWidget(button)

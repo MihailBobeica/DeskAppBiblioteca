@@ -1,6 +1,6 @@
 from database import Utente as db_Utente
 from abstract.view import View
-from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QPushButton
 
 
 class VisualizzaView(View):
@@ -38,6 +38,6 @@ class VisualizzaView(View):
         super().__init__()
 
     def go_back(self):
-        from view.home_admin import HomeAdminView
+        from view.homepage.admin import HomeAdminView
         self.redirect(HomeAdminView())
 

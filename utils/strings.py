@@ -45,3 +45,5 @@ CONFIRM_CANCELLA_PRENOTAZIONE_MESSAGE = "Sei sicuro di voler cancellare la" \
 
 CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE = "La cancellazione della prenotazione" \
                                               "\ndel libro è stata portata a termine."
+
+BUTTON_LABEL_LOGIN = "Login"

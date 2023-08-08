@@ -8,7 +8,7 @@ from abstract import View
 from database import Libro as DbLibro
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from utils.auth import Auth
-from utils.backend import CONTEXT_CATALOGO_PRENOTAZIONI, CONTEXT_CATALOGO, LABEL_LIBRO, LABEL_PRENOTAZIONE_LIBRO, \
+from utils.backend import CONTEXT_CATALOGO_PRENOTAZIONI, CONTEXT_CATALOGO_LIBRI_GUEST, LABEL_LIBRO, LABEL_PRENOTAZIONE_LIBRO, \
     DATE_FORMAT
 from utils.strings import UTENTE, OPERATORE, ADMIN
 from utils.ui import get_cover_image, label_autori, BOX_WIDTH
@@ -43,7 +43,7 @@ class LibroComponent(View):
 
         v_layout.addWidget(label_title)
         v_layout.addWidget(label_autor)
-        if self.context == CONTEXT_CATALOGO:
+        if self.context == CONTEXT_CATALOGO_LIBRI_GUEST:
             # copie disponibili
             label_disponibili = QLabel(f"Copie disponibili: {self.libro.disponibili}")
             v_layout.addWidget(label_disponibili)

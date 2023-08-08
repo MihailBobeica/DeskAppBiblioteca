@@ -33,9 +33,6 @@ class View(QFrame):
 
     def __init__(self):
         super().__init__()
-        from app import main_window
-        self.main_window = main_window
-
         self.controllers: dict[str, Observer] = dict()
         self.attach_controllers()
 
@@ -47,9 +44,6 @@ class View(QFrame):
 
     def attach_controllers(self) -> None:
         pass
-
-    def redirect(self, view: Any) -> None:
-        self.main_window.set_view(view)
 
     def send_logout_request(self):
         self.notify("logout")

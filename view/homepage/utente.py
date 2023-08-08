@@ -7,7 +7,7 @@ from strategy import CercaLibriCatalogo
 from utils.auth import Auth
 from abstract.view import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
-from utils.backend import CONTEXT_CATALOGO
+from utils.backend import CONTEXT_CATALOGO_LIBRI_GUEST
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 from view.libri_prenotati import LibriPrenotatiView
@@ -75,7 +75,7 @@ class HomeUtenteView(View):
         self.redirect(VisualizzaCronologia(libri))
 
     def __init__(self):
-        self.catalogo = CatalogoComponent(CercaLibriCatalogo(), context=CONTEXT_CATALOGO)
+        self.catalogo = CatalogoComponent(CercaLibriCatalogo(), context=CONTEXT_CATALOGO_LIBRI_GUEST)
         super().__init__()
 
     def update(self):

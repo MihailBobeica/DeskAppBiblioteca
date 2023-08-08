@@ -7,7 +7,7 @@ from .component.view_conferma import view_conferma
 from abstract.view import View
 from database import Libro as DbLibro
 from utils.auth import Auth
-from utils.backend import CONTEXT_CATALOGO, CONTEXT_CATALOGO_PRENOTAZIONI
+from utils.backend import CONTEXT_CATALOGO_LIBRI_GUEST, CONTEXT_CATALOGO_PRENOTAZIONI
 from utils.strings import UTENTE
 from utils.ui import get_cover_image, label_autori
 
@@ -71,7 +71,7 @@ class LibroView(View):
         v_layout.addStretch(1)
 
         if Auth.is_logged_as(UTENTE):
-            if self.context == CONTEXT_CATALOGO:
+            if self.context == CONTEXT_CATALOGO_LIBRI_GUEST:
                 if self.libro.disponibili > 0:
                     button_prenota = QPushButton("Prenota libro")
                     button_prenota.clicked.connect(self.send_prenota_libro_request)

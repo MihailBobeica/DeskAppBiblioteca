@@ -1,10 +1,7 @@
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox, \
-    QDateTimeEdit, QSpinBox, QDateEdit, QFileDialog
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QGridLayout, QSpinBox, QDateEdit
 from datetime import datetime
 
 from abstract.view import View
-from view.home_admin import HomeAdminView
-from model.libro import Libro
 
 
 class InserisciView(View):

@@ -7,7 +7,7 @@ from utils.auth import Auth
 from utils.backend import is_empty, MODEL_PRENOTAZIONE_LIBRO, MODEL_LIBRO, LABEL_PRENOTAZIONE_LIBRO, LABEL_LIBRO
 
 
-class RicercaStrategy:
+class SearchStrategy:
     def __init__(self):
         pass
 
@@ -16,7 +16,7 @@ class RicercaStrategy:
         pass
 
 
-class CercaLibriCatalogo(RicercaStrategy):
+class CercaLibriCatalogo(SearchStrategy):
     def search(self, models: dict[str, BoundedModel], text: str) -> list[dict[str, object]]:
         model_libro: Libro = models[MODEL_LIBRO]
         if is_empty(text):
@@ -30,7 +30,7 @@ class CercaLibriCatalogo(RicercaStrategy):
         super().__init__()
 
 
-class CercaPrenotazioniValide(RicercaStrategy):
+class CercaPrenotazioniValide(SearchStrategy):
     def search(self, models: dict[str, BoundedModel], text: str) -> list[dict[str, object]]:
         model_prenotazione_libro: PrenotazioneLibro = models[MODEL_PRENOTAZIONE_LIBRO]
         model_libro: Libro = models[MODEL_LIBRO]
