@@ -44,10 +44,10 @@ class ScegliAulaView(View):
             # Connetti il segnale clicked del pulsante dell'opzione aula al metodo on_opzione_clicked
             opzione_button.clicked.connect(partial(self.on_opzione_clicked, aula))
 
-    def close_dettaglio_aula_view(self):
-        if self.dettaglio_aula_view:
-            self.dettaglio_aula_view.deleteLater()
-            self.dettaglio_aula_view = None
+    #def close_dettaglio_aula_view(self):
+       # if self.dettaglio_aula_view:
+       #     self.dettaglio_aula_view.deleteLater()
+           # self.dettaglio_aula_view = None
 
     def on_opzione_clicked(self, aula_data):
         if self.tipo_prenotazione == "prenota_aula" and not self.popup_shown:
@@ -84,7 +84,7 @@ class ScegliAulaView(View):
             self.main_window.set_view(lista_prenotazioni_view)
         else:
             # Rimuovi tutti i widget dal layout attuale
-            self.clear_layout()
+           # self.clear_layout()
             # Esegui lo split per ottenere solo la parte della data fino a "YYYY-MM-DD"
             data_selezionata = self.data_selezionata.split(" ")[0]
 
@@ -97,17 +97,17 @@ class ScegliAulaView(View):
             # Aggiungi la vista DettaglioAulaView al layout principale della ScegliAulaView
             self.main_window.set_view(self.dettaglio_aula_view)
 
-    def clear_layout(self):
+    #def clear_layout(self):
         # Rimuovi tutti i widget dal layout principale
-        while self.layout().count():
-            item = self.layout().takeAt(0)
-            widget = item.widget()
-            if widget:
-                widget.deleteLater()
+       # while self.layout().count():
+           # item = self.layout().takeAt(0)
+           # widget = item.widget()
+           # if widget:
+              #  widget.deleteLater()
 
-    def update_aule_layout(self):
+   # def update_aule_layout(self):
         # Rimuovi tutti i widget dal layout attuale
-        self.clear_layout()
+        #self.clear_layout()
 
         # Ricrea il layout delle aule
-        self.create_layout()
+       # self.create_layout()

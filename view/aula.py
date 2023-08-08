@@ -4,6 +4,8 @@ from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QPushButton, QMessag
 from abstract import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
 from model.posto import Posto
+from view.lisat_prenotazioni import ListaPrenotazioniView
+
 
 class DettaglioAulaView(View):
     def __init__(self, nome_aula, data_selezionata, durata):
@@ -59,17 +61,14 @@ class DettaglioAulaView(View):
             )
 
             # Mostra un messaggio di conferma
-            msg_box = QMessageBox(self)
-            msg_box.setWindowTitle("Prenotazione effettuata")
-            msg_box.setText(f"Prenotazione effettuata per il posto: {posto_data.nome} - Aula: {posto_data.aula}")
-            msg_box.setIcon(QMessageBox.Information)
-            msg_box.exec()
-        else:
-            QMessageBox.warning(self, "Attenzione", "Devi selezionare una data prima di prenotare un posto.")
-
-    def clear_layout(self):
-        while self.layout().count():
-            item = self.layout().takeAt(0)
-            widget = item.widget()
-            if widget:
-                widget.deleteLater()
+            QMessageBox.information(self,"Prenotazione effettuata",
+                         f"Prenotazione effettuata per il posto: {posto_data.nome} - Aula: {posto_data.aula}")
+            self.popup_shown = True
+            lista_prenotazioni_view = ListaPrenotazioniView(prenotazione_controller, self.main_window)
+            self.main_window.set_view(lista_prenotazioni_view)
+    #def clear_layout(self):
+       # while self.layout().count():
+          #  item = self.layout().takeAt(0)
+          #  widget = item.widget()
+            #if widget:
+             #   widget.deleteLater()
