@@ -97,5 +97,5 @@ class CatalogoController(Controller):
                     self.go_back()
                 if contesto == "catalogo":
                     self.replace(LibriPrenotatiView())
-                self.alert(title=CANCELLA_PRENOTAZIONE_TITLE,
-                           message=CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE)
+                # self.alert(title=CANCELLA_PRENOTAZIONE_TITLE,
+                #            message=CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE)

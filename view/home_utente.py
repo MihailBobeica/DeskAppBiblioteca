@@ -1,16 +1,16 @@
 from PySide6.QtWidgets import QHBoxLayout
 
+from abstract.view import View
+from model.prestito import Prestito
 from strategy import CercaLibriCatalogo
 from utils.auth import Auth
-from abstract.view import View
-from controller.gestione_prenotazione_posto import PrenotazioneController
 from utils.backend import CONTEXT_CATALOGO
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
 from view.libri_prenotati import LibriPrenotatiView
 from view.lisat_prenotazioni import ListaPrenotazioniView
 from view.scegli_prenotazione import ScegliPrenotazione
-from model.prestito import Prestito
+
 
 class HomeUtenteView(View):
     def create_layout(self):
@@ -26,12 +26,11 @@ class HomeUtenteView(View):
                                     "Info",
                                     "Logout"),
                             style="button")
-        catalogo = CatalogoComponent(CercaLibriCatalogo(), context=CONTEXT_CATALOGO)
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
-        layout.addWidget(catalogo)
+        layout.addWidget(self.catalogo)
 
     def connect_buttons(self):
         logout_button = self.get_button("Logout")
@@ -41,7 +40,6 @@ class HomeUtenteView(View):
         self.get_button("Libri prenotati").clicked.connect(self.libri_prenotati)
         self.get_button("Libri in prestito").clicked.connect(self.libri_in_prestito)
         self.get_button("Visualizza cronologia").clicked.connect(self.visualizza_cronologia)
-
 
     def attach_controllers(self) -> None:
         from app import controller_logout
@@ -64,18 +62,18 @@ class HomeUtenteView(View):
         # self.redirect(VisualizzaPrenotazioni(prenotazioni))
 
     def libri_in_prestito(self):
-
-        libri = Prestito.by_utente(self,Auth.user.username)
+        libri = Prestito.by_utente(self, Auth.user.username)
         from .libri_in_prestito import VisualizzaPrestiti
         self.redirect(VisualizzaPrestiti(libri))
 
     def visualizza_cronologia(self):
-        libri = Prestito.by_utente(self,Auth.user.username)
+        libri = Prestito.by_utente(self, Auth.user.username)
         from view.Gestione_utente.visualizza_cronologia import VisualizzaCronologia
         self.redirect(VisualizzaCronologia(libri))
 
-
-
     def __init__(self):
+        self.catalogo = CatalogoComponent(CercaLibriCatalogo(), context=CONTEXT_CATALOGO)
         super().__init__()
 
+    def update(self):
+        self.catalogo.update()

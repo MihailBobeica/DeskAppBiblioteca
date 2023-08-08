@@ -10,9 +10,12 @@ class LibriPrenotatiView(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout(self)
 
-        catalogo = CatalogoComponent(CercaPrenotazioniValide(), context=CONTEXT_CATALOGO_PRENOTAZIONI)
-
-        layout.addWidget(catalogo)
+        layout.addWidget(self.catalogo)
 
     def __init__(self):
+        self.catalogo: CatalogoComponent = CatalogoComponent(CercaPrenotazioniValide(),
+                                                             context=CONTEXT_CATALOGO_PRENOTAZIONI)
         super().__init__()
+
+    def update(self):
+        self.catalogo.update()

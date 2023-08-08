@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGrid
 
 from abstract.view import View
 from strategy.search import RicercaStrategy
+from utils.backend import OBJ_NAME_SEARCHBAR
 from utils.ui import get_style, CATALOG_COLUMNS
 from view.component.libro import LibroComponent
 
@@ -13,6 +14,7 @@ class CatalogoComponent(View):
     def create_layout(self) -> None:
         # content
         searchbar = QLineEdit()
+        searchbar.setObjectName(OBJ_NAME_SEARCHBAR)
         searchbar.textChanged.connect(self.search)
         searchbar.setPlaceholderText("Ricerca per titolo o autore")
         searchbar.setStyleSheet(get_style("input"))
@@ -44,6 +46,10 @@ class CatalogoComponent(View):
         super().__init__()
 
         self.search()
+
+    def update(self):
+        searchbar = self.get_line_edit(OBJ_NAME_SEARCHBAR)
+        self.search(searchbar.text())
 
     def attach_controllers(self) -> None:
         from app import controller_catalogo

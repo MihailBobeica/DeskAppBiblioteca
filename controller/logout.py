@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract.controller import Controller
 from utils.auth import Auth
 from utils.strings import *
-from view.homepage import HomePageView
+from view.first import FirstView
 
 
 class LogoutController(Controller):
@@ -21,5 +21,5 @@ class LogoutController(Controller):
                                 message=LOGOUT_MESSAGE)
         if response == QMessageBox.StandardButton.Yes:
             Auth.logout()
-            self.redirect(HomePageView())
+            self.redirect(FirstView())
             self.main_window.reset_history()

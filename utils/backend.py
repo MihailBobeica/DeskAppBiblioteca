@@ -16,6 +16,8 @@ MODEL_PRENOTAZIONE_LIBRO = "prenotazioni_libri"
 LABEL_LIBRO = "libro"
 LABEL_PRENOTAZIONE_LIBRO = "prenotazione_libro"
 
+OBJ_NAME_SEARCHBAR = "searchbar"
+
 
 def is_empty(string: str) -> bool:
     return (string is None) or (len(string) == 0)

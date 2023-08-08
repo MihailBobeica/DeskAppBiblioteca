@@ -4,7 +4,9 @@ from abstract.controller import Controller, BoundedModel
 from utils.auth import Auth, check_password
 from utils.backend import is_empty
 from utils.strings import *
-from view.homepage import HomePageView
+from view.home_admin import HomeAdminView
+from view.home_operatore import HomeOperatoreView
+from view.home_utente import HomeUtenteView
 
 
 class LoginController(Controller):
@@ -27,7 +29,13 @@ class LoginController(Controller):
             self.bad_credentials_popup()
             return
         Auth.logged_as(user)
-        self.redirect(HomePageView())
+        if Auth.is_logged_as(UTENTE):
+            self.redirect(HomeUtenteView())
+        elif Auth.is_logged_as(OPERATORE):
+            self.redirect(HomeOperatoreView())
+        elif Auth.is_logged_as(ADMIN):
+            self.redirect(HomeAdminView())
+        self.main_window.reset_history()
 
     def bad_credentials_popup(self):
         self.alert(ACCESS_DENIED_TITLE, BAD_CREDENTIALS_MESSAGE)

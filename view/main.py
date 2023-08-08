@@ -110,7 +110,7 @@ class MainWindow(QMainWindow):
         view.setObjectName(next_view_name)
         layout.insertWidget(0, view)
         view.show()
-        self.update_view(type(view))
+        # self.update_view(type(view))
 
     def replace(self, view: BoundedView):
         self.set_view(view, navigate=True)
@@ -123,6 +123,7 @@ class MainWindow(QMainWindow):
     def go_back(self) -> None:
         if self.cronologia:
             last_view: BoundedView = self.cronologia.pop()
+            last_view.update()
             self.replace(last_view)
             return
 
@@ -131,6 +132,7 @@ class MainWindow(QMainWindow):
                     message=QUICK_ALERT_GO_BACK_MESSAGE)
 
     def go_home(self) -> None:
+        return
         this_view = self.get_this_view()
         not_on_home_page = not isinstance(this_view, HomePageView)
         if not_on_home_page:

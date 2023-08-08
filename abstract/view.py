@@ -42,6 +42,9 @@ class View(QFrame):
         self.create_layout()
         self.connect_buttons()
 
+    def update(self):
+        pass
+
     def attach_controllers(self) -> None:
         pass
 
