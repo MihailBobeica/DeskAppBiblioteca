@@ -2,8 +2,11 @@ from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
 from model.prestito import Prestito
+from controller.gestione_prenotazione_posto import PrenotazioneController
 from strategy import CercaLibriCatalogo
 from utils.auth import Auth
+from abstract.view import View
+from controller.gestione_prenotazione_posto import PrenotazioneController
 from utils.backend import CONTEXT_CATALOGO
 from view.component import SidebarComponent
 from view.component.catalogo import CatalogoComponent
@@ -44,7 +47,7 @@ class HomeUtenteView(View):
     def attach_controllers(self) -> None:
         from app import controller_logout
         self.attach(controller_logout)
-        # self.prenotazione_controller = PrenotazioneController() # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
+        self.prenotazione_controller = PrenotazioneController() # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
     def show_prenota_schermata(self):
         scegli_prenotazione_view = ScegliPrenotazione()

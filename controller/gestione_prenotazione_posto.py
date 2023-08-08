@@ -1,10 +1,11 @@
 import threading
 from datetime import timedelta, datetime
-
 from sqlalchemy import null
+from sqlalchemy.orm import session
+from sqlalchemy import and_
 
 from abstract.controller import Controller
-from database import PrenotazioneAula, PrenotazionePosto, Session
+from database import PrenotazioneAula, PrenotazionePosto, Session, Aula
 from model.prenotazione_posto import prenotazione_posto
 from model.prenotazione_aula import prenotazione_aula
 from utils.auth import Auth
@@ -159,6 +160,8 @@ class PrenotazioneController(Controller):
                 db_session.commit()
             db_session.close()
 
+
+
     def cancella_prenotazioni_scadute_per_ora_fine(self):
         db_session = Session()
 
@@ -180,3 +183,46 @@ class PrenotazioneController(Controller):
 
         db_session.commit()
         db_session.close()
+
+    def is_aula_disponibile(self,ora_inizio, ora_fine):
+        # Interroga il database per ottenere le prenotazioni sovrapposte
+        prenotazioni_sovrapposte = session.query(PrenotazioneAula).filter(
+            and_(
+                PrenotazioneAula.data_prenotazione <= ora_inizio,
+                PrenotazioneAula.ora_fine >= ora_fine
+            )
+        ).all()
+
+        # Ottieni l'elenco degli id delle aule prenotate in modo da poter escluderle dalle aule disponibili
+        id_aule_prenotate = [prenotazione.codice_aula for prenotazione in prenotazioni_sovrapposte]
+
+        # Ottieni l'elenco delle aule disponibili escludendo quelle già prenotate
+        aule_disponibili = session.query(Aula).filter(Aula.id.notin_(id_aule_prenotate)).all()
+
+        return aule_disponibili
+
+    def has_prenotazione_in_fascia_oraria(self,username, data_prenotazione, ora_inizio, ora_fine):
+        db_session = Session()
+
+        # Controlla se esistono prenotazioni sovrapposte per l'utente nella data specificata
+        prenotazioni_esistenti_aula = db_session.query(PrenotazioneAula).filter(
+            and_(
+                PrenotazioneAula.codice_utente == username,
+                PrenotazioneAula.data_prenotazione == data_prenotazione,
+                PrenotazioneAula.ora_fine > ora_inizio,
+                PrenotazioneAula.ora_inizio < ora_fine
+            )
+        ).all()
+
+        prenotazioni_esistentia_posto = db_session.query(PrenotazionePosto).filter(
+            and_(
+                PrenotazionePosto.codice_utente == username,
+                PrenotazionePosto.data_prenotazione == data_prenotazione,
+                PrenotazionePosto.ora_fine > ora_inizio,
+                PrenotazionePosto.ora_inizio < ora_fine
+            )
+        ).all()
+
+        db_session.close()
+        return prenotazioni_esistentia_posto+prenotazioni_esistenti_aula
+
