@@ -36,6 +36,9 @@ class Prestito(Model):
     def restituzione(self, prestito):
         db_session = Session()
         prestito.data_restituzione = datetime.now()
+        if prestito.data_restituzione > prestito.data_scadenza:
+            new_sanzione(prestito)
+        
         db_session.merge(prestito)
         libro = Libro.by_isbn(self,prestito.libro)
         libro.disponibili += 1

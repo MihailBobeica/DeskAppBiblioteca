@@ -31,7 +31,7 @@ class RegistraPrestito(View):
         if self.input1.text():
             from model.prenotazione_libro import PrenotazioneLibro
             prenotazione = PrenotazioneLibro.by_codice(self,self.input1.text())
-            dati = {"utente" : prenotazione.utente, "libro" : prenotazione.libro}
+            dati = {"utente" : prenotazione.utente_id, "libro" : prenotazione.libro_id}
             from model.prestito import Prestito
             Prestito.inserisci(self,dati)
             self.redirect(HomeOperatoreView())
