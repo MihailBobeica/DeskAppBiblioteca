@@ -43,7 +43,7 @@ class Prestito(Model):
             Sanzione.new_sanzione(prestito)'''
         
         db_session.merge(prestito)
-        libro = Libro.by_isbn(self,prestito.libro)
+        libro = Libro.by_id(self,prestito.libro_id)
         libro.disponibili += 1
         db_session.merge(libro)
         db_session.commit()

@@ -19,8 +19,9 @@ class Restituzione(View):
             layout.addWidget(label)
             label = QLabel("Lista libri in prestito:")
             layout.addWidget(label)
-            for j in self.lista_libri(i.username):
-                clickable_label = QLabel("ISBN: "+j.libro, self)
+
+            for j in self.lista_libri(i.id):
+                clickable_label = QLabel("codice: "+j.codice)
                 clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
                 clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)
 
@@ -33,10 +34,10 @@ class Restituzione(View):
         self.utente = db_utente
         super().__init__()
 
-    def lista_libri(self, username):
+    def lista_libri(self, id):
         from model.prestito import Prestito
-        libri = Prestito.by_utente(self,username)
-        return libri
+        prestiti = Prestito.by_utente(self,id)
+        return prestiti
 
     def on_label_clicked(self, event, prestito):
         from model.prestito import Prestito
