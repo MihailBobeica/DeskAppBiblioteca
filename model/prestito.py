@@ -26,7 +26,7 @@ class Prestito(Model):
 
     def inserisci(self, dati:Dict):
         db_session = Session()
-        prestito = db_prestito(data_inizio = datetime.now(), data_scadenza= datetime.now() + timedelta(days=21),libro_id=dati["libro"], utente_id=dati["utente"],codice = str(uuid.uuid4())[:10])
+        prestito = db_prestito(data_inizio = datetime.now(), data_scadenza= datetime.now() + timedelta(days=21),libro_id=dati["libro"], utente_id=dati["utente"],codice = str(uuid.uuid4())[:12])
         db_session.add(prestito)
         print(prestito.codice)
         db_session.commit()
@@ -36,12 +36,13 @@ class Prestito(Model):
 
 
     def restituzione(self, prestito):
+
         db_session = Session()
         prestito.data_restituzione = datetime.now()
+       
         if prestito.data_restituzione > prestito.data_scadenza:
-            '''prova = Prestito(data_inizio = datetime(2023,8,10),data_scadenza = datetime(2023,8,11), data_restituzione = datetime.now(),  )
-            Sanzione.new_sanzione(prestito)'''
-        
+            Sanzione.new_sanzione(prestito)
+            
         db_session.merge(prestito)
         libro = Libro.by_id(self,prestito.libro_id)
         libro.disponibili += 1

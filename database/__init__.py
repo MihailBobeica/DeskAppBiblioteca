@@ -90,8 +90,8 @@ class PrenotazioneLibro(Base):
     data_cancellazione = Column(DateTime, nullable=True)
     codice = Column(String)
 
-    utente_id = Column(String, ForeignKey('utenti.id'))
-    libro_id = Column(String, ForeignKey('libri.id', ondelete="CASCADE"))
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
+    libro_id = Column(Integer, ForeignKey('libri.id', ondelete="CASCADE"))
 
     utente = relationship("Utente")
     libro = relationship("Libro")
@@ -106,8 +106,8 @@ class Prestito(Base):
     data_scadenza = Column(DateTime)
     data_restituzione = Column(DateTime, nullable=True)
     codice = Column(String)
-    utente_id = Column(String, ForeignKey('utenti.id'))
-    libro_id = Column(String, ForeignKey('libri.id', ondelete="CASCADE"))
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
+    libro_id = Column(Integer, ForeignKey('libri.id', ondelete="CASCADE"))
 
     utente = relationship("Utente")
     libro = relationship("Libro")
@@ -117,10 +117,10 @@ class Prestito(Base):
 class Sanzione(Base):
     __tablename__ = "sanzioni"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     durata = Column(DateTime)
     tipo = Column(String)
-    utente_id = Column(String, ForeignKey('utenti.id'))
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
 
     utente = relationship("Utente")
 

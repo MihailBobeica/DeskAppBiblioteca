@@ -1,10 +1,14 @@
+import uuid
+from datetime import datetime
+
 from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout
 from database import Utente as db_Utente
 from abstract.view import View
 from model.utente import Utente
 from PySide6.QtCore import Qt
 from view.home_operatore import HomeOperatoreView
-
+from database import Prestito as db_prestito
+from model.sanzione import Sanzione
 
 
 class Restituzione(View):
