@@ -3,8 +3,9 @@ import uuid
 from abstract.model import Model
 from database import Sanzione as db_Sanzione
 from datetime import datetime, timedelta
-from database import Session,Prestito as db_Prestito
+from database import Session,Prestito as db_Prestito,Sanzione as db_Sanzione
 from sqlalchemy import and_, or_
+
 
 
 class Sanzione(Model):
@@ -18,6 +19,19 @@ class Sanzione(Model):
         db_session.add(sanzione)
         db_session.commit()
         db_session.close()
+
+
+    def check_sansiozioni(self):
+        db_session = Session
+        scaduti = db_session.query(db_Prestito).filter(and_(db_Prestito.data_scadenza < datetime.now()),db_Prestito.data_restituzione == None).all()
+        for scaduto in scaduti:
+            sanzione_attiva = db_session.query(db_Sanzione).filter_by(or_(and_(db_Sanzione.durata < datetime.now()),db_Sanzione.utente_id == scaduto.utente_id),db_Sanzione.utente_id != scaduto.utente_id).first()
+            if not sanzione_attiva:
+                self.new_sanzione(scaduto)
+        db_session.commit()
+        db_session.close()
+
+
 
 
 

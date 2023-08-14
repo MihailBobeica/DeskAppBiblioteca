@@ -118,7 +118,7 @@ class Sanzione(Base):
     __tablename__ = "sanzioni"
 
     id = Column(String, primary_key=True)
-    durata = Column(DateTime)
+    durata = Column(DateTime, nullable=True)
     tipo = Column(String)
     utente_id = Column(Integer, ForeignKey('utenti.id'))
 
