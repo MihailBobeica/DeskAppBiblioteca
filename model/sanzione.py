@@ -1,12 +1,15 @@
+import uuid
+
 from abstract.model import Model
 from database import Sanzione as db_Sanzione
-from datetime import datetime
+from datetime import datetime, timedelta
+from database import Session,Prestito as db_Prestito
 from sqlalchemy import and_, or_
 
 
 class Sanzione(Model):
 
-    def new_sanzione(prestito: Prestito):
+    def new_sanzione(prestito: db_Prestito):
         db_session = Session()
         ''' ricerca vecchie sospensioni ?'''
         

@@ -5,6 +5,7 @@ from abstract.model import Model
 from database import Session, PrenotazioneLibro as db_prenotazione_libro, Prestito as db_prestito
 from view.component.view_errore import view_errore
 from .libro import Libro
+from model.sanzione import Sanzione
 
 
 class Prestito(Model):
@@ -25,8 +26,9 @@ class Prestito(Model):
 
     def inserisci(self, dati:Dict):
         db_session = Session()
-        prestito = db_prestito(data_inizio = datetime.now(), data_scadenza= datetime.now() + timedelta(days=21),libro=dati["libro"], utente=dati["utente"],codice = str(uuid.uuid4())[:10])
+        prestito = db_prestito(data_inizio = datetime.now(), data_scadenza= datetime.now() + timedelta(days=21),libro_id=dati["libro"], utente_id=dati["utente"],codice = str(uuid.uuid4())[:10])
         db_session.add(prestito)
+        print(prestito.codice)
         db_session.commit()
         db_session.close()
 
@@ -37,7 +39,8 @@ class Prestito(Model):
         db_session = Session()
         prestito.data_restituzione = datetime.now()
         if prestito.data_restituzione > prestito.data_scadenza:
-            new_sanzione(prestito)
+            '''prova = Prestito(data_inizio = datetime(2023,8,10),data_scadenza = datetime(2023,8,11), data_restituzione = datetime.now(),  )
+            Sanzione.new_sanzione(prestito)'''
         
         db_session.merge(prestito)
         libro = Libro.by_isbn(self,prestito.libro)
@@ -46,8 +49,8 @@ class Prestito(Model):
         db_session.commit()
         db_session.close()
 
-    def by_utente(self, username):
+    def by_utente(self, id):
         db_session = Session()
-        prestiti = db_session.query(db_prestito).filter_by(utente=username).all()
+        prestiti = db_session.query(db_prestito).filter_by(utente_id=id).all()
         db_session.close()
         return prestiti
