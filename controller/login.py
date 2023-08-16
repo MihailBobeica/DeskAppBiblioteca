@@ -1,14 +1,12 @@
 from typing import Optional
 
 from abstract.controller import Controller, BoundedModel
+from factory import HomepageFactory
 from utils.auth import Auth, check_password
 from utils.backend import is_empty
-from utils.request import REQUEST_GO_TO_LOGIN
+from utils.request import *
 from utils.strings import *
 from view.auth import LoginView
-from view.homepage.admin import HomeAdminView
-from view.homepage.operatore import HomeOperatoreView
-from view.homepage.utente import HomeUtenteView
 
 
 class LoginController(Controller):
@@ -16,8 +14,10 @@ class LoginController(Controller):
         super().__init__(models)
 
     def receive_message(self, message: str, data: Optional[dict] = None):
-        if message == "login":
-            self.login(data["username"], data["password"])
+        if message == REQUEST_LOGIN:
+            username: str = data["username"]
+            password: str = data["password"]
+            self.login(username, password)
         elif message == REQUEST_GO_TO_LOGIN:
             self.go_to_login()
 
@@ -36,13 +36,7 @@ class LoginController(Controller):
             self.bad_credentials_popup()
             return
         Auth.logged_as(user)
-        if Auth.is_logged_as(UTENTE):
-            self.redirect(HomeUtenteView())
-        elif Auth.is_logged_as(OPERATORE):
-            self.redirect(HomeOperatoreView())
-        elif Auth.is_logged_as(ADMIN):
-            self.redirect(HomeAdminView())
-        self.main_window.reset_history()
+        self.redirect(HomepageFactory.create_homepage())
 
     def bad_credentials_popup(self):
         self.alert(ACCESS_DENIED_TITLE, BAD_CREDENTIALS_MESSAGE)

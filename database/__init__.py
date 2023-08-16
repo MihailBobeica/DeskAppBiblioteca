@@ -1,4 +1,5 @@
 import uuid
+from typing import TypeVar
 
 from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, ForeignKey
 from sqlalchemy import create_engine
@@ -12,6 +13,8 @@ db_engine = create_engine('sqlite:///./database/db.sqlite')
 Session = sessionmaker(bind=db_engine)
 
 Base = declarative_base()
+
+BoundedDbModel = TypeVar("BoundedDbModel", bound=Base)
 
 
 class Utente(Base):

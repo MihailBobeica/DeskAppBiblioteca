@@ -11,6 +11,7 @@ CATALOGO = "catalogo"
 CONTEXT_CATALOGO_PRENOTAZIONI = "catalogo_prenotazioni"
 
 DATE_FORMAT = "%d %B %Y %H:%M"
+YEAR_FORMAT = "%Y"
 
 MODEL_LIBRO = "libri"
 MODEL_PRENOTAZIONE_LIBRO = "prenotazioni_libri"
