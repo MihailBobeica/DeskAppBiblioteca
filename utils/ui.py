@@ -2,7 +2,8 @@ import traceback
 from os import path
 from typing import Iterable
 
-from PySide6.QtWidgets import QLayout, QPushButton
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QLayout, QPushButton, QMessageBox
 
 INPUT_WIDTH = 320
 INPUT_HEIGHT = 32
@@ -51,3 +52,16 @@ def label_autori(autori: str) -> str:
     if "," in autori:
         return f"Autori: {autori}"
     return f"Autore: {autori}"
+
+
+def quick_alert(parent, title: str, message: str, seconds: int = 3):
+    alert = QMessageBox(parent)
+    alert.setIcon(QMessageBox.Information)
+    alert.setWindowTitle(title)
+    alert.setText(message)
+
+    timer = QTimer()
+    timer.timeout.connect(alert.close)
+    timer.start(int(seconds * 1000))
+
+    alert.exec_()
