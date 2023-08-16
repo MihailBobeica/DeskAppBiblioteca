@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
 
 from abstract.view import View
-from utils.backend import REQUEST_LOGIN
+from utils.request import REQUEST_LOGIN
 from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT
 
 

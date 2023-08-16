@@ -85,6 +85,7 @@ class CatalogoController(Controller):
     def message_cancella_prenotazione(self, message: str, data: Optional[dict] = None):
         if message == "cancella_prenotazione":
             libro: DbLibro = data["libro"]
+            catalogo: CatalogoComponent = data["catalogo"]
             prenotazione: DbPrenotazioneLibro = data["prenotazione"]
             contesto = data["contesto"]
             response = self.confirm(title=CANCELLA_PRENOTAZIONE_TITLE,
@@ -92,10 +93,12 @@ class CatalogoController(Controller):
             if response == QMessageBox.StandardButton.Yes:
                 model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
                 model_prenotazione_libro.cancella(prenotazione)
-                self.update_view(LibriPrenotatiView)
+                # self.update_view(LibriPrenotatiView)
                 if contesto == "dettagli":
                     self.go_back()
                 if contesto == "catalogo":
-                    self.replace(LibriPrenotatiView())
+                    catalogo.update()
+                catalogo.update()
+                    # self.replace(LibriPrenotatiView())
                 # self.alert(title=CANCELLA_PRENOTAZIONE_TITLE,
                 #            message=CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE)

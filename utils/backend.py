@@ -10,11 +10,6 @@ CATALOGO = "catalogo"
 # TODO maybe put context in a separate file
 CONTEXT_CATALOGO_PRENOTAZIONI = "catalogo_prenotazioni"
 
-CONTEXT_CATALOGO_LIBRI_GUEST = "context_catalogo_libri_guest"
-CONTEXT_CATALOGO_LIBRI_UTENTE = "context_catalogo_libri_utente"
-CONTEXT_CATALOGO_LIBRI_OPERATORE = "context_catalogo_libri_operatore"
-CONTEXT_CATALOGO_LIBRI_ADMIN = "context_catalogo_libri_admin"
-
 DATE_FORMAT = "%d %B %Y %H:%M"
 
 MODEL_LIBRO = "libri"
@@ -24,9 +19,6 @@ LABEL_LIBRO = "libro"
 LABEL_PRENOTAZIONE_LIBRO = "prenotazione_libro"
 
 OBJ_NAME_SEARCHBAR = "searchbar"
-
-REQUEST_GO_TO_LOGIN = "go_to_login"
-REQUEST_LOGIN = "login"
 
 
 def is_empty(string: str) -> bool:

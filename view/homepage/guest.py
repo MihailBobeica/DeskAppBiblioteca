@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
-from utils.backend import CONTEXT_CATALOGO_LIBRI_GUEST, REQUEST_GO_TO_LOGIN
+from utils.context import CONTEXT_CATALOGO_LIBRI_GUEST
+from utils.request import REQUEST_GO_TO_LOGIN
 from utils.strings import BUTTON_LABEL_LOGIN
 from view.component import SidebarComponent, CatalogoComponent
 

@@ -7,7 +7,7 @@ from .component.view_conferma import view_conferma
 from abstract.view import View
 from database import Libro as DbLibro
 from utils.auth import Auth
-from utils.backend import CONTEXT_CATALOGO_LIBRI_GUEST, CONTEXT_CATALOGO_PRENOTAZIONI
+from utils.context import CONTEXT_CATALOGO_LIBRI_GUEST
 from utils.strings import UTENTE
 from utils.ui import get_cover_image, label_autori
 

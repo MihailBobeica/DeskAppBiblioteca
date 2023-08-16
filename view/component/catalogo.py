@@ -4,11 +4,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout
 
 from abstract.view import View
-from factory import SearchStrategyFactory
-from strategy.search import SearchStrategy
-from utils.backend import OBJ_NAME_SEARCHBAR
+from factory import SearchStrategyFactory, LibroComponentFactory
 from utils.ui import get_style, CATALOG_COLUMNS
-from view.component.libro import LibroComponent
 
 
 class CatalogoComponent(View):
@@ -39,8 +36,7 @@ class CatalogoComponent(View):
 
     def __init__(self, context: str):
         self.context = context
-        search_strategy_factory = SearchStrategyFactory()
-        self.search_strategy = search_strategy_factory.create_search_strategy(self.context)
+        self.search_strategy = SearchStrategyFactory.create_search_strategy(self.context)
 
         self.searchbar = QLineEdit()
         self.grid_layout: Optional[QGridLayout] = None
@@ -50,8 +46,7 @@ class CatalogoComponent(View):
         self.search()
 
     def update(self):
-        searchbar = self.get_line_edit(OBJ_NAME_SEARCHBAR)
-        self.search(searchbar.text())
+        self.search(self.searchbar.text())
 
     def attach_controllers(self) -> None:
         from app import controller_catalogo
@@ -65,11 +60,11 @@ class CatalogoComponent(View):
     def load_grid(self, data_list: list[dict[str, object]]) -> None:
         while self.grid_layout.count():
             child = self.grid_layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
+            if t := child.widget():
+                t.deleteLater()
 
         for index, data in enumerate(data_list):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
-            libro = LibroComponent(data, self.context)  # TODO put a factory
+            libro = LibroComponentFactory.create_libro_component(self, self.context, data)
             self.grid_layout.addWidget(libro, row, col)

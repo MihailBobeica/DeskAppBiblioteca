@@ -2,7 +2,8 @@ from typing import Optional
 
 from abstract.controller import Controller, BoundedModel
 from utils.auth import Auth, check_password
-from utils.backend import is_empty, REQUEST_GO_TO_LOGIN
+from utils.backend import is_empty
+from utils.request import REQUEST_GO_TO_LOGIN
 from utils.strings import *
 from view.auth import LoginView
 from view.homepage.admin import HomeAdminView
