@@ -55,11 +55,7 @@ class Utente(Model):
         db_session.close()
         return utenti
 
-    def visualizza_cronologia(self,utente : DbUtente):
-        db_session = Session()
-        prestiti = db_session.query(Prestito).filter_by(utente=utente.username).all()
-        db_session.close()
-        return prestiti
+
 
     def __init__(self):
         super().__init__()

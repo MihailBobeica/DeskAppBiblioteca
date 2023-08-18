@@ -28,7 +28,6 @@ class Prestito(Model):
         db_session = Session()
         prestito = db_prestito(data_inizio = datetime.now(), data_scadenza= datetime.now() + timedelta(days=21),libro_id=dati["libro"], utente_id=dati["utente"],codice = str(uuid.uuid4())[:12])
         db_session.add(prestito)
-        print(prestito.codice)
         db_session.commit()
         db_session.close()
 
@@ -55,3 +54,4 @@ class Prestito(Model):
         prestiti = db_session.query(db_prestito).filter_by(utente_id=id).all()
         db_session.close()
         return prestiti
+

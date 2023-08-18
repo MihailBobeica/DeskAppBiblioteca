@@ -102,3 +102,5 @@ class Libro(Model):
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
+
+
