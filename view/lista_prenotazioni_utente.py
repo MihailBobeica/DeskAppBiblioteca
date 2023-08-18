@@ -48,5 +48,10 @@ class ListaPrestitiUtente(View):
 
     def on_label_clicked(self, event, prestito):
         from model.prestito import Prestito
-        Prestito.restituzione(self,prestito)
+        dati = {
+            "libro" : prestito.libro_id,
+            "utente" : prestito.utente_id
+        }
+        print(dati)
+        Prestito.inserisci(self,dati)
         self.redirect(HomeOperatoreView())

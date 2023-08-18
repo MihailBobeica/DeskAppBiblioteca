@@ -18,7 +18,7 @@ class VisualizzaCronologia(View):
                 item7 = QListWidgetItem("Data restituzione: " + str(res.data_restituzione))
             else:
                 item7 = QListWidgetItem("Data restituzione: ")
-            item4 = QListWidgetItem("Libro: "+ res.libro)
+            item4 = QListWidgetItem("Libro: "+ str(res.libro_id))
             item5 = QListWidgetItem("Codice: "+res.codice)
             item6 = QListWidgetItem("")
             self.result_list.addItem(item2)

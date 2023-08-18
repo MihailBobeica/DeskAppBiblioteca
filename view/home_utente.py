@@ -71,7 +71,8 @@ class HomeUtenteView(View):
         self.redirect(VisualizzaPrestiti(libri))
 
     def visualizza_cronologia(self):
-        libri = Prestito.by_utente(self,Auth.user.username)
+        libri = Prestito.by_utente(self,Auth.user.id)
+        print(libri)
         from view.Gestione_utente.visualizza_cronologia import VisualizzaCronologia
         self.redirect(VisualizzaCronologia(libri))
 
