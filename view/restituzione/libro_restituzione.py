@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout
+from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout, QMessageBox
 from database import Utente as db_Utente
 from abstract.view import View
 from model.utente import Utente
@@ -14,22 +14,22 @@ from model.sanzione import Sanzione
 class Restituzione(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout(self)
-        for i in self.utente:
-            label = QLabel("Nome: "+i.nome)
-            layout.addWidget(label)
-            label = QLabel("Cognome: "+i.cognome)
-            layout.addWidget(label)
-            label = QLabel("Username: "+i.username)
-            layout.addWidget(label)
-            label = QLabel("Lista libri in prestito:")
-            layout.addWidget(label)
 
-            for j in self.lista_libri(i.id):
-                clickable_label = QLabel("codice: "+j.codice)
-                clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-                clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)
+        label = QLabel("Nome: "+self.utente.nome)
+        layout.addWidget(label)
+        label = QLabel("Cognome: "+self.utente.cognome)
+        layout.addWidget(label)
+        label = QLabel("Username: "+self.utente.username)
+        layout.addWidget(label)
+        label = QLabel("Lista libri in prestito:")
+        layout.addWidget(label)
 
-                layout.addWidget(clickable_label)
+        for j in self.lista_libri(self.utente.id):
+            clickable_label = QLabel("codice: "+j.codice+"\ntitolo: "+j.libro.titolo)
+            clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)
+
+            layout.addWidget(clickable_label)
 
         self.setLayout(layout)
 
@@ -44,9 +44,20 @@ class Restituzione(View):
         return prestiti
 
     def on_label_clicked(self, event, prestito):
-        from model.prestito import Prestito
-        Prestito.restituzione(self,prestito)
-        self.redirect(HomeOperatoreView())
+        confirm_dialog = QMessageBox()
+        confirm_dialog.setIcon(QMessageBox.Question)
+        confirm_dialog.setWindowTitle("Conferma")
+        confirm_dialog.setText("Vuoi confermare l'avvenuto prestito del libro?")
+        confirm_dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
+        result = confirm_dialog.exec_()
+        if result == QMessageBox.Yes:
+            from model.prestito import Prestito
+            Prestito.restituzione(self, prestito)
+            self.redirect(HomeOperatoreView())
+        else:
+            pass
+
 
 
 

@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout
+from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout, QMessageBox
 from database import Utente as db_Utente
 from abstract.view import View
 from model.utente import Utente
@@ -47,11 +47,23 @@ class ListaPrestitiUtente(View):
         return prenotazioni
 
     def on_label_clicked(self, event, prestito):
-        from model.prestito import Prestito
-        dati = {
-            "libro" : prestito.libro_id,
-            "utente" : prestito.utente_id
-        }
-        print(dati)
-        Prestito.inserisci(self,dati)
-        self.redirect(HomeOperatoreView())
+        confirm_dialog = QMessageBox()
+        confirm_dialog.setIcon(QMessageBox.Question)
+        confirm_dialog.setWindowTitle("Conferma")
+        confirm_dialog.setText("Vuoi confermare l'avvenuto prestito del libro?")
+        confirm_dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
+        result = confirm_dialog.exec_()
+        if result == QMessageBox.Yes:
+            from model.prestito import Prestito
+            dati = {
+                "libro": prestito.libro_id,
+                "utente": prestito.utente_id
+            }
+            Prestito.inserisci(self, dati)
+            self.redirect(HomeOperatoreView())
+        else:
+            pass
+
+
+

@@ -51,7 +51,7 @@ class Prestito(Model):
 
     def by_utente(self, id):
         db_session = Session()
-        prestiti = db_session.query(db_prestito).filter_by(utente_id=id).all()
+        prestiti = db_session.query(db_prestito).filter(db_prestito.utente_id==id)
         db_session.close()
         return prestiti
 
