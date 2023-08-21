@@ -1,28 +1,37 @@
-from typing import Optional
+from typing import Optional, TypedDict, Type
 
-from abstract import BoundedView
-from utils.auth import Auth
-from utils.strings import UTENTE, OPERATORE, ADMIN
+from abstract import BoundedView, Factory
+from utils import KeyAuth
 
 
-class HomepageFactory:
-    @staticmethod
-    def create_homepage(displayed_view: Optional[BoundedView] = None) -> Optional[BoundedView]:
-        from view.homepage import HomeAdminView, HomeOperatoreView, HomeUtenteView, HomeGuestView
+class KwargsDict(TypedDict):
+    displayed_view: Type[BoundedView]
 
-        # controllo se mi trovo già nella home page
+
+class HomepageFactory(Factory):
+    def __init__(self):
+        super().__init__()
+
+        from view.homepage import HomeAdminView
+        from view.homepage import HomeOperatoreView
+        from view.homepage import HomeUtenteView
+        from view.homepage import HomeGuestView
+
+        self.type: dict[KeyAuth, Type[BoundedView]] = dict()
+
+        self.type[KeyAuth.ADMIN] = HomeAdminView
+        self.type[KeyAuth.OPERATORE] = HomeOperatoreView
+        self.type[KeyAuth.UTENTE] = HomeUtenteView
+        self.type[KeyAuth.GUEST] = HomeGuestView
+
+    def create(self, key: KeyAuth, **kwargs) -> Optional[BoundedView]:
+        kwargs: KwargsDict
+        displayed_view = kwargs.get("displayed_view")
+        homepage: Type[BoundedView] = self.type.get(key)
         if displayed_view:
-            if any(isinstance(displayed_view, t) for t in [HomeAdminView,
-                                                           HomeOperatoreView,
-                                                           HomeUtenteView,
-                                                           HomeGuestView]):
+            if isinstance(type(displayed_view), homepage):
                 return None
+        return homepage()
 
-        if Auth.is_logged_as(ADMIN):
-            return HomeAdminView()
-        elif Auth.is_logged_as(OPERATORE):
-            return HomeOperatoreView()
-        elif Auth.is_logged_as(UTENTE):
-            return HomeUtenteView()
-        else:
-            return HomeGuestView()
+
+homepage_factory = HomepageFactory()

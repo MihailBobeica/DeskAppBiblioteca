@@ -1,16 +1,24 @@
-from strategy import SearchStrategy, CercaLibriCatalogo, CercaPrenotazioniValide
-from utils.context import *
+from abstract import Factory
+from strategy import CercaLibriCatalogo
+from strategy import CercaPrenotazioniValide
+from strategy import SearchStrategy
+from utils import KeyContext
 
 
-class SearchStrategyFactory:
-    @staticmethod
-    def create_search_strategy(context: str) -> SearchStrategy:
-        if context in [CONTEXT_CATALOGO_LIBRI_GUEST,
-                       CONTEXT_CATALOGO_LIBRI_UTENTE,
-                       CONTEXT_CATALOGO_LIBRI_OPERATORE,
-                       CONTEXT_CATALOGO_LIBRI_ADMIN]:
-            return CercaLibriCatalogo()
-        elif context == CONTEXT_CATALOGO_PRENOTAZIONI_LIBRI:
-            return CercaPrenotazioniValide()
-        else:
-            raise ValueError("Invalid search strategy type")
+class SearchStrategyFactory(Factory):
+    def __init__(self):
+        super().__init__()
+
+        self.type: dict[KeyContext, SearchStrategy] = dict()
+
+        self.type[KeyContext.CATALOGO_LIBRI] = CercaLibriCatalogo()
+        self.type[KeyContext.CATALOGO_PRENOTAZIONI_LIBRI] = CercaPrenotazioniValide()
+
+    def create(self, key: KeyContext, **kwargs) -> SearchStrategy:
+        search_strategy = self.type.get(key)
+        if search_strategy:
+            return search_strategy
+        raise ValueError("Invalid search strategy type")
+
+
+search_strategy_factory = SearchStrategyFactory()
