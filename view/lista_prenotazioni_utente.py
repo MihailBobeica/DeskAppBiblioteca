@@ -9,9 +9,10 @@ from PySide6.QtCore import Qt
 from view.home_operatore import HomeOperatoreView
 from database import Prestito as db_prestito
 from model.sanzione import Sanzione
+from model.prenotazione_libro import PrenotazioneLibro
 
 
-class ListaPrestitiUtente(View):
+class ListaPrenotazioniUtente(View):
     def create_layout(self) -> None:
 
         layout = QVBoxLayout(self)
@@ -46,7 +47,7 @@ class ListaPrestitiUtente(View):
         prenotazioni = PrenotazioneLibro.query_prenotazioni_valide(self,utente)
         return prenotazioni
 
-    def on_label_clicked(self, event, prestito):
+    def on_label_clicked(self, event, prenotazione):
         confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")
@@ -57,10 +58,11 @@ class ListaPrestitiUtente(View):
         if result == QMessageBox.Yes:
             from model.prestito import Prestito
             dati = {
-                "libro": prestito.libro_id,
-                "utente": prestito.utente_id
+                "libro": prenotazione.libro_id,
+                "utente": prenotazione.utente_id
             }
             Prestito.inserisci(self, dati)
+            PrenotazioneLibro.cancella(self,prenotazione)
             self.redirect(HomeOperatoreView())
         else:
             pass

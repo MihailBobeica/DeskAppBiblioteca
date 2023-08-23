@@ -27,5 +27,6 @@ class RicercaPrestito(View):
         if self.input.text():
             results = Utente.by_username(self, self.input.text())
             if results:
-                from .lista_prenotazioni_utente import ListaPrestitiUtente
-                self.redirect(ListaPrestitiUtente(results))
+                from .lista_prenotazioni_utente import ListaPrenotazioniUtente
+                print(results)
+                self.redirect(ListaPrenotazioniUtente(results))
