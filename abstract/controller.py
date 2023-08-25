@@ -1,4 +1,4 @@
-from typing import Optional, TypeVar, Type
+from typing import Optional, TypeVar
 
 from PySide6.QtWidgets import QMessageBox
 
@@ -21,15 +21,6 @@ class Controller:
 
     def redirect(self, view: BoundedView) -> None:
         self.main_window.set_view(view)
-
-    def replace(self, view: BoundedView) -> None:
-        self.main_window.replace(view)
-
-    def go_back(self) -> None:
-        self.main_window.go_back()
-
-    def update_view(self, view: Type[BoundedView]) -> None:
-        self.main_window.update_view(view)
 
     def alert(self, title: str, message: str) -> QMessageBox:
         return QMessageBox.information(self.main_window,
