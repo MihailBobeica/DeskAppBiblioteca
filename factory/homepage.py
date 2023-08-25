@@ -1,6 +1,6 @@
 from typing import Optional, TypedDict, Type
 
-from abstract import BoundedView, Factory
+from abstract import BoundedView, factory
 from utils import KeyAuth
 
 

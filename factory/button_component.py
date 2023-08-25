@@ -1,6 +1,7 @@
 from typing import Type, TypedDict
 
-from abstract import BoundedView, Factory
+from abstract import BoundedView, factory
+from abstract.factory import Factory
 from utils import KeyButtonComponent
 from view.component.button import ButtonCancellaPrenotazioneLibro
 from view.component.button import ButtonDettagliPrenotazioneLibro

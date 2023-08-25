@@ -1,4 +1,4 @@
-from abstract import Factory
+from abstract import factory
 from strategy import CercaLibriCatalogo
 from strategy import CercaPrenotazioniValide
 from strategy import SearchStrategy

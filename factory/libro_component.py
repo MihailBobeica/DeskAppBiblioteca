@@ -1,6 +1,6 @@
 from typing import Type, TypedDict
 
-from abstract import Factory
+from abstract import factory
 from database import BoundedDbModel
 from utils import KeyContext
 from view.component import CatalogoComponent
