@@ -2,7 +2,7 @@ from abstract import factory
 from strategy import CercaLibriCatalogo
 from strategy import CercaPrenotazioniValide
 from strategy import SearchStrategy
-from utils import KeyContext
+from utils.key import KeyContext
 
 
 class SearchStrategyFactory(Factory):
@@ -11,14 +11,14 @@ class SearchStrategyFactory(Factory):
 
         self.type: dict[KeyContext, SearchStrategy] = dict()
 
-        self.type[KeyContext.CATALOGO_LIBRI] = CercaLibriCatalogo()
+        t = CercaLibriCatalogo()
+
+        self.type[KeyContext.CATALOGO_LIBRI_GUEST] = t
+        self.type[KeyContext.CATALOGO_LIBRI_UTENTE] = t
         self.type[KeyContext.CATALOGO_PRENOTAZIONI_LIBRI] = CercaPrenotazioniValide()
 
-    def create(self, key: KeyContext, **kwargs) -> SearchStrategy:
+    def create(self, key: KeyContext) -> SearchStrategy:
         search_strategy = self.type.get(key)
         if search_strategy:
             return search_strategy
         raise ValueError("Invalid search strategy type")
-
-
-search_strategy_factory = SearchStrategyFactory()

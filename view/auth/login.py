@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
 
 from abstract.view import View
-from utils.request import REQUEST_LOGIN
+from utils.request import Request
 from utils.ui import get_style, INPUT_WIDTH, INPUT_HEIGHT
 
 
@@ -60,4 +60,4 @@ class LoginView(View):
         return login_data
 
     def send_login_data(self) -> None:
-        self.notify(REQUEST_LOGIN, self.get_login_data())
+        self.notify(Request.LOGIN, self.get_login_data())

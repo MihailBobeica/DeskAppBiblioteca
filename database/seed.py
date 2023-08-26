@@ -83,22 +83,23 @@ for aula in AULE:
 
 PRESTITI = [
     {
-    "data_restituzione" : None,
-    "utente": "S003",
-    "libro" : "0471958697",
-    "codice" : "1234567890"
-}, {
+        "data_restituzione": None,
+        "utente": "S003",
+        "libro": "0471958697",
+        "codice": "1234567890"
+    }, {
 
-    "data_restituzione" : None,
-    "utente": "S003",
-    "libro" : "0306406152",
-    "codice" : "0123456789"
+        "data_restituzione": None,
+        "utente": "S003",
+        "libro": "0306406152",
+        "codice": "0123456789"
 
     }
 ]
+
 PRENOTAZIONI_AULE = [
     {
-        "id":"1",
+        "id": "1",
         "data_prenotazione": datetime(2023, 8, 1),
         "ora_inizio": datetime(2023, 8, 3, 21, 50),
         "ora_fine": datetime(2023, 8, 3, 23, 57),
@@ -108,7 +109,7 @@ PRENOTAZIONI_AULE = [
         "codice_utente": "S001"
     },
     {
-        "id":"2",
+        "id": "2",
         "data_prenotazione": datetime(2023, 8, 1),
         "ora_inizio": datetime(2023, 8, 3, 22, 0),
         "ora_fine": datetime(2023, 8, 3, 21, 55),

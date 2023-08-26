@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton
 
 from abstract import BoundedView
 from factory import HomepageFactory
+from utils.auth import auth
 from utils.strings import *
 from utils.ui import HOME_ICON, quick_alert
 
@@ -71,7 +72,8 @@ class MainWindow(QMainWindow):
         layout.insertWidget(0, self.displayed_view)
 
     def go_home(self) -> None:
-        homepage = HomepageFactory.create_homepage(self.displayed_view)
+        homepage_factory = HomepageFactory(displayed_view=self.displayed_view)
+        homepage = homepage_factory.create(auth.get_key())
         if homepage:
             self.set_view(homepage)
         else:

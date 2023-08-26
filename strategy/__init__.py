@@ -1,1 +1,3 @@
-from .search import SearchStrategy, CercaLibriCatalogo, CercaPrenotazioniValide
+from .search import CercaLibriCatalogo
+from .search import CercaPrenotazioniValide
+from .search import SearchStrategy

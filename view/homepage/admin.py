@@ -7,31 +7,19 @@ from view.component import SidebarComponent
 class HomeAdminView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
-        sidebar.add_buttons(labels=("Gestione operatori",
-                                    "Inserisci libro",
-                                    "Gestione libri",
-                                    "Gestione utenti",
-                                    "Logout",),
-                            style="button")
+
+        sidebar.set_button("Gestione operatori").clicked.connect(self.gestione_operatori)
+        sidebar.set_button("Inserisci libro").clicked.connect(self.inserisci_libro)
+        sidebar.set_button("Gestione libri").clicked.connect(self.ricerca_libro)
+        sidebar.set_button("Gestione utenti").clicked.connect(self.gestione_utenti)
+        sidebar.set_button("Logout").clicked.connect(self.logout)
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
 
-    def connect_buttons(self):
-        logout_button = self.get_button("Logout")
-        logout_button.clicked.connect(self.send_logout_request)
-        gestione_operatori_button = self.get_button("Gestione operatori")
-        gestione_operatori_button.clicked.connect(self.gestione_operatori)
-        inserisci_libro_button = self.get_button("Inserisci libro")
-        inserisci_libro_button.clicked.connect(self.inserisci_libro)
-        ricerca_libro_button = self.get_button("Gestione libri")
-        ricerca_libro_button.clicked.connect(self.ricerca_libro)
-        gestione_utenti_button = self.get_button("Gestione utenti")
-        gestione_utenti_button.clicked.connect(self.gestione_utenti)
-
     def attach_controllers(self) -> None:
-        from app import controller_logout,controller_gestione_operatori
+        from app import controller_logout, controller_gestione_operatori
         self.attach(controller_logout)
         self.attach(controller_gestione_operatori)
 
@@ -40,7 +28,6 @@ class HomeAdminView(View):
 
     def gestione_operatori(self, text: Optional[str] = None) -> None:
         self.notify(message="gestione_operatori")
-
 
     def inserisci_libro(self):
         self.notify(message="inserisci_libro")

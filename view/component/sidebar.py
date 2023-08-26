@@ -16,12 +16,11 @@ class SidebarComponent(View):
         layout.setAlignment(Qt.AlignTop)
 
     def __init__(self):
-        self.button: dict[str, QPushButton] = dict()
         super().__init__()
 
-    def set_buttons(self, labels: tuple[str, ...]):
+    def set_button(self, label: str) -> QPushButton:
         layout = self.layout()
-        for label in labels:
-            button = self.button[label] = QPushButton(label)
-            button.setStyleSheet(get_style("button"))
-            layout.addWidget(button)
+        button = QPushButton(label)
+        button.setStyleSheet(get_style("button"))
+        layout.addWidget(button)
+        return button

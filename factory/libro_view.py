@@ -2,7 +2,7 @@ from typing import Type, TypedDict
 
 from abstract import factory
 from database import BoundedDbModel
-from utils import KeyAuth
+from utils.key import KeyAuth, KeyDb
 from view.scaffold import LibroViewScaffold
 
 
@@ -11,7 +11,9 @@ class KwargsDict(TypedDict):
 
 
 class LibroViewFactory(Factory):
-    def __init__(self):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        self.data = data
+
         super().__init__()
 
         from view.libro import LibroViewGuest
@@ -22,13 +24,8 @@ class LibroViewFactory(Factory):
         self.type[KeyAuth.GUEST] = LibroViewGuest
         self.type[KeyAuth.UTENTE] = LibroViewUtente
 
-    def create(self, key: KeyAuth, **kwargs) -> LibroViewScaffold:
-        kwargs: KwargsDict
-        data = kwargs.get("data")
+    def create(self, key: KeyAuth) -> LibroViewScaffold:
         libro_view = self.type.get(key)
         if libro_view:
-            return libro_view(data=data)
+            return libro_view(data=self.data)
         raise ValueError("Invalid libro view type")
-
-
-libro_view_factory = LibroViewFactory()

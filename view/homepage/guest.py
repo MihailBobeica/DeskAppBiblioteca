@@ -1,9 +1,8 @@
 from PySide6.QtWidgets import QHBoxLayout
 
 from abstract.view import View
-from utils.context import CONTEXT_CATALOGO_LIBRI_GUEST
-from utils.request import REQUEST_GO_TO_LOGIN
-from utils.strings import BUTTON_LABEL_LOGIN
+from utils.key import KeyContext
+from utils.request import Request
 from view.component import SidebarComponent, CatalogoComponent
 
 
@@ -11,10 +10,10 @@ class HomeGuestView(View):
     def create_layout(self):
         # content
         sidebar = SidebarComponent()
-        sidebar.set_buttons(labels=(BUTTON_LABEL_LOGIN,))
-        sidebar.button[BUTTON_LABEL_LOGIN].clicked.connect(self.send_go_to_login_view_request)
+        btn_login = sidebar.set_button("Login")
+        btn_login.clicked.connect(self.go_to_login)
 
-        catalogo = CatalogoComponent(context=CONTEXT_CATALOGO_LIBRI_GUEST)
+        catalogo = CatalogoComponent(context=KeyContext.CATALOGO_LIBRI_GUEST)
 
         # layout
         layout = QHBoxLayout(self)
@@ -28,5 +27,5 @@ class HomeGuestView(View):
         from app import controller_login
         self.attach(controller_login)
 
-    def send_go_to_login_view_request(self):
-        self.notify(REQUEST_GO_TO_LOGIN)
+    def go_to_login(self):
+        self.notify(Request.GO_TO_LOGIN)

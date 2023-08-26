@@ -7,12 +7,12 @@ from view.component import SidebarComponent
 class GestioneOperatori(View):
     def create_layout(self):
         sidebar = SidebarComponent()
-        sidebar.add_buttons(labels=("Crea operatore",
+        sidebar.add_buttons_rm(labels=("Crea operatore",
                                     "Elimina operatore",
                                     "Modifica operatore",
                                     "Visualizza operatore",
                                     "Logout",),
-                            style="button")
+                               style="button")
 
         # layout
         layout = QHBoxLayout(self)

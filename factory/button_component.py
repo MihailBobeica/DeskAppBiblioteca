@@ -1,15 +1,7 @@
 from typing import Type
 
-from abstract import BoundedView
-from abstract.factory import Factory
+from abstract import BoundedView, Factory
 from utils.key import KeyButtonComponent
-from view.component.button import ButtonCancellaPrenotazioneLibro
-from view.component.button import ButtonDettagliPrenotazioneLibro
-from view.component.button import ButtonGoToLibriPrenotati
-from view.component.button import ButtonOsservaLibro
-from view.component.button import ButtonPrenotaLibro
-from view.component.button import ButtonVisualizzaLibro
-from view.component.button import RequestButton
 
 
 class ButtonComponentFactory(Factory):
@@ -17,6 +9,14 @@ class ButtonComponentFactory(Factory):
         self.view = view
 
         super().__init__()
+
+        from view.component.button import ButtonCancellaPrenotazioneLibro
+        from view.component.button import ButtonDettagliPrenotazioneLibro
+        from view.component.button import ButtonGoToLibriPrenotati
+        from view.component.button import ButtonOsservaLibro
+        from view.component.button import ButtonPrenotaLibro
+        from view.component.button import ButtonVisualizzaLibro
+        from view.component.button import RequestButton
 
         self.type: dict[KeyButtonComponent, Type[RequestButton]] = dict()
 
@@ -27,7 +27,7 @@ class ButtonComponentFactory(Factory):
         self.type[KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO] = ButtonCancellaPrenotazioneLibro
         self.type[KeyButtonComponent.GO_TO_LIBRI_PRENOTATI] = ButtonGoToLibriPrenotati
 
-    def create(self, key: KeyButtonComponent) -> RequestButton:
+    def create(self, key: KeyButtonComponent):
         button_component = self.type.get(key)
         if button_component:
             return button_component(view=self.view)

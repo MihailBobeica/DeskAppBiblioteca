@@ -3,7 +3,8 @@ from abc import abstractmethod
 from PySide6.QtWidgets import QPushButton
 
 from abstract import BoundedView
-from utils.request import *
+from utils.request import Request
+from view.scaffold import LibroScaffold
 
 
 class RequestButton(QPushButton):
@@ -23,10 +24,9 @@ class ButtonVisualizzaLibro(RequestButton):
         self.setText("Visualizza")
 
     def send_request(self) -> None:
-        self.view: LibroComponent
-        self.view.notify(message="visualizza_libro",
-                         data={"libro": self.view.libro,
-                               "context": self.view.context})
+        self.view: LibroScaffold
+        self.view.notify(message=Request.GO_TO_VISUALIZZA_LIBRO,
+                         data=self.view.data)
 
 
 class ButtonPrenotaLibro(RequestButton):
@@ -35,8 +35,8 @@ class ButtonPrenotaLibro(RequestButton):
         self.setText("Prenota libro")
 
     def send_request(self) -> None:
-        self.view: LibroComponent
-        self.view.notify(message="prenota_libro",
+        self.view: LibroScaffold
+        self.view.notify(message=Request.PRENOTA_LIBRO,
                          data={"libro": self.view.libro})
 
 
@@ -46,8 +46,8 @@ class ButtonOsservaLibro(RequestButton):
         self.setText("Osserva libro")
 
     def send_request(self) -> None:
-        self.view: LibroComponent
-        self.view.notify(message="osserva_libro",
+        self.view: LibroScaffold
+        self.view.notify(message=Request.OSSERVA_LIBRO,
                          data={"libro": self.view.libro})
 
 
@@ -57,8 +57,8 @@ class ButtonDettagliPrenotazioneLibro(RequestButton):
         self.setText("Dettagli prenotazione")
 
     def send_request(self) -> None:
-        self.view: LibroComponentPrenotazione  # TODO: make a generic class
-        self.view.notify(message="visualizza_dettagli_prenotazione",
+        self.view: LibroScaffold
+        self.view.notify(message=Request.GO_TO_VISUALIZZA_DETTAGLI_PRENOTAZIONE_LIBRO,
                          data={"libro": self.view.libro,
                                "prenotazione": self.view.prenotazione})
 
@@ -69,12 +69,12 @@ class ButtonCancellaPrenotazioneLibro(RequestButton):
         self.setText("Cancella prenotazione")
 
     def send_request(self) -> None:
-        self.view: LibroComponentPrenotazione  # TODO: make a generic class
-        self.view.notify(message="cancella_prenotazione",
+        self.view: LibroScaffold
+        self.view.notify(message=Request.CANCELLA_PRENOTAZIONE_LIBRO,
                          data={"catalogo": self.view.catalogo,
                                "libro": self.view.libro,
                                "prenotazione": self.view.prenotazione,
-                               "contesto": self.view.context})
+                               "contesto": self.view.catalogo.context})
 
 
 class ButtonGoToLibriPrenotati(RequestButton):
@@ -83,5 +83,5 @@ class ButtonGoToLibriPrenotati(RequestButton):
         self.setText("Indietro")
 
     def send_request(self) -> None:
-        self.view: LibroComponentPrenotazione
-        self.view.notify(message=REQUEST_GO_TO_LIBRI_PRENOTATI)
+        self.view: LibroScaffold
+        self.view.notify(message=Request.GO_TO_LIBRI_PRENOTATI)
