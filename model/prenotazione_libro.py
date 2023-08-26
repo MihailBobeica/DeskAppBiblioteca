@@ -112,3 +112,16 @@ class PrenotazioneLibro(Model):
         prestiti = db_session.query(DbPrenotazioneLibro).filter_by(codice=codice).first()
         db_session.close()
         return prestiti
+
+    '''def by_utente(selfself, id):
+        db_session = Session()
+        prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente_id=id).filter().first()
+        db_session.close()'''
+
+
+
+
+
+
+
+

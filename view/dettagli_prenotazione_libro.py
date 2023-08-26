@@ -37,6 +37,7 @@ class DettagliPrenotazioneLibroView(View):
         label_data_scadenza.setFont(font)
         # codice prenotazione
         label_codice = QLabel(f"Codice prenotazione:\n{self.prenotazione.codice}")
+        print(self.prenotazione.codice)
         label_codice.setFont(font)
 
         # layout

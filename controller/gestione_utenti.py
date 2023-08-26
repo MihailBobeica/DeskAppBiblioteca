@@ -8,6 +8,7 @@ from view.Gestione_utente.ricerca_utente import RicercaView
 from model.utente import Utente
 from view.component.view_errore import view_errore
 from view.Gestione_utente.visualizza_cronologia import VisualizzaCronologia
+from model.prestito import Prestito
 
 
 class GestioneUtentiController(Controller):
@@ -22,7 +23,7 @@ class GestioneUtentiController(Controller):
         elif message == "trova_utente":
             utente = Utente.by_username(self,data["username"])
             if utente and utente.ruolo=="utente":
-                prestiti = Utente.visualizza_cronologia(self,utente)
+                prestiti = Prestito.by_utente(self,utente.id)
                 self.redirect(VisualizzaCronologia(prestiti))
             else:
                 view_errore("Errore","L'utente non è presente nel sistema")

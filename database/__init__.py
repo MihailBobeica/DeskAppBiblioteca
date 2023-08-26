@@ -93,8 +93,8 @@ class PrenotazioneLibro(Base):
     data_cancellazione = Column(DateTime, nullable=True)
     codice = Column(String)
 
-    utente_id = Column(String, ForeignKey('utenti.id'))
-    libro_id = Column(String, ForeignKey('libri.id', ondelete="CASCADE"))
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
+    libro_id = Column(Integer, ForeignKey('libri.id', ondelete="CASCADE"))
 
     utente = relationship("Utente")
     libro = relationship("Libro")
@@ -108,9 +108,25 @@ class Prestito(Base):
     data_inizio = Column(DateTime)
     data_scadenza = Column(DateTime)
     data_restituzione = Column(DateTime, nullable=True)
-    utente = Column(String, ForeignKey('utenti.username'))
-    libro = Column(String, ForeignKey('libri.isbn', ondelete="CASCADE"))
     codice = Column(String)
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
+    libro_id = Column(Integer, ForeignKey('libri.id', ondelete="CASCADE"))
+
+    utente = relationship("Utente")
+    libro = relationship("Libro")
+    
+
+
+class Sanzione(Base):
+    __tablename__ = "sanzioni"
+
+    id = Column(String, primary_key=True)
+    durata = Column(DateTime, nullable=True)
+    tipo = Column(String)
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
+
+    utente = relationship("Utente")
+
 
 
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle

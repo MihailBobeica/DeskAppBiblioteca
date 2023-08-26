@@ -2,34 +2,36 @@ import uuid
 from datetime import datetime
 
 from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout, QMessageBox
-from PySide6.QtWidgets import QLabel, QVBoxLayout
 from database import Utente as db_Utente
 from abstract.view import View
+from model.utente import Utente
 from PySide6.QtCore import Qt
 from view.home_operatore import HomeOperatoreView
 from database import Prestito as db_prestito
 from model.sanzione import Sanzione
-from view.homepage.operatore import HomeOperatoreView
+from model.prenotazione_libro import PrenotazioneLibro
 
 
-
-class Restituzione(View):
+class ListaPrenotazioniUtente(View):
     def create_layout(self) -> None:
-        layout = QVBoxLayout(self)
 
+        layout = QVBoxLayout(self)
+        
         label = QLabel("Nome: "+self.utente.nome)
         layout.addWidget(label)
         label = QLabel("Cognome: "+self.utente.cognome)
         layout.addWidget(label)
         label = QLabel("Username: "+self.utente.username)
         layout.addWidget(label)
-        label = QLabel("Lista libri in prestito:")
+        label = QLabel("Lista libri prenotati:")
         layout.addWidget(label)
 
-        for j in self.lista_libri(self.utente.id):
-            clickable_label = QLabel("codice: "+j.codice+"\ntitolo: "+j.libro.titolo)
+        for j in self.lista_libri(self.utente):
+            clickable_label = QLabel("codice: "+j.codice+"\nlibro: "+ j.libro.titolo)
             clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
             clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)
+
+
 
             layout.addWidget(clickable_label)
 
@@ -40,12 +42,12 @@ class Restituzione(View):
         self.utente = db_utente
         super().__init__()
 
-    def lista_libri(self, id):
-        from model.prestito import Prestito
-        prestiti = Prestito.by_utente(self,id)
-        return prestiti
+    def lista_libri(self, utente: db_Utente):
+        from model.prenotazione_libro import PrenotazioneLibro
+        prenotazioni = PrenotazioneLibro.query_prenotazioni_valide(self,utente)
+        return prenotazioni
 
-    def on_label_clicked(self, event, prestito):
+    def on_label_clicked(self, event, prenotazione):
         confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")
@@ -55,13 +57,15 @@ class Restituzione(View):
         result = confirm_dialog.exec_()
         if result == QMessageBox.Yes:
             from model.prestito import Prestito
-            Prestito.restituzione(self, prestito)
+            dati = {
+                "libro": prenotazione.libro_id,
+                "utente": prenotazione.utente_id
+            }
+            Prestito.inserisci(self, dati)
+            PrenotazioneLibro.cancella(self,prenotazione)
             self.redirect(HomeOperatoreView())
         else:
             pass
-
-
-
 
 
 

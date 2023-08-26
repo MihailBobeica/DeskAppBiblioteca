@@ -77,6 +77,12 @@ class Libro(Model):
         db_session.close()
         return libro
 
+    def by_id(self, id):
+        db_session = Session()
+        libro = db_session.query(DbLibro).filter_by(id=id).first()
+        db_session.close()
+        return libro
+
     def elimina(self, libro: DbLibro):
         db_session = Session()
         db_session.delete(libro)
@@ -96,3 +102,6 @@ class Libro(Model):
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
+
+
+

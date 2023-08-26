@@ -83,16 +83,15 @@ for aula in AULE:
 
 PRESTITI = [
     {
-        "data_restituzione": None,
-        "utente": "S003",
-        "libro": "0471958697",
-        "codice": "1234567890"
-    }, {
+    "data_restituzione" : None,
+    "utente": 3,
+    "libro" : 1
+}, {
 
-        "data_restituzione": None,
-        "utente": "S003",
-        "libro": "0306406152",
-        "codice": "0123456789"
+    "data_restituzione" : None,
+    "utente": "S003",
+    "libro" : "0306406152",
+    "codice" : "0123456789"
 
     }
 ]

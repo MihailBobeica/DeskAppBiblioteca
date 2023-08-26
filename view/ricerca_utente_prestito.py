@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 from database import Utente as db_Utente
 from model.utente import Utente
 
-class RicercaRestituzione(View):
+class RicercaPrestito(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout()
         grid_layout = QGridLayout()
@@ -27,8 +27,6 @@ class RicercaRestituzione(View):
         if self.input.text():
             results = Utente.by_username(self, self.input.text())
             if results:
-                from .libro_restituzione import Restituzione
-                self.redirect(Restituzione(results))
-
-
-
+                from .lista_prenotazioni_utente import ListaPrenotazioniUtente
+                print(results)
+                self.redirect(ListaPrenotazioniUtente(results))

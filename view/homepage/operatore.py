@@ -27,14 +27,29 @@ class HomeOperatoreView(View):
     def __init__(self):
         super().__init__()
 
-    def ricerca_prestito(self):
-        from view.registra_prestito import RegistraPrestito
-        self.redirect(RegistraPrestito())
+    def ricerca_utente_prestito(self):
+        from view.ricerca_utente_prestito import RicercaPrestito
+        self.redirect(RicercaPrestito())
 
     def ricerca_utente(self):
-        from view.restituzione.ricerca_utente_restituzione import Prova
-        self.redirect(Prova())
+        from view.restituzione.ricerca_utente_restituzione import RicercaRestituzione
+        self.redirect(RicercaRestituzione())
 
     def show_conferma_prenotazioni(self):
         lista_prenotazioni_view = ListaTuttePrenotazioniView(self.prenotazione_controller, self.main_window)
         self.main_window.set_view(lista_prenotazioni_view)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
