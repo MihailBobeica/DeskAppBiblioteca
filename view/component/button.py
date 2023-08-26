@@ -7,8 +7,8 @@ from utils.request import *
 
 
 class RequestButton(QPushButton):
-    def __init__(self, label: str, view: BoundedView):
-        super().__init__(label)
+    def __init__(self, view: BoundedView):
+        super().__init__()
         self.view = view
         self.clicked.connect(self.send_request)
 
@@ -19,8 +19,8 @@ class RequestButton(QPushButton):
 
 class ButtonVisualizzaLibro(RequestButton):
     def __init__(self, view: BoundedView):
-        super().__init__(label="Visualizza",
-                         view=view)
+        super().__init__(view=view)
+        self.setText("Visualizza")
 
     def send_request(self) -> None:
         self.view: LibroComponent
@@ -31,8 +31,8 @@ class ButtonVisualizzaLibro(RequestButton):
 
 class ButtonPrenotaLibro(RequestButton):
     def __init__(self, view: BoundedView):
-        super().__init__(label="Prenota libro",
-                         view=view)
+        super().__init__(view=view)
+        self.setText("Prenota libro")
 
     def send_request(self) -> None:
         self.view: LibroComponent
@@ -42,8 +42,8 @@ class ButtonPrenotaLibro(RequestButton):
 
 class ButtonOsservaLibro(RequestButton):
     def __init__(self, view: BoundedView):
-        super().__init__(label="Osserva libro",
-                         view=view)
+        super().__init__(view=view)
+        self.setText("Osserva libro")
 
     def send_request(self) -> None:
         self.view: LibroComponent
@@ -53,8 +53,8 @@ class ButtonOsservaLibro(RequestButton):
 
 class ButtonDettagliPrenotazioneLibro(RequestButton):
     def __init__(self, view: BoundedView):
-        super().__init__(label="Dettagli prenotazione",
-                         view=view)
+        super().__init__(view=view)
+        self.setText("Dettagli prenotazione")
 
     def send_request(self) -> None:
         self.view: LibroComponentPrenotazione  # TODO: make a generic class
@@ -65,8 +65,8 @@ class ButtonDettagliPrenotazioneLibro(RequestButton):
 
 class ButtonCancellaPrenotazioneLibro(RequestButton):
     def __init__(self, view: BoundedView):
-        super().__init__(label="Cancella prenotazione",
-                         view=view)
+        super().__init__(view=view)
+        self.setText("Cancella prenotazione")
 
     def send_request(self) -> None:
         self.view: LibroComponentPrenotazione  # TODO: make a generic class
@@ -79,8 +79,8 @@ class ButtonCancellaPrenotazioneLibro(RequestButton):
 
 class ButtonGoToLibriPrenotati(RequestButton):
     def __init__(self, view: BoundedView):
-        super().__init__(label="Indietro",
-                         view=view)
+        super().__init__(view=view)
+        self.setText("Indietro")
 
     def send_request(self) -> None:
         self.view: LibroComponentPrenotazione

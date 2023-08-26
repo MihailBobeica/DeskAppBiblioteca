@@ -1,15 +1,13 @@
-from typing import Optional, TypedDict, Type
+from typing import Optional, Type
 
-from abstract import BoundedView, factory
-from utils import KeyAuth
-
-
-class KwargsDict(TypedDict):
-    displayed_view: Type[BoundedView]
+from abstract import BoundedView, Factory
+from utils.key import KeyAuth
 
 
 class HomepageFactory(Factory):
-    def __init__(self):
+    def __init__(self, displayed_view: Optional[BoundedView] = None):
+        self.displayed_view = displayed_view
+
         super().__init__()
 
         from view.homepage import HomeAdminView
@@ -24,14 +22,9 @@ class HomepageFactory(Factory):
         self.type[KeyAuth.UTENTE] = HomeUtenteView
         self.type[KeyAuth.GUEST] = HomeGuestView
 
-    def create(self, key: KeyAuth, **kwargs) -> Optional[BoundedView]:
-        kwargs: KwargsDict
-        displayed_view = kwargs.get("displayed_view")
+    def create(self, key: KeyAuth) -> Optional[BoundedView]:
         homepage: Type[BoundedView] = self.type.get(key)
-        if displayed_view:
-            if isinstance(type(displayed_view), homepage):
+        if self.displayed_view:
+            if isinstance(type(self.displayed_view), homepage):
                 return None
         return homepage()
-
-
-homepage_factory = HomepageFactory()

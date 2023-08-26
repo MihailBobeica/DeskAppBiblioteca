@@ -1,8 +1,8 @@
-from typing import Type, TypedDict
+from typing import Type
 
-from abstract import BoundedView, factory
+from abstract import BoundedView
 from abstract.factory import Factory
-from utils import KeyButtonComponent
+from utils.key import KeyButtonComponent
 from view.component.button import ButtonCancellaPrenotazioneLibro
 from view.component.button import ButtonDettagliPrenotazioneLibro
 from view.component.button import ButtonGoToLibriPrenotati
@@ -12,12 +12,10 @@ from view.component.button import ButtonVisualizzaLibro
 from view.component.button import RequestButton
 
 
-class KwargsDict(TypedDict):
-    view: BoundedView
-
-
 class ButtonComponentFactory(Factory):
-    def __init__(self):
+    def __init__(self, view: BoundedView):
+        self.view = view
+
         super().__init__()
 
         self.type: dict[KeyButtonComponent, Type[RequestButton]] = dict()
@@ -29,13 +27,8 @@ class ButtonComponentFactory(Factory):
         self.type[KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO] = ButtonCancellaPrenotazioneLibro
         self.type[KeyButtonComponent.GO_TO_LIBRI_PRENOTATI] = ButtonGoToLibriPrenotati
 
-    def create(self, key: KeyButtonComponent, **kwargs) -> RequestButton:
-        kwargs: KwargsDict
-        view = kwargs.get("view")
+    def create(self, key: KeyButtonComponent) -> RequestButton:
         button_component = self.type.get(key)
         if button_component:
-            return button_component(view=view)
+            return button_component(view=self.view)
         raise ValueError("Invalid button component type")
-
-
-button_component_factory = ButtonComponentFactory()

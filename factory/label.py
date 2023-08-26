@@ -2,7 +2,7 @@ from typing import Type, TypedDict
 
 from PySide6.QtWidgets import QLabel
 
-from abstract import factory
+from abstract import Factory
 from database import BoundedDbModel
 from utils import KeyLabelComponent
 from view.component.label import LabelAnnoEdizione
