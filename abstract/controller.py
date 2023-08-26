@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QMessageBox
 
 from abstract.model import Model
 from abstract.view import View
-from utils.key import KeyModel
+# from utils.key import KeyModel  # TODO
 from utils.request import Request
 
 BoundedModel = TypeVar("BoundedModel", bound=Model)
@@ -16,7 +16,7 @@ class Controller:
     def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
         pass
 
-    def __init__(self, models: Optional[dict[KeyModel, BoundedModel]] = None):
+    def __init__(self, models: Optional[dict[str, BoundedModel]] = None):
         self.models = models
         from app import main_window
         self.main_window = main_window

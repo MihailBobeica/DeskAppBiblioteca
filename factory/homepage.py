@@ -25,6 +25,6 @@ class HomepageFactory(Factory):
     def create(self, key: KeyAuth) -> Optional[BoundedView]:
         homepage: Type[BoundedView] = self.type.get(key)
         if self.displayed_view:
-            if isinstance(type(self.displayed_view), homepage):
+            if isinstance(self.displayed_view, homepage):
                 return None
         return homepage()

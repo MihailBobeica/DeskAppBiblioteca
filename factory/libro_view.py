@@ -1,6 +1,6 @@
 from typing import Type, TypedDict
 
-from abstract import factory
+from abstract import Factory
 from database import BoundedDbModel
 from utils.key import KeyAuth, KeyDb
 from view.scaffold import LibroViewScaffold
