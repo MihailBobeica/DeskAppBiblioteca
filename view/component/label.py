@@ -50,3 +50,16 @@ class LabelEditore(QLabel):
     def __init__(self, data: dict[KeyDb, BoundedDbModel]):
         libro: DbLibro = data[KeyDb.LIBRO]
         super().__init__(f"Editore: {libro.editore}")
+
+
+class LabelDati(QLabel):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        libro: DbLibro = data[KeyDb.LIBRO]
+        super().__init__(f"Dati: {libro.dati}")
+
+
+class LabelIsbn(QLabel):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        libro: DbLibro = data[KeyDb.LIBRO]
+        super().__init__(f"ISBN: {libro.isbn}")
+

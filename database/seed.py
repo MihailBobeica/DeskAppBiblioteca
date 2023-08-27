@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from utils.auth import hash_password
 from utils.backend import to_year, POSTI_PER_AULA
-from datetime import datetime
 
 UTENTI = [
     {"nome": "Mario",
@@ -83,16 +84,13 @@ for aula in AULE:
 
 PRESTITI = [
     {
-    "data_restituzione" : None,
-    "utente": 3,
-    "libro" : 1
-}, {
-
-    "data_restituzione" : None,
-    "utente": "S003",
-    "libro" : "0306406152",
-    "codice" : "0123456789"
-
+        "data_restituzione": None,
+        "utente": 3,
+        "libro": 1
+    }, {
+        "data_restituzione": None,
+        "utente": 3,
+        "libro": 2
     }
 ]
 

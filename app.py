@@ -1,5 +1,5 @@
 
-from controller import FirstController, LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche
+from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche
 from model import PrenotazioneLibro
 from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI, PRENOTAZIONI_AULE
 from model.aula import Aula

@@ -3,7 +3,8 @@ from os import path
 from typing import Iterable
 
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QLayout, QPushButton, QMessageBox
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QLayout, QPushButton, QMessageBox, QLabel
 
 INPUT_WIDTH = 320
 INPUT_HEIGHT = 32
@@ -67,3 +68,10 @@ def quick_alert(parent, title: str, message: str, seconds: int = 3):
     timer.start(int(seconds * 1000))
 
     alert.exec_()
+
+
+def font_16(label: QLabel):
+    font = QFont()
+    font.setPointSize(16)
+    label.setFont(font)
+    return label

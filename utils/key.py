@@ -60,6 +60,8 @@ class KeyLabelComponent(Enum):
     ANNO_PUBBLICAZIONE = "key_label_component_anno_pubblicazione"
     EDITORE = "key_label_component_editore"
     SCADENZA_PRENOTAZIONE_LIBRO = "key_label_component_scadenza_prenotazione_libro"
+    DATI = "KEY_LABEL_COMPONENT_DATI"
+    ISBN = "KEY_LABEL_COMPONENT_ISBN"
 
 
 class KeyButtonComponent(Enum):

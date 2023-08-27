@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Callable
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
@@ -72,9 +72,11 @@ class LibroScaffold(View):
         from app import controller_catalogo
         self.attach(controller_catalogo)
 
-    def add_labels(self, label_keys: tuple[KeyLabelComponent, ...]) -> None:
+    def add_labels(self, label_keys: tuple[KeyLabelComponent, ...], transform: Optional[Callable] = None) -> None:
         for label_key in label_keys:
             label = self.label_component_factory.create(label_key)
+            if transform:
+                label = transform(label)
             self.v_layout.addWidget(label)
         self.v_layout.addStretch(1)
 
