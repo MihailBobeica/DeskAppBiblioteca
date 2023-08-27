@@ -13,20 +13,20 @@ from view.lisat_prenotazioni import ListaPrenotazioniView
 from view.scegli_prenotazione import ScegliPrenotazione
 from model.prestito import Prestito
 
+
 class HomeUtenteView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
-        sidebar.add_buttons(labels=("Catalogo",
-                                    "Libri in prestito",
-                                    "Libri prenotati",
-                                    "Lista di osservazione",
-                                    "Prenota posto",
-                                    "Lista di prenotazioni",
-                                    "Visualizza cronologia",
-                                    "Sanzioni",
-                                    "Info",
-                                    "Logout"),
-                            style="button")
+
+        sidebar.set_button("Libri in prestito").clicked.connect()
+        sidebar.set_button("Libri prenotati").clicked.connect()
+        sidebar.set_button("Lista di osservazione").clicked.connect()
+        sidebar.set_button("Prenota posto").clicked.connect()
+        sidebar.set_button("Posti prenotati").clicked.connect()
+        sidebar.set_button("Cronologia").clicked.connect()
+        # sidebar.set_button("Info").clicked.connect()
+        sidebar.set_button("Logout").clicked.connect(self.logout)
+
         catalogo = CatalogoComponent(CercaLibriCatalogo(), context=CONTEXT_CATALOGO)
 
         # layout

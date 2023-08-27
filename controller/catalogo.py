@@ -27,6 +27,7 @@ class CatalogoController(Controller):
         self.action[Request.OSSERVA_LIBRO] = self.osserva_libro
         self.action[Request.GO_TO_VISUALIZZA_DETTAGLI_PRENOTAZIONE_LIBRO] = self.visualizza_dettagli_prenotazione_libro
         self.action[Request.CANCELLA_PRENOTAZIONE_LIBRO] = self.cancella_prenotazione_libro
+        self.action[Request.GO_TO_LIBRI_PRENOTATI] = self.visualizza_libri_prenotati
 
     def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
         action = self.action.get(message)
@@ -75,7 +76,7 @@ class CatalogoController(Controller):
                                 message=CONFIRM_PRENOTAZIONE_LIBRO_MESSAGE.format(libro.titolo))
         if response == QMessageBox.StandardButton.Yes:
             model_prenotazione_libro.inserisci(libro)
-            self.main_window.set_view(LibriPrenotatiView())
+            self.redirect(LibriPrenotatiView())
 
     def osserva_libro(self, data):
         ...
@@ -83,7 +84,7 @@ class CatalogoController(Controller):
     def visualizza_dettagli_prenotazione_libro(self, data: Optional[dict] = None):
         libro: DbLibro = data["libro"]
         prenotazione: DbPrenotazioneLibro = data["prenotazione"]
-        self.main_window.set_view(DettagliPrenotazioneLibroView(libro=libro,
+        self.redirect(DettagliPrenotazioneLibroView(libro=libro,
                                                                 prenotazione=prenotazione))
 
     def cancella_prenotazione_libro(self, data: Optional[dict] = None):
@@ -103,3 +104,6 @@ class CatalogoController(Controller):
             # self.replace(LibriPrenotatiView())
             # self.alert(title=CANCELLA_PRENOTAZIONE_TITLE,
             #            message=CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE)
+
+    def visualizza_libri_prenotati(self, data: Optional[dict] = None):
+        self.redirect(LibriPrenotatiView())

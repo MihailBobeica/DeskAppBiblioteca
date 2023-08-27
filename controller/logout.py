@@ -13,8 +13,8 @@ class LogoutController(Controller):
     def __init__(self):
         super().__init__()
 
-    def receive_message(self, message: str, data: Optional[dict] = None) -> None:
-        if message == REQUEST_LOGOUT:
+    def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
+        if message == Request.LOGOUT:
             self.confirm_logout()
 
     def confirm_logout(self) -> None:
