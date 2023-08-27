@@ -63,3 +63,14 @@ class LabelIsbn(QLabel):
         libro: DbLibro = data[KeyDb.LIBRO]
         super().__init__(f"ISBN: {libro.isbn}")
 
+
+class LabelDataPrenotazioneLibro(QLabel):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        prenotazione_libro: DbPrenotazioneLibro = data[KeyDb.PRENOTAZIONE_LIBRO]
+        super().__init__(f"Data prenotazione:\n{prenotazione_libro.data_prenotazione.strftime(DATE_FORMAT)}")
+
+
+class LabelCodicePrenotazioneLibro(QLabel):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        prenotazione_libro: DbPrenotazioneLibro = data[KeyDb.PRENOTAZIONE_LIBRO]
+        super().__init__(f"Codice prenotazione:\n{prenotazione_libro.codice}")

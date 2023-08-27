@@ -1,5 +1,5 @@
 from database import BoundedDbModel
-from utils.key import KeyButtonComponent, KeyDb
+from utils.key import KeyButtonComponent
 from utils.key import KeyLabelComponent
 from view.component.button import *
 from view.scaffold import LibroComponentScaffold
@@ -40,5 +40,4 @@ class LibroPrenotatoComponent(LibroComponentScaffold):
                          KeyLabelComponent.SCADENZA_PRENOTAZIONE_LIBRO))
 
         self.add_buttons((KeyButtonComponent.DETTAGLI_PRENOTAZIONE_LIBRO,
-                          KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO,
-                          KeyButtonComponent.VISUALIZZA_LIBRO))
+                          KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO))

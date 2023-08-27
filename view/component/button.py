@@ -3,6 +3,7 @@ from abc import abstractmethod
 from PySide6.QtWidgets import QPushButton
 
 from abstract import BoundedView
+from utils.key import KeyDb
 from utils.request import Request
 from view.scaffold import LibroScaffold
 
@@ -37,7 +38,7 @@ class ButtonPrenotaLibro(RequestButton):
     def send_request(self) -> None:
         self.view: LibroScaffold
         self.view.notify(message=Request.PRENOTA_LIBRO,
-                         data={"libro": self.view.libro})
+                         data={KeyDb.LIBRO: self.view.libro})
 
 
 class ButtonOsservaLibro(RequestButton):
@@ -48,7 +49,7 @@ class ButtonOsservaLibro(RequestButton):
     def send_request(self) -> None:
         self.view: LibroScaffold
         self.view.notify(message=Request.OSSERVA_LIBRO,
-                         data={"libro": self.view.libro})
+                         data={KeyDb.LIBRO: self.view.libro})
 
 
 class ButtonDettagliPrenotazioneLibro(RequestButton):
@@ -58,9 +59,9 @@ class ButtonDettagliPrenotazioneLibro(RequestButton):
 
     def send_request(self) -> None:
         self.view: LibroScaffold
-        self.view.notify(message=Request.GO_TO_VISUALIZZA_DETTAGLI_PRENOTAZIONE_LIBRO,
-                         data={"libro": self.view.libro,
-                               "prenotazione": self.view.prenotazione})
+        self.view.notify(message=Request.GO_TO_DETTAGLI_PRENOTAZIONE_LIBRO,
+                         data={KeyDb.LIBRO: self.view.libro,
+                               KeyDb.PRENOTAZIONE_LIBRO: self.view.prenotazione})
 
 
 class ButtonCancellaPrenotazioneLibro(RequestButton):
@@ -72,9 +73,8 @@ class ButtonCancellaPrenotazioneLibro(RequestButton):
         self.view: LibroScaffold
         self.view.notify(message=Request.CANCELLA_PRENOTAZIONE_LIBRO,
                          data={"catalogo": self.view.catalogo,
-                               "libro": self.view.libro,
-                               "prenotazione": self.view.prenotazione,
-                               "contesto": self.view.catalogo.context})
+                               KeyDb.LIBRO: self.view.libro,
+                               KeyDb.PRENOTAZIONE_LIBRO: self.view.prenotazione})
 
 
 class ButtonGoToLibriPrenotati(RequestButton):
