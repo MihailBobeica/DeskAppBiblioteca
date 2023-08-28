@@ -1,5 +1,6 @@
 
 from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche
+from controller.router import RouterController
 from model import PrenotazioneLibro
 from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI, PRENOTAZIONI_AULE
 from model.aula import Aula
@@ -34,6 +35,7 @@ model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
 model_prestito.seed_db(PRESTITI)
 
 # instantiate all controllers
+controller_router = RouterController()
 controller_catalogo = CatalogoController({"libri": model_libro,
                                           "prenotazioni_libri": model_prenotazione_libro})
 controller_login = LoginController({"utente": model_utente})

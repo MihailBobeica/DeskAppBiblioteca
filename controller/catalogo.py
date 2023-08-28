@@ -34,8 +34,6 @@ class CatalogoController(Controller):
         action = self.action.get(message)
         if action:
             action(data)
-        else:
-            raise ValueError("Invalid action type")
 
     def search(self, data: Optional[dict] = None):
         catalogo: CatalogoComponent = data["catalogo"]

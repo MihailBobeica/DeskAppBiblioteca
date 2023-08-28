@@ -8,7 +8,7 @@ from abstract.controller import Controller
 from database import PrenotazioneAula, PrenotazionePosto, Session, Aula
 from model.prenotazione_posto import prenotazione_posto
 from model.prenotazione_aula import prenotazione_aula
-from utils.auth import Auth
+from utils.auth import auth
 
 
 class PrenotazioneController(Controller):
@@ -82,7 +82,7 @@ class PrenotazioneController(Controller):
         return prenotazioni_utente
 
     def get_username_utente_loggato(self):
-        return Auth.user.username if Auth.user else None
+        return auth.user.username if auth.user else None
 
     def cancella_prenotazione_aula(self, prenotazione_id):
         db_session = Session()

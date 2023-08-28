@@ -49,8 +49,10 @@ class HomeUtenteView(View):
     def attach_controllers(self) -> None:
         from app import controller_logout
         from app import controller_catalogo
+        from app import controller_router
         self.attach(controller_logout)
         self.attach(controller_catalogo)
+        self.attach(controller_router)
         # self.prenotazione_controller = PrenotazioneController()  # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
     # def show_prenota_schermata(self):

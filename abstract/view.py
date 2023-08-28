@@ -28,6 +28,9 @@ class View(QFrame):
         pass
 
     def __init__(self):
+        from app import main_window
+        self.main_window = main_window
+
         super().__init__()
         self.controllers: dict[str, Observer] = dict()
         self.attach_controllers()
