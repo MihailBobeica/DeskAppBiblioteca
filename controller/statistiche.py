@@ -2,13 +2,15 @@ from abstract import Controller, BoundedModel
 from typing import Optional
 from model.statistiche import Statistiche
 from model.libro import Libro
+from utils.request import Request
+
 
 class StatisticheController(Controller):
     def __init__(self):
         super().__init__()
 
-    def receive_message(self, message: str, data: Optional[dict] = None) -> None:
-        if message == "visualizza_statistiche":
+    def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
+        if message == Request.GO_TO_STATISTICHE:
             num_prestiti = Statistiche.num_prestiti(self)
             num_utenti = Statistiche.num_utenti(self)
             num_sospensioni = Statistiche.num_sospensioni(self)

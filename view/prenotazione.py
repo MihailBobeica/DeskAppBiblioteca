@@ -74,8 +74,8 @@ class VisualizzaPrenotazioneView(View):
 
 
             # Importa la classe ListaPrenotazioniView qui all'interno della funzione on_cancella_clicked
-        from view.lisat_prenotazioni import ListaPrenotazioniView
+        from view.lista_prenotazioni import ListaPrenotazioniView
 
             # Dopo aver cancellato la prenotazione, vai alla vista ListaPrenotazioniView
-        lista_prenotazioni_view = ListaPrenotazioniView(prenotazione_controller, self.main_window)
+        lista_prenotazioni_view = ListaPrenotazioniView()
         self.main_window.set_view(lista_prenotazioni_view)

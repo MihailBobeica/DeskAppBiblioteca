@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QPushButton, QMessag
 from abstract import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
 from model.posto import Posto
-from view.lisat_prenotazioni import ListaPrenotazioniView
+from view.lista_prenotazioni import ListaPrenotazioniView
 
 
 class DettaglioAulaView(View):
@@ -64,7 +64,7 @@ class DettaglioAulaView(View):
             QMessageBox.information(self,"Prenotazione effettuata",
                          f"Prenotazione effettuata per il posto: {posto_data.nome} - Aula: {posto_data.aula}")
             self.popup_shown = True
-            lista_prenotazioni_view = ListaPrenotazioniView(prenotazione_controller, self.main_window)
+            lista_prenotazioni_view = ListaPrenotazioniView()
             self.main_window.set_view(lista_prenotazioni_view)
     #def clear_layout(self):
        # while self.layout().count():

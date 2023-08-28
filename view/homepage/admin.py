@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QHBoxLayout
 from typing import Optional
 from abstract.view import View
+from utils.request import Request
 from view.component import SidebarComponent
 
 
@@ -12,6 +13,7 @@ class HomeAdminView(View):
         sidebar.set_button("Inserisci libro").clicked.connect(self.inserisci_libro)
         sidebar.set_button("Gestione libri").clicked.connect(self.ricerca_libro)
         sidebar.set_button("Gestione utenti").clicked.connect(self.gestione_utenti)
+        sidebar.set_button("Statistiche").clicked.connect(self.visualizza_statistiche)
         sidebar.set_button("Logout").clicked.connect(self.logout)
 
         # layout
@@ -22,6 +24,8 @@ class HomeAdminView(View):
         from app import controller_logout, controller_gestione_operatori
         self.attach(controller_logout)
         self.attach(controller_gestione_operatori)
+        from app import controller_statistiche
+        self.attach(controller_statistiche)
 
     def __init__(self):
         super().__init__()
@@ -37,3 +41,7 @@ class HomeAdminView(View):
 
     def gestione_utenti(self):
         self.notify(message="gestione_utenti")
+
+    def visualizza_statistiche(self):
+        self.notify(message=Request.GO_TO_STATISTICHE)
+

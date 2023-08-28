@@ -47,7 +47,7 @@ LIBRI = [
      "isbn": "123456789X",
      "anno_edizione": to_year("2019"),
      "anno_pubblicazione": to_year("2019"),
-     "disponibili": 2,
+     "disponibili": 1,
      "dati": "1 voll., XXXIV-860 p., 10 ed."},
     {"titolo": "Ricerca operativa",
      "autori": "Massimo Pappalardo, Mauro Passacantando",
@@ -94,6 +94,9 @@ PRESTITI = [
     }
 ]
 
+PRENOTAZIONI_AULE = []
+
+"""
 PRENOTAZIONI_AULE = [
     {
         "id": "1",
@@ -126,3 +129,4 @@ PRENOTAZIONI_AULE = [
         "codice_utente": "S002"
     }
 ]
+"""
