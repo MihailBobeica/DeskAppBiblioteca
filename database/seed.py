@@ -29,7 +29,7 @@ LIBRI = [
      "isbn": "0471958697",
      "anno_edizione": to_year("2000"),
      "anno_pubblicazione": to_year("2000"),
-     "disponibili": 3,
+     "disponibili": 0,
      "dati": "583 p., ill., 2 ed."},
     {"titolo": "Fisica. Vol. 2: Elettromagnetismo, onde",
      "autori": "Paolo Mazzoldi, Massimo Nigro, Cesare Voci",

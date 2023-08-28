@@ -73,9 +73,11 @@ class KeyButtonComponent(Enum):
     DETTAGLI_PRENOTAZIONE_LIBRO = "key_button_component_dettagli_prenotazione_libro"
     CANCELLA_PRENOTAZIONE_LIBRO = "key_button_component_cancella_prenotazione_libro"
     GO_TO_LIBRI_PRENOTATI = "key_button_component_go_to_libri_prenotati"
+    RIMUOVI_LIBRO_OSSERVATO = "KEY_BUTTON_RIMUOVI_LIBRO_OSSERVATO"
 
 
 class KeyContext(Enum):
     CATALOGO_LIBRI_GUEST = "context_catalogo_libri_guest"
     CATALOGO_LIBRI_UTENTE = "context_catalogo_libri_utente"
     CATALOGO_PRENOTAZIONI_LIBRI = "context_catalogo_prenotazioni_libri"
+    CATALOGO_LIBRI_OSSERVATI = "context_catalogo_libri_osservati"

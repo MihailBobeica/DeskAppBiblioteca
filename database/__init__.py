@@ -100,7 +100,6 @@ class PrenotazioneLibro(Base):
     libro = relationship("Libro")
 
 
-
 class Prestito(Base):
     __tablename__ = 'prestiti'
 
@@ -114,7 +113,6 @@ class Prestito(Base):
 
     utente = relationship("Utente")
     libro = relationship("Libro")
-    
 
 
 class Sanzione(Base):
@@ -127,6 +125,17 @@ class Sanzione(Base):
 
     utente = relationship("Utente")
 
+
+class OsservaLibro(Base):
+    __tablename__ = "osservazioni"
+
+    id = Column(Integer, primary_key=True)
+
+    utente_id = Column(Integer, ForeignKey('utenti.id'))
+    libro_id = Column(Integer, ForeignKey('libri.id', ondelete="CASCADE"))
+
+    utente = relationship("Utente")
+    libro = relationship("Libro")
 
 
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle

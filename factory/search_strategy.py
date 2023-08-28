@@ -1,5 +1,6 @@
 from abstract import Factory
 from strategy import CercaLibriCatalogo
+from strategy import CercaLibriOsservati
 from strategy import CercaPrenotazioniValide
 from strategy import SearchStrategy
 from utils.key import KeyContext
@@ -16,6 +17,7 @@ class SearchStrategyFactory(Factory):
         self.type[KeyContext.CATALOGO_LIBRI_GUEST] = t
         self.type[KeyContext.CATALOGO_LIBRI_UTENTE] = t
         self.type[KeyContext.CATALOGO_PRENOTAZIONI_LIBRI] = CercaPrenotazioniValide()
+        self.type[KeyContext.CATALOGO_LIBRI_OSSERVATI] = CercaLibriOsservati()
 
     def create(self, key: KeyContext) -> SearchStrategy:
         search_strategy = self.type.get(key)

@@ -16,6 +16,7 @@ class ButtonComponentFactory(Factory):
         from view.component.button import ButtonOsservaLibro
         from view.component.button import ButtonPrenotaLibro
         from view.component.button import ButtonVisualizzaLibro
+        from view.component.button import ButtonRimuoviLibroOsservato
         from view.component.button import RequestButton
 
         self.type: dict[KeyButtonComponent, Type[RequestButton]] = dict()
@@ -26,6 +27,7 @@ class ButtonComponentFactory(Factory):
         self.type[KeyButtonComponent.DETTAGLI_PRENOTAZIONE_LIBRO] = ButtonDettagliPrenotazioneLibro
         self.type[KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO] = ButtonCancellaPrenotazioneLibro
         self.type[KeyButtonComponent.GO_TO_LIBRI_PRENOTATI] = ButtonGoToLibriPrenotati
+        self.type[KeyButtonComponent.RIMUOVI_LIBRO_OSSERVATO] = ButtonRimuoviLibroOsservato
 
     def create(self, key: KeyButtonComponent):
         button_component = self.type.get(key)

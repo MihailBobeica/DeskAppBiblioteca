@@ -2,6 +2,7 @@ from typing import Optional
 
 from abstract import Controller, BoundedModel
 from utils.request import Request
+from view.libri_osservati import LibriOsservatiView
 from view.lista_prenotazioni import ListaPrenotazioniView
 from view.scegli_prenotazione import ScegliPrenotazione
 
@@ -15,3 +16,5 @@ class RouterController(Controller):
             self.redirect(ScegliPrenotazione())
         elif message == Request.GO_TO_POSTI_PRENOTATI:
             self.redirect(ListaPrenotazioniView())
+        elif message == Request.GO_TO_LISTA_DI_OSSERVAZIONE:
+            self.redirect(LibriOsservatiView())

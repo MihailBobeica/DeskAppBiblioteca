@@ -16,12 +16,14 @@ class LibroComponentFactory(Factory):
         from view.component.libro import LibroComponentGuest
         from view.component.libro import LibroComponentUtente
         from view.component.libro import LibroPrenotatoComponent
+        from view.component.libro import LibroOsservatoComponent
 
         self.type: dict[KeyContext, Type[LibroComponentScaffold]] = dict()
 
         self.type[KeyContext.CATALOGO_LIBRI_GUEST] = LibroComponentGuest
         self.type[KeyContext.CATALOGO_LIBRI_UTENTE] = LibroComponentUtente
         self.type[KeyContext.CATALOGO_PRENOTAZIONI_LIBRI] = LibroPrenotatoComponent
+        self.type[KeyContext.CATALOGO_LIBRI_OSSERVATI] = LibroOsservatoComponent
 
     def create(self, key: KeyContext):
         libro_component = self.type.get(key)

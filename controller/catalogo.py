@@ -6,12 +6,14 @@ from abstract import Controller, BoundedModel
 from database import Libro as DbLibro
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from factory import LibroViewFactory
+from model import LibroOsservato
 from model import PrenotazioneLibro
 from utils.auth import auth
 from utils.key import KeyDb
 from utils.request import *
 from utils.strings import *
 from view.component.catalogo import CatalogoComponent
+from view.libri_osservati import LibriOsservatiView
 from view.libri_prenotati import LibriPrenotatiView
 from view.libro import PrenotazioneLibroView
 
@@ -29,6 +31,7 @@ class CatalogoController(Controller):
         self.action[Request.GO_TO_DETTAGLI_PRENOTAZIONE_LIBRO] = self.visualizza_dettagli_prenotazione_libro
         self.action[Request.CANCELLA_PRENOTAZIONE_LIBRO] = self.cancella_prenotazione_libro
         self.action[Request.GO_TO_LIBRI_PRENOTATI] = self.visualizza_libri_prenotati
+        self.action[Request.RIMUOVI_LIBRO_OSSERVATO] = self.rimuovi_libro_osservato
 
     def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
         action = self.action.get(message)
@@ -77,8 +80,37 @@ class CatalogoController(Controller):
             model_prenotazione_libro.inserisci(libro)
             self.redirect(LibriPrenotatiView())
 
-    def osserva_libro(self, data):
-        ...
+    def osserva_libro(self, data: Optional[dict] = None):
+        libro: DbLibro = data.get(KeyDb.LIBRO)
+
+        model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
+        model_osserva_libro: LibroOsservato = self.models["osserva_libri"]
+
+        gia_osservato = model_osserva_libro.gia_osservato(auth.user, libro)
+        if gia_osservato:
+            self.alert(title=ALERT_OSSERVA_LIBRO_TITLE,
+                       message=ALERT_LIBRO_GIA_OSSERVATO_MESSAGE)
+            return
+
+        # check se l'utente ha già prenotato questo libro
+        has_already_this_prenotazione = model_prenotazione_libro.gia_effettuata(utente=auth.user,
+                                                                                libro=libro)
+        if has_already_this_prenotazione:
+            self.alert(title=ALERT_OSSERVA_LIBRO_TITLE,
+                       message=ALERT_LIBRO_GIA_PRENOTATO_MESSAGE)
+            return
+
+        # check se l'utente non ha fatto il numero massimo di prenotazioni
+        has_max_osservazioni = model_osserva_libro.raggiunto_limite(utente=auth.user)
+        if has_max_osservazioni:
+            self.alert(title=ALERT_OSSERVA_LIBRO_TITLE,
+                       message=ALERT_MAX_OSSERVAZIONI_MESSAGE)
+            return
+
+        model_osserva_libro.registra(utente=auth.user,
+                                     libro=libro)
+
+        self.redirect(LibriOsservatiView())
 
     def visualizza_dettagli_prenotazione_libro(self, data: Optional[dict] = None):
         self.redirect(PrenotazioneLibroView(data))
@@ -99,3 +131,10 @@ class CatalogoController(Controller):
 
     def visualizza_libri_prenotati(self, data: Optional[dict] = None):
         self.redirect(LibriPrenotatiView())
+
+    def rimuovi_libro_osservato(self, data: Optional[dict] = None):
+        libro: DbLibro = data.get(KeyDb.LIBRO)
+        catalogo: CatalogoComponent = data.get("catalogo")
+        model_osserva_libro: LibroOsservato = self.models["osserva_libri"]
+        model_osserva_libro.rimuovi(auth.user, libro)
+        catalogo.update()

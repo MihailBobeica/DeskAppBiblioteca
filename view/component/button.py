@@ -85,3 +85,15 @@ class ButtonGoToLibriPrenotati(RequestButton):
     def send_request(self) -> None:
         self.view: LibroScaffold
         self.view.notify(message=Request.GO_TO_LIBRI_PRENOTATI)
+
+
+class ButtonRimuoviLibroOsservato(RequestButton):
+    def __init__(self, view: BoundedView):
+        super().__init__(view=view)
+        self.setText("Rimuovi")
+
+    def send_request(self) -> None:
+        self.view: LibroScaffold
+        self.view.notify(message=Request.RIMUOVI_LIBRO_OSSERVATO,
+                         data={"catalogo": self.view.catalogo,
+                               KeyDb.LIBRO: self.view.libro})

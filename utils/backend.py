@@ -5,6 +5,7 @@ HISTORY_LIMIT = 5
 POSTI_PER_AULA = 20
 DURATA_PRENOTAZIONE = 3  # in giorni
 MAX_PRENOTAZIONI = 3
+MAX_OSSERVAZIONI = 5
 CATALOGO = "catalogo"
 
 # TODO maybe put context in a separate file
@@ -20,8 +21,6 @@ KEY_LIBRO = "libro"
 KEY_PRENOTAZIONE_LIBRO = "prenotazione_libro"
 
 OBJ_NAME_SEARCHBAR = "searchbar"
-
-
 
 
 def is_empty(string: str) -> bool:
@@ -54,4 +53,3 @@ def get_codice() -> str:
 #         return CercaPrenotazioniValide()
 #     else:
 #         raise ValueError("Invalid search strategy type")
-

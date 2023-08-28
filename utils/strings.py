@@ -46,3 +46,9 @@ CONFIRM_CANCELLA_PRENOTAZIONE_MESSAGE = "Sei sicuro di voler cancellare la" \
 CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE = "La cancellazione della prenotazione" \
                                               "\ndel libro è stata portata a termine."
 
+ALERT_OSSERVA_LIBRO_TITLE = "Osserva libro"
+
+ALERT_MAX_OSSERVAZIONI_MESSAGE = "Hai raggiunto il numero massimo di" \
+                                 "\nlibri osservati."
+
+ALERT_LIBRO_GIA_OSSERVATO_MESSAGE = "Stai già osservando questo libro."

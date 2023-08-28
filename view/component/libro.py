@@ -41,3 +41,13 @@ class LibroPrenotatoComponent(LibroComponentScaffold):
 
         self.add_buttons((KeyButtonComponent.DETTAGLI_PRENOTAZIONE_LIBRO,
                           KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO))
+
+
+class LibroOsservatoComponent(LibroComponentScaffold):
+    def __init__(self, catalogo: BoundedView, data: dict[KeyDb, BoundedDbModel]):
+        super().__init__(catalogo=catalogo, data=data)
+
+        self.add_labels((KeyLabelComponent.TITOLO,
+                         KeyLabelComponent.AUTORI))
+
+        self.add_buttons((KeyButtonComponent.RIMUOVI_LIBRO_OSSERVATO,))
