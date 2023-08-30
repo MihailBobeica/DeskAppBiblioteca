@@ -32,3 +32,4 @@ class Request(Enum):
     GO_TO_DETTAGLI_PRENOTAZIONE_LIBRO = "go_to_visualizza_dettagli_prenotazione_libro"
     CANCELLA_PRENOTAZIONE_LIBRO = "cancella_prenotazione_libro"
     RIMUOVI_LIBRO_OSSERVATO = "RIMUOVI_LIBRO_OSSERVATO"
+    CHECK_LIBRI_OSSERVATI = "CHECK_LIBRI_OSSERVATI"

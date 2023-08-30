@@ -25,7 +25,7 @@ class LibroOsservato(Model):
         db_session.commit()
         db_session.close()
 
-    def get_libri_ossevati(self, utente: DbUtente):
+    def get_libri_ossevati(self, utente: DbUtente) -> list[DbLibro]:
         db_session = Session()
 
         osservazioni_libri = db_session.query(DbOsservaLibro).filter_by(utente_id=utente.id).all()

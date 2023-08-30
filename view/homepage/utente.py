@@ -50,9 +50,11 @@ class HomeUtenteView(View):
         from app import controller_logout
         from app import controller_catalogo
         from app import controller_router
+        from app import controller_notifica
         self.attach(controller_logout)
         self.attach(controller_catalogo)
         self.attach(controller_router)
+        self.attach(controller_notifica)
         # self.prenotazione_controller = PrenotazioneController()  # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
     # def show_prenota_schermata(self):
@@ -83,6 +85,8 @@ class HomeUtenteView(View):
     def __init__(self):
         self.catalogo = CatalogoComponent(context=KeyContext.CATALOGO_LIBRI_UTENTE)
         super().__init__()
+
+        self.notify(Request.CHECK_LIBRI_OSSERVATI)
 
     def update(self):
         self.catalogo.update()

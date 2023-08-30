@@ -19,6 +19,11 @@ UTENTI = [
      "ruolo": "utente",
      "username": "S003",
      "password": hash_password("utente")},
+    {"nome": "Massimo",
+     "cognome": "Minimi",
+     "ruolo": "utente",
+     "username": "S004",
+     "password": hash_password("utente")},
 ]
 
 LIBRI = [

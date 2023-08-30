@@ -1,5 +1,6 @@
 
 from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche
+from controller.notifica import NotificaController
 from controller.router import RouterController
 from controller.statistiche import StatisticheController
 from model import LibroOsservato
@@ -38,6 +39,7 @@ model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
 model_prestito.seed_db(PRESTITI)
 
 # instantiate all controllers
+controller_notifica = NotificaController({"osserva_libri": model_osserva_libro})
 controller_router = RouterController()
 controller_statistiche = StatisticheController()
 controller_catalogo = CatalogoController({"libri": model_libro,
