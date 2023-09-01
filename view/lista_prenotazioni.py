@@ -4,17 +4,18 @@ from view.prenotazione import VisualizzaPrenotazioneView
 
 
 class ListaPrenotazioniView(View):
-    def __init__(self, prenotazione_controller, main_window):
+    def __init__(self):
         super().__init__()
-        self.prenotazione_controller = prenotazione_controller
-        self.main_window = main_window
+
+        from controller.gestione_prenotazione_posto import PrenotazioneController
+        self.prenotazione_controller = PrenotazioneController()
 
         # Ottieni l'ID dell'utente corrente
-        utente_id = prenotazione_controller.get_username_utente_loggato()
+        utente_id = self.prenotazione_controller.get_username_utente_loggato()
 
         # Ottieni le prenotazioni dell'utente corrente utilizzando il controller
-        prenotazioni_aula = prenotazione_controller.by_utente(utente_id)
-        prenotazioni_posto = prenotazione_controller.search_by_utente(utente_id)
+        prenotazioni_aula = self.prenotazione_controller.by_utente(utente_id)
+        prenotazioni_posto = self.prenotazione_controller.search_by_utente(utente_id)
 
         # Crea un layout verticale per la vista
         layout = QVBoxLayout()

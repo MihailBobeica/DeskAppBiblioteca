@@ -5,16 +5,22 @@ HISTORY_LIMIT = 5
 POSTI_PER_AULA = 20
 DURATA_PRENOTAZIONE = 3  # in giorni
 MAX_PRENOTAZIONI = 3
+MAX_OSSERVAZIONI = 5
 CATALOGO = "catalogo"
+
+# TODO maybe put context in a separate file
 CONTEXT_CATALOGO_PRENOTAZIONI = "catalogo_prenotazioni"
-CONTEXT_CATALOGO = "context_catalogo"
+
 DATE_FORMAT = "%d %B %Y %H:%M"
+YEAR_FORMAT = "%Y"
 
 MODEL_LIBRO = "libri"
 MODEL_PRENOTAZIONE_LIBRO = "prenotazioni_libri"
 
-LABEL_LIBRO = "libro"
-LABEL_PRENOTAZIONE_LIBRO = "prenotazione_libro"
+KEY_LIBRO = "libro"
+KEY_PRENOTAZIONE_LIBRO = "prenotazione_libro"
+
+OBJ_NAME_SEARCHBAR = "searchbar"
 
 
 def is_empty(string: str) -> bool:
@@ -35,3 +41,15 @@ def to_year(year: str) -> datetime:
 
 def get_codice() -> str:
     return str(uuid.uuid4())[:13]
+
+# @staticmethod
+# def create_search_strategy(context: str) -> SearchStrategy:
+#     if context in [CONTEXT_CATALOGO_LIBRI_GUEST,
+#                    CONTEXT_CATALOGO_LIBRI_UTENTE,
+#                    CONTEXT_CATALOGO_LIBRI_OPERATORE,
+#                    CONTEXT_CATALOGO_LIBRI_ADMIN]:
+#         return CercaLibriCatalogo()
+#     elif context == CONTEXT_CATALOGO_PRENOTAZIONI_LIBRI:
+#         return CercaPrenotazioniValide()
+#     else:
+#         raise ValueError("Invalid search strategy type")

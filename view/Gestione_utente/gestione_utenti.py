@@ -6,10 +6,10 @@ from view.component import SidebarComponent
 class GestioneUtentiView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
-        sidebar.add_buttons(labels=("Visualizza utente",
+        sidebar.add_buttons_rm(labels=("Visualizza utente",
                                     "Visualizza cronologia",
                                     "Logout",),
-                            style="button")
+                               style="button")
 
         # layout
         layout = QHBoxLayout(self)

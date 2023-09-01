@@ -6,8 +6,8 @@ from PySide6.QtWidgets import QLabel, QLineEdit, QDateEdit, QSpinBox, QGridLayou
 
 from abstract.view import View
 from database import Libro
-from model.libro import Libro as model_libro
-from view.home_admin import HomeAdminView
+from model.libro import Libro as ModelLibro
+from view.homepage.admin import HomeAdminView
 
 
 class LibroView(View):
@@ -117,7 +117,7 @@ class LibroView(View):
         super().__init__()
 
     def go_back(self):
-        self.redirect(HomeAdminView())
+        self.main_window.set_view(HomeAdminView())
 
     def modifica(self):
         dati = {
@@ -129,8 +129,8 @@ class LibroView(View):
             "dati": self.input7.text(),
             "disponibili": self.input6.text()
         }
-        model_libro.modifica(self, dati, self.info.isbn)
-        self.redirect(HomeAdminView())
+        ModelLibro().modifica(dati, self.info.isbn)
+        self.main_window.set_view(HomeAdminView())
 
     def elimina(self):
         msg_box = QMessageBox()
@@ -141,6 +141,6 @@ class LibroView(View):
         msg_box.setDefaultButton(QMessageBox.Ok)
         response = msg_box.exec()
         if response == QMessageBox.Ok:
-            model_libro.elimina(self, self.info)
+            ModelLibro().elimina(self.info)
 
-        self.redirect(HomeAdminView())
+        self.main_window.set_view(HomeAdminView())

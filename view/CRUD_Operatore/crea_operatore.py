@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QGrid
 from abstract.view import View
 from model.utente import Utente
 from utils.auth import hash_password
-from view.home_admin import HomeAdminView
+from view.homepage.admin import HomeAdminView
 
 
 class ProvaView(View):

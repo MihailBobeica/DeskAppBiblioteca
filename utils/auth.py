@@ -1,6 +1,10 @@
+from typing import Optional
+
 import bcrypt
 
 from database import Utente as DbUtente
+from utils.key import KeyAuth
+from utils.role import *
 
 
 def hash_password(password: str) -> str:
@@ -17,23 +21,31 @@ def check_password(password: str, stored_password: str) -> bool:
 
 
 class Auth:
-    user: DbUtente = None
-    logged = ""
+    def __init__(self):
+        self.user: Optional[DbUtente] = None
 
-    @staticmethod
-    def logged_as(user: DbUtente):
-        Auth.user = user
-        Auth.logged = user.ruolo
+        self.key: dict[str, KeyAuth] = dict()
 
-    @staticmethod
-    def is_logged_as(ruolo: str):
-        return Auth.logged == ruolo
+        self.key[ADMIN] = KeyAuth.ADMIN
+        self.key[OPERATORE] = KeyAuth.OPERATORE
+        self.key[UTENTE] = KeyAuth.UTENTE
 
-    @staticmethod
-    def is_logged() -> bool:
-        return Auth.user is not None
+    def login_as(self, user: DbUtente) -> None:
+        self.user = user
 
-    @staticmethod
-    def logout():
-        Auth.user = None
-        Auth.logged = ""
+    def is_logged_as(self, ruolo: str) -> bool:
+        if self.user:
+            return self.user.ruolo == ruolo
+        return False
+
+    def logout(self):
+        self.user = None
+
+    def get_key(self) -> KeyAuth:
+        if self.user:
+            return self.key.get(self.user.ruolo)
+        else:
+            return KeyAuth.GUEST
+
+
+auth = Auth()

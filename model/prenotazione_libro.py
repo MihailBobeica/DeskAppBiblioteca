@@ -6,7 +6,7 @@ from abstract.model import Model
 from database import Libro as DbLibro, Utente as DbUtente
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Session
-from utils.auth import Auth
+from utils.auth import auth
 from utils.backend import DURATA_PRENOTAZIONE, get_codice, MAX_PRENOTAZIONI
 
 
@@ -65,7 +65,7 @@ class PrenotazioneLibro(Model):
         db_session = Session()
 
         libro_id = libro.id
-        user_id = Auth.user.id
+        user_id = auth.user.id
         data_prenotazione = datetime.now()
         data_scadenza = data_prenotazione + timedelta(days=DURATA_PRENOTAZIONE)
         codice = get_codice()
@@ -97,7 +97,7 @@ class PrenotazioneLibro(Model):
         if input:
             pass
         else:
-            prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente=Auth.user.id).all()
+            prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente=auth.user.id).all()
             db_session.close()
             return prestiti
 

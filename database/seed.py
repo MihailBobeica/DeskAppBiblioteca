@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from utils.auth import hash_password
 from utils.backend import to_year, POSTI_PER_AULA
-from datetime import datetime
 
 UTENTI = [
     {"nome": "Mario",
@@ -18,6 +19,11 @@ UTENTI = [
      "ruolo": "utente",
      "username": "S003",
      "password": hash_password("utente")},
+    {"nome": "Massimo",
+     "cognome": "Minimi",
+     "ruolo": "utente",
+     "username": "S004",
+     "password": hash_password("utente")},
 ]
 
 LIBRI = [
@@ -28,7 +34,7 @@ LIBRI = [
      "isbn": "0471958697",
      "anno_edizione": to_year("2000"),
      "anno_pubblicazione": to_year("2000"),
-     "disponibili": 3,
+     "disponibili": 0,
      "dati": "583 p., ill., 2 ed."},
     {"titolo": "Fisica. Vol. 2: Elettromagnetismo, onde",
      "autori": "Paolo Mazzoldi, Massimo Nigro, Cesare Voci",
@@ -46,7 +52,7 @@ LIBRI = [
      "isbn": "123456789X",
      "anno_edizione": to_year("2019"),
      "anno_pubblicazione": to_year("2019"),
-     "disponibili": 2,
+     "disponibili": 1,
      "dati": "1 voll., XXXIV-860 p., 10 ed."},
     {"titolo": "Ricerca operativa",
      "autori": "Massimo Pappalardo, Mauro Passacantando",
@@ -83,20 +89,22 @@ for aula in AULE:
 
 PRESTITI = [
     {
-    "data_restituzione" : None,
-    "utente": 3,
-    "libro" : 1
-}, {
-
-    "data_restituzione" : None,
-    "utente": 3,
-    "libro" : 2
-
+        "data_restituzione": None,
+        "utente": 3,
+        "libro": 1
+    }, {
+        "data_restituzione": None,
+        "utente": 3,
+        "libro": 2
     }
 ]
+
+PRENOTAZIONI_AULE = []
+
+"""
 PRENOTAZIONI_AULE = [
     {
-        "id":"1",
+        "id": "1",
         "data_prenotazione": datetime(2023, 8, 1),
         "ora_inizio": datetime(2023, 8, 3, 21, 50),
         "ora_fine": datetime(2023, 8, 3, 23, 57),
@@ -106,7 +114,7 @@ PRENOTAZIONI_AULE = [
         "codice_utente": "S001"
     },
     {
-        "id":"2",
+        "id": "2",
         "data_prenotazione": datetime(2023, 8, 1),
         "ora_inizio": datetime(2023, 8, 3, 22, 0),
         "ora_fine": datetime(2023, 8, 3, 21, 55),
@@ -126,3 +134,4 @@ PRENOTAZIONI_AULE = [
         "codice_utente": "S002"
     }
 ]
+"""

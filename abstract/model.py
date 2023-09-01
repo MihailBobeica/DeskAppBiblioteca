@@ -3,6 +3,7 @@ from typing import Optional
 
 from protocol import Observer
 from utils.backend import get_label
+from utils.request import Request
 
 
 class Model:
@@ -13,7 +14,7 @@ class Model:
     def detach(self, label: str) -> None:
         del self.views[label]
 
-    def notify(self, message: str, data: Optional[dict] = None) -> None:
+    def notify(self, message: Request, data: Optional[dict] = None) -> None:
         for view in self.views.values():
             view.receive_message(message, data)
 

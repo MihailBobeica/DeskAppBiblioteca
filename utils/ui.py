@@ -2,7 +2,9 @@ import traceback
 from os import path
 from typing import Iterable
 
-from PySide6.QtWidgets import QLayout, QPushButton
+from PySide6.QtCore import QTimer
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QLayout, QPushButton, QMessageBox, QLabel
 
 INPUT_WIDTH = 320
 INPUT_HEIGHT = 32
@@ -10,6 +12,8 @@ SIDEBAR_WIDTH = 200
 BOX_WIDTH = 180
 CATALOG_COLUMNS = 2
 RESULTS_LIMIT = 15
+LIBRO_VIEW_WIDTH = 320
+LIBRO_VIEW_HEIGHT = 480
 
 PATH_CSS = "src/css"
 PATH_IMAGE = "src/img"
@@ -51,3 +55,23 @@ def label_autori(autori: str) -> str:
     if "," in autori:
         return f"Autori: {autori}"
     return f"Autore: {autori}"
+
+
+def quick_alert(parent, title: str, message: str, seconds: int = 3):
+    alert = QMessageBox(parent)
+    alert.setIcon(QMessageBox.Information)
+    alert.setWindowTitle(title)
+    alert.setText(message)
+
+    timer = QTimer()
+    timer.timeout.connect(alert.close)
+    timer.start(int(seconds * 1000))
+
+    alert.exec_()
+
+
+def font_16(label: QLabel):
+    font = QFont()
+    font.setPointSize(16)
+    label.setFont(font)
+    return label

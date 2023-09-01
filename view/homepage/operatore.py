@@ -9,41 +9,31 @@ from view.conferma_prenotazioni import ListaTuttePrenotazioniView
 class HomeOperatoreView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
-        sidebar.add_buttons(labels=("Registra prestito",
-                                    "Registra restituzione",
-                                    "Conferma Prenotazioni",
-                                    "Logout"),
-                            style="button")
+
+        sidebar.set_button("Registra prestito").clicked.connect(self.ricerca_utente_prestito)
+        sidebar.set_button("Registra restituzione").clicked.connect(self.ricerca_utente)
+        sidebar.set_button("Conferma Prenotazioni").clicked.connect(self.show_conferma_prenotazioni)
+        sidebar.set_button("Logout").clicked.connect(self.logout)
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
 
-    def connect_buttons(self):
-        logout_button = self.get_button("Logout")
-        logout_button.clicked.connect(self.send_logout_request)
-        prestito_button = self.get_button("Registra prestito")
-        prestito_button.clicked.connect(self.ricerca_utente_prestito)
-        restituzione_button = self.get_button("Registra restituzione")
-        restituzione_button.clicked.connect(self.ricerca_utente)
-        self.get_button("Conferma Prenotazioni").clicked.connect(self.show_conferma_prenotazioni)
-
-
     def attach_controllers(self) -> None:
         from app import controller_logout
         self.attach(controller_logout)
-        self.prenotazione_controller = PrenotazioneController() # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
+        self.prenotazione_controller = PrenotazioneController()  # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
     def __init__(self):
         super().__init__()
 
     def ricerca_utente_prestito(self):
         from view.ricerca_utente_prestito import RicercaPrestito
-        self.redirect(RicercaPrestito())
+        self.main_window.set_view(RicercaPrestito())
 
     def ricerca_utente(self):
         from view.restituzione.ricerca_utente_restituzione import RicercaRestituzione
-        self.redirect(RicercaRestituzione())
+        self.main_window.set_view(RicercaRestituzione())
 
     def show_conferma_prenotazioni(self):
         lista_prenotazioni_view = ListaTuttePrenotazioniView(self.prenotazione_controller, self.main_window)

@@ -9,9 +9,7 @@ from model import Libro, PrenotazioneLibro
 from utils.auth import Auth
 from utils.strings import *
 from view.component.catalogo import CatalogoComponent
-from view.dettagli_prenotazione_libro import DettagliPrenotazioneLibroView
 from view.libri_prenotati import LibriPrenotatiView
-from view.libro import LibroView
 from model.libro import Libro
 from database import Libro as db_Libro
 

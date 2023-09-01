@@ -1,9 +1,8 @@
 
 
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton
-from utils.auth import Auth
 from abstract.view import View
-from view.home_operatore import HomeOperatoreView
+from view.homepage.operatore import HomeOperatoreView
 
 
 

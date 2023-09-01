@@ -42,8 +42,8 @@ class LibroComponent(View):
 
         v_layout.addStretch(1)
 
-        self.add_buttons(labels=("Visualizza",),
-                         layout=v_layout)
+        self.add_buttons_rm(labels=("Visualizza",),
+                            layout=v_layout)
 
         contenitore_dati.setLayout(v_layout)
 
