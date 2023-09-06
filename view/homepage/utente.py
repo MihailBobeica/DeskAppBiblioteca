@@ -87,6 +87,7 @@ class HomeUtenteView(View):
         super().__init__()
 
         self.notify(Request.CHECK_LIBRI_OSSERVATI)
+        self.notify(Request.CHECK_SCADENZA_PRENOTAZIONI)
 
     def update(self):
         self.catalogo.update()

@@ -113,6 +113,16 @@ class PrenotazioneLibro(Model):
         db_session.close()
         return prestiti
 
+    def quasi_scadute(self, utente: DbUtente) -> list[DbPrenotazioneLibro]:
+        db_session = Session()
+        prenotazioni_valide = self.query_prenotazioni_valide(utente)
+        one_day_later = datetime.now() + timedelta(days=1)
+        prenotazioni_quasi_scadute = prenotazioni_valide.filter(
+            DbPrenotazioneLibro.data_scadenza <= one_day_later
+        ).all()
+        db_session.close()
+        return prenotazioni_quasi_scadute
+
     '''def by_utente(selfself, id):
         db_session = Session()
         prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente_id=id).filter().first()

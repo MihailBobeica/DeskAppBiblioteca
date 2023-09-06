@@ -4,7 +4,7 @@ from datetime import datetime
 HISTORY_LIMIT = 5
 POSTI_PER_AULA = 20
 DURATA_PRENOTAZIONE = 3  # in giorni
-MAX_PRENOTAZIONI = 3
+MAX_PRENOTAZIONI = 2
 MAX_OSSERVAZIONI = 5
 CATALOGO = "catalogo"
 
