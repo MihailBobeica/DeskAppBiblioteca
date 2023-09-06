@@ -1,3 +1,4 @@
+from utils.backend import MINIMO_COPIE_DISPONIBILI
 from utils.key import *
 from utils.ui import font_16
 from view.component.label import *
@@ -30,7 +31,7 @@ class LibroViewUtente(LibroViewScaffold):
                          KeyLabelComponent.ISBN),
                         transform=font_16)
 
-        if self.libro.disponibili > 0:
+        if self.libro.disponibili > MINIMO_COPIE_DISPONIBILI:
             self.add_buttons((KeyButtonComponent.PRENOTA_LIBRO,))
         else:
             self.add_buttons((KeyButtonComponent.OSSERVA_LIBRO,))

@@ -1,4 +1,5 @@
 from database import BoundedDbModel
+from utils.backend import MINIMO_COPIE_DISPONIBILI
 from utils.key import KeyButtonComponent
 from utils.key import KeyLabelComponent
 from view.component.button import *
@@ -24,7 +25,7 @@ class LibroComponentUtente(LibroComponentScaffold):
                          KeyLabelComponent.ANNO_EDIZIONE,
                          KeyLabelComponent.DISPONIBILI))
 
-        if self.libro.disponibili > 0:
+        if self.libro.disponibili > MINIMO_COPIE_DISPONIBILI:
             self.add_buttons((KeyButtonComponent.PRENOTA_LIBRO,))
         else:
             self.add_buttons((KeyButtonComponent.OSSERVA_LIBRO,))

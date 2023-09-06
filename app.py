@@ -39,7 +39,8 @@ model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
 model_prestito.seed_db(PRESTITI)
 
 # instantiate all controllers
-controller_notifica = NotificaController({"osserva_libri": model_osserva_libro})
+controller_notifica = NotificaController({"osserva_libri": model_osserva_libro,
+                                          "prenotazioni_libri": model_prenotazione_libro})
 controller_router = RouterController()
 controller_statistiche = StatisticheController()
 controller_catalogo = CatalogoController({"libri": model_libro,

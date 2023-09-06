@@ -3,6 +3,7 @@ from typing import Optional
 from abstract import Controller, BoundedModel
 from model import LibroOsservato, PrenotazioneLibro
 from utils.auth import auth
+from utils.backend import MINIMO_COPIE_DISPONIBILI
 from utils.request import Request
 from utils.strings import *
 
@@ -21,7 +22,7 @@ class NotificaController(Controller):
         model_osserva_libro: LibroOsservato = self.models["osserva_libri"]
         libri_osservati = model_osserva_libro.get_libri_ossevati(auth.user)
         for libro_osservato in libri_osservati:
-            if libro_osservato.disponibili > 0:
+            if libro_osservato.disponibili > MINIMO_COPIE_DISPONIBILI:
                 model_osserva_libro.rimuovi(auth.user, libro_osservato)
                 self.alert(title=ALERT_LIBRO_ORA_DISPONIBILE_TITLE,
                            message=ALERT_LIBRO_ORA_DISPONIBILE_MESSAGE.format(libro_osservato.titolo))
