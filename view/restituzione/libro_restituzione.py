@@ -42,7 +42,7 @@ class Restituzione(View):
 
     def lista_libri(self, id):
         from model.prestito import Prestito
-        prestiti = Prestito.by_utente(self,id)
+        prestiti = Prestito.da_restituire(self,id)
         return prestiti
 
     def on_label_clicked(self, event, prestito):

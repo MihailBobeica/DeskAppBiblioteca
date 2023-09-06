@@ -5,6 +5,7 @@ from abstract.model import Model
 from database import Session, PrenotazioneLibro as db_prenotazione_libro, Prestito as db_prestito
 from view.component.view_errore import view_errore
 from .libro import Libro
+from sqlalchemy import or_, and_
 from model.sanzione import Sanzione
 
 
@@ -52,6 +53,13 @@ class Prestito(Model):
     def by_utente(self, id):
         db_session = Session()
         prestiti = db_session.query(db_prestito).filter(db_prestito.utente_id==id)
+        db_session.close()
+        return prestiti
+
+    def da_restituire(self,id):
+        db_session = Session()
+        prestiti = db_session.query(db_prestito).filter(and_(db_prestito.utente_id == id),(db_prestito.data_restituzione == None)).all()
+        print(prestiti)
         db_session.close()
         return prestiti
 
