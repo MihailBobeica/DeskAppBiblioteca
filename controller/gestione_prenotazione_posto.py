@@ -104,14 +104,14 @@ class PrenotazioneController(Controller):
         while True:
             self.cancella_prenotazioni_scadute_senza_ora_attivazione()
 
-            # Intervallo di 1 minuto
-            intervallo = timedelta(minutes=1)
+            # Intervallo di 30 minuto
+            intervallo = timedelta(minutes=30)
 
             # Attendi l'intervallo prima di eseguire il controllo successivo
             threading.Event().wait(intervallo.total_seconds())
 
     def cancella_prenotazioni_scadute_senza_ora_attivazione(self):
-        data_limite = datetime.now() - timedelta(minutes=1)
+        data_limite = datetime.now() - timedelta(minutes=30)
 
         db_session = Session()
 
@@ -124,8 +124,8 @@ class PrenotazioneController(Controller):
             data_inizio_aula = prenotazione_aula.ora_inizio
             minuti_trascorsi_aula = (datetime.now() - data_inizio_aula).total_seconds() / 60
 
-            # Se sono trascorsi almeno 1 minuto dalla data di inizio, cancella la prenotazione
-            if minuti_trascorsi_aula >= 1:
+            # Se sono trascorsi almeno 30 minuto dalla data di inizio, cancella la prenotazione
+            if minuti_trascorsi_aula >= 30:
                 db_session.delete(prenotazione_aula)
 
         # Cancellazione delle prenotazioni dei posti
@@ -137,8 +137,8 @@ class PrenotazioneController(Controller):
             data_inizio_posto = prenotazione_posto.ora_inizio
             minuti_trascorsi_posto = (datetime.now() - data_inizio_posto).total_seconds() / 60
 
-            # Se sono trascorsi almeno 1 minuto dalla data di inizio, cancella la prenotazione
-            if minuti_trascorsi_posto >= 1:
+            # Se sono trascorsi almeno 30 minuto dalla data di inizio, cancella la prenotazione
+            if minuti_trascorsi_posto >= 30:
                 db_session.delete(prenotazione_posto)
 
         db_session.commit()

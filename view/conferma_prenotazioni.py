@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PySide6.QtWidgets import QVBoxLayout, QPushButton, QMessageBox, QLabel
 from abstract.view import View
 from database import PrenotazioneAula, PrenotazionePosto
@@ -43,20 +45,28 @@ class ListaTuttePrenotazioniView(View):
 
     def create_apri_prenotazione_closure(self, prenotazione):
         def apri_prenotazione():
-            # Mostra un pop-up con la scritta "Prenotazione Confermata!"
-            message = "Prenotazione Confermata!"
-            msg_box = QMessageBox(self)
-            msg_box.setWindowTitle("Conferma Prenotazione")
-            msg_box.setText(message)
-            msg_box.exec_()
+            # Verifica se la data di attivazione è prima della data di inizio
+            if datetime.now() <= prenotazione.data_prenotazione:
+                message = "Ancora non è iniziata la prenotazione!"
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Attenzione")
+                msg_box.setText(message)
+                msg_box.exec_()
+            else:
+                # Mostra un pop-up con la scritta "Prenotazione Confermata!"
+                message = "Prenotazione Confermata!"
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Conferma Prenotazione")
+                msg_box.setText(message)
+                msg_box.exec_()
 
-            # Chiamata al metodo di conferma prenotazione del controller corrispondente
-            if isinstance(prenotazione, PrenotazioneAula):
-                self.prenotazione_controller.conferma_prenotazione_aula(prenotazione.id)
-            elif isinstance(prenotazione, PrenotazionePosto):
-                self.prenotazione_controller.conferma_prenotazione_posto(prenotazione.id)
+                # Chiamata al metodo di conferma prenotazione del controller corrispondente
+                if isinstance(prenotazione, PrenotazioneAula):
+                    self.prenotazione_controller.conferma_prenotazione_aula(prenotazione.id)
+                elif isinstance(prenotazione, PrenotazionePosto):
+                    self.prenotazione_controller.conferma_prenotazione_posto(prenotazione.id)
 
-            # Aggiorna la vista dopo la conferma
-            self.update_prenotazioni()
+                # Aggiorna la vista dopo la conferma
+                self.update_prenotazioni()
 
         return apri_prenotazione
