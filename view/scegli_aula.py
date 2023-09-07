@@ -28,10 +28,26 @@ class ScegliAulaView(View):
         label_scegli_aula = QLabel("Scegli un aula disponibile:")
         layout.addWidget(label_scegli_aula)
 
+        # Converti la durata in un numero intero rappresentante le ore e moltiplicala per 60 per ottenere i minuti
+        durata_ore = int(self.durata)
+        durata_minuti = durata_ore * 60
+
+        # Converti self.data_selezionata in un oggetto datetime
+        data_selezionata_datetime = datetime.strptime(self.data_selezionata, "%Y-%m-%d %H:%M")
+
+        # Calcola ora_inizio e ora_fine in base alla data selezionata e alla durata
+        ora_inizio = data_selezionata_datetime
+        ora_fine = data_selezionata_datetime + timedelta(minutes=durata_minuti)
+
+        # Ottieni Aula
+        prenotazione_controller = PrenotazioneController()
+        aule = prenotazione_controller.is_aula_disponibile(self.data_selezionata, ora_inizio, ora_fine)
+
         # Ottieni aule dal database utilizzando il modello Aula
-        db_session = Session()
-        aule = db_session.query(Aula).all()
-        db_session.close()
+       # db_session = Session()
+       # aule = db_session.query(Aula).all()
+        #db_session.close()
+
 
 
 

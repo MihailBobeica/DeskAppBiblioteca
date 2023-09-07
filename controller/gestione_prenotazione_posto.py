@@ -1,5 +1,7 @@
 import threading
 from datetime import timedelta, datetime
+from utils.backend import POSTI_PER_AULA
+
 from sqlalchemy import null
 from sqlalchemy.orm import session
 from sqlalchemy import and_
@@ -253,11 +255,12 @@ class PrenotazioneController(Controller):
 
         # db_session.commit()
         # db_session.close()
-    def is_posto_disponibile(self, data_prenotazione, ora_inizio, ora_fine):
+    def is_posto_disponibile(self,nome_aula, data_prenotazione, ora_inizio, ora_fine):
         db_session = Session()
 
         # Ottieni tutti i posti
-        tutti_posti = db_session.query(Posto).all()
+        tutti_posti = db_session.query(Posto).filter_by(aula=nome_aula).limit(POSTI_PER_AULA).all()
+
 
         # Controlla quali posti sono disponibili nella fascia oraria specificata
         posti_disponibili = []
@@ -275,7 +278,6 @@ class PrenotazioneController(Controller):
 
         db_session.close()
         return posti_disponibili
-
 
     def is_aula_disponibile(self, data_prenotazione, ora_inizio, ora_fine):
         db_session = Session()
@@ -315,3 +317,4 @@ class PrenotazioneController(Controller):
 
         db_session.close()
         return aule_disponibili
+
