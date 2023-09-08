@@ -9,6 +9,7 @@ from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI, PRENOTAZIONI_AUL
 from model.aula import Aula
 from model.libro import Libro
 from model.posto import Posto
+from model.sanzione import Sanzione
 from model.utente import Utente
 from model.prestito import Prestito
 from model.prenotazione_aula import prenotazione_aula
@@ -28,6 +29,7 @@ model_posto = Posto()
 model_prenotazione_aula = prenotazione_aula()
 model_prenotazione_libro = PrenotazioneLibro()
 model_prestito = Prestito()
+model_sanzioni = Sanzione()
 
 # seeding
 model_utente.seed_db(UTENTI)
@@ -45,7 +47,8 @@ controller_router = RouterController()
 controller_statistiche = StatisticheController()
 controller_catalogo = CatalogoController({"libri": model_libro,
                                           "prenotazioni_libri": model_prenotazione_libro,
-                                          "osserva_libri": model_osserva_libro})
+                                          "osserva_libri": model_osserva_libro,
+                                          "sanzioni": model_sanzioni})
 controller_login = LoginController({"utente": model_utente})
 controller_logout = LogoutController()
 controller_gestione_operatori = AdminController.Gestione_Op_Controller()

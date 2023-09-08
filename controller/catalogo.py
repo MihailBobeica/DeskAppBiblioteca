@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, Callable
 
 from PySide6.QtWidgets import QMessageBox
@@ -8,6 +9,7 @@ from database import PrenotazioneLibro as DbPrenotazioneLibro
 from factory import LibroViewFactory
 from model import LibroOsservato
 from model import PrenotazioneLibro
+from model.sanzione import Sanzione
 from utils.auth import auth
 from utils.key import KeyDb
 from utils.request import *
@@ -52,8 +54,10 @@ class CatalogoController(Controller):
     def prenota_libro(self, data: Optional[dict] = None):
         libro: DbLibro = data.get(KeyDb.LIBRO)
         model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
+        model_sanzione: Sanzione = self.models["sanzioni"]
+
         # check se l'utente non è sanzionato
-        is_sanzionato = False  # TODO
+        is_sanzionato = model_sanzione.is_sanzionato(auth.user)
         if is_sanzionato:
             self.alert(title=ALERT_PRENOTAZIONE_NEGATA_TITLE,
                        message=ALERT_UTENTE_SANZIONATO_MESSAGE)
@@ -121,13 +125,22 @@ class CatalogoController(Controller):
         response = self.confirm(title=CANCELLA_PRENOTAZIONE_TITLE,
                                 message=CONFIRM_CANCELLA_PRENOTAZIONE_MESSAGE.format(libro.titolo))
         if response == QMessageBox.StandardButton.Yes:
-            model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
-            model_prenotazione_libro.cancella(prenotazione)
-            catalogo: CatalogoComponent = data.get("catalogo")
-            if catalogo:
-                catalogo.update()
-            else:
-                self.visualizza_libri_prenotati()
+            response = self.confirm(title=CANCELLA_PRENOTAZIONE_TITLE,
+                                    message="Verrai temporaneamente sospeso"
+                                            "\ndal servizio di prenotazione libri.")
+            if response == QMessageBox.StandardButton.Yes:
+                model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
+                model_prenotazione_libro.cancella(prenotazione)
+
+                model_sanzione: Sanzione = self.models["sanzioni"]
+                data_fine = datetime.now() + (prenotazione.data_cancellazione - prenotazione.data_prenotazione)
+                model_sanzione.from_cancella_prenotazione(auth.user, data_fine)
+
+                catalogo: CatalogoComponent = data.get("catalogo")
+                if catalogo:
+                    catalogo.update()
+                else:
+                    self.visualizza_libri_prenotati()
 
     def visualizza_libri_prenotati(self, data: Optional[dict] = None):
         self.redirect(LibriPrenotatiView())

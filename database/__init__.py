@@ -118,7 +118,8 @@ class Prestito(Base):
 class Sanzione(Base):
     __tablename__ = "sanzioni"
 
-    id = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    data_fine = Column(DateTime)
     durata = Column(DateTime, nullable=True)
     tipo = Column(String)
     utente_id = Column(Integer, ForeignKey('utenti.id'))
