@@ -5,7 +5,9 @@ from sqlalchemy import and_, or_
 from abstract.model import Model
 from database import Sanzione as DbSanzione
 from database import Session, Prestito as DbPrestito
+from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Utente as DbUtente
+from utils.backend import DURATA_PRENOTAZIONE
 
 
 class Sanzione(Model):
@@ -61,6 +63,20 @@ class Sanzione(Model):
         db_session.commit()
         db_session.close()
 
+    def from_libro_non_ritirato(self, utente: DbUtente, prenotazione: DbPrenotazioneLibro):
+        db_session = Session()
+
+        data_fine = datetime.now() + timedelta(days=DURATA_PRENOTAZIONE)
+
+        sospensione = DbSanzione(data_fine=data_fine,
+                                 utente_id=utente.id,
+                                 prenotazione_id=prenotazione.id,
+                                 tipo="sospensione")
+
+        db_session.add(sospensione)
+        db_session.commit()
+        db_session.close()
+
     def is_sanzionato(self, utente: DbUtente) -> bool:
         db_session = Session()
         sanzioni_valide = db_session.query(DbSanzione).filter(
@@ -73,11 +89,20 @@ class Sanzione(Model):
         db_session.close()
         return len(sanzioni_valide) >= 1
 
-    def is_registered(self, utente: DbUtente, prestito: DbPrestito) -> bool:
+    def prestito_is_registered(self, utente: DbUtente, prestito: DbPrestito) -> bool:
         db_session = Session()
         sanzione = db_session.query(DbSanzione).filter(
             and_(DbSanzione.utente_id == utente.id,
                  DbSanzione.prestito_id == prestito.id)
+        ).all()
+        db_session.close()
+        return len(sanzione) >= 1  # >= just in case
+
+    def prenotazione_is_registered(self, utente: DbUtente, prenotazione: DbPrenotazioneLibro) -> bool:
+        db_session = Session()
+        sanzione = db_session.query(DbSanzione).filter(
+            and_(DbSanzione.utente_id == utente.id,
+                 DbSanzione.prestito_id == prenotazione.id)
         ).all()
         db_session.close()
         return len(sanzione) >= 1  # >= just in case

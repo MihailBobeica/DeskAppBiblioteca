@@ -123,6 +123,16 @@ class PrenotazioneLibro(Model):
         db_session.close()
         return prenotazioni_quasi_scadute
 
+    def scadute(self, utente: DbUtente):
+        db_session = Session()
+        prenotazioni_scadute = db_session.query(DbPrenotazioneLibro).filter(
+            and_(DbPrenotazioneLibro.utente_id == utente.id,
+                 DbPrenotazioneLibro.data_cancellazione == None,
+                 DbPrenotazioneLibro.data_scadenza < datetime.now())
+        ).all()
+        db_session.close()
+        return prenotazioni_scadute
+
     '''def by_utente(selfself, id):
         db_session = Session()
         prestiti = db_session.query(DbPrenotazioneLibro).filter_by(utente_id=id).filter().first()

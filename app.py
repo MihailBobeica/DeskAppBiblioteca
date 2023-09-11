@@ -58,6 +58,7 @@ controller_gestione_libri = gestione_libri.GestioneLibriController()
 controller_gestione_utenti = gestione_utenti.GestioneUtentiController()
 controller_sanzione = SanzioneController({"utenti": model_utente,
                                           "prestiti": model_prestito,
-                                          "sanzioni": model_sanzioni})
+                                          "sanzioni": model_sanzioni,
+                                          "prenotazioni_libri": model_prenotazione_libro})
 
 main_window.set_view(HomeGuestView())
