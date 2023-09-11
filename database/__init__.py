@@ -119,12 +119,16 @@ class Sanzione(Base):
     __tablename__ = "sanzioni"
 
     id = Column(Integer, primary_key=True)
-    data_fine = Column(DateTime)
+    data_fine = Column(DateTime, nullable=True)
     durata = Column(DateTime, nullable=True)
     tipo = Column(String)
     utente_id = Column(Integer, ForeignKey('utenti.id'))
+    prestito_id = Column(Integer, ForeignKey('prestiti.id'), nullable=True)
+    prenotazione_id = Column(Integer, ForeignKey('prenotazioni_libri.id'), nullable=True)
 
     utente = relationship("Utente")
+    prestito = relationship("Prestito")
+    prenotazione = relationship("PrenotazioneLibro")
 
 
 class OsservaLibro(Base):

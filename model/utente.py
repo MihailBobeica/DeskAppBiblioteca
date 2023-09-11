@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Type
 
 from PySide6.QtWidgets import QMessageBox
 from sqlalchemy import or_,and_
@@ -45,6 +45,12 @@ class Utente(Model):
         db_session.merge(utente)
         db_session.commit()
         db_session.close()
+
+    def all(self) -> list[DbUtente]:
+        db_session = Session()
+        utenti = db_session.query(DbUtente).all()
+        db_session.close()
+        return utenti
 
     def ricerca(self,input):
         db_session = Session()

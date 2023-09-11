@@ -6,7 +6,6 @@ from abstract.model import Model
 from database import Sanzione as DbSanzione
 from database import Session, Prestito as DbPrestito
 from database import Utente as DbUtente
-from database import PrenotazioneLibro as DbPrenotazioneLibro
 
 
 class Sanzione(Model):
@@ -51,12 +50,34 @@ class Sanzione(Model):
         db_session.commit()
         db_session.close()
 
+    def from_libro_non_restituito(self, utente: DbUtente, prestito: DbPrestito):
+        db_session = Session()
+
+        sospensione = DbSanzione(utente_id=utente.id,
+                                 prestito_id=prestito.id,
+                                 tipo="sospensione")
+
+        db_session.add(sospensione)
+        db_session.commit()
+        db_session.close()
+
     def is_sanzionato(self, utente: DbUtente) -> bool:
         db_session = Session()
         sanzioni_valide = db_session.query(DbSanzione).filter(
             and_(DbSanzione.utente_id == utente.id,
-                 DbSanzione.data_fine >= datetime.now())
+                 or_(DbSanzione.data_fine == None,
+                     DbSanzione.data_fine >= datetime.now())
+                 )
         ).all()
 
         db_session.close()
         return len(sanzioni_valide) >= 1
+
+    def is_registered(self, utente: DbUtente, prestito: DbPrestito) -> bool:
+        db_session = Session()
+        sanzione = db_session.query(DbSanzione).filter(
+            and_(DbSanzione.utente_id == utente.id,
+                 DbSanzione.prestito_id == prestito.id)
+        ).all()
+        db_session.close()
+        return len(sanzione) >= 1  # >= just in case

@@ -2,6 +2,7 @@
 from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche
 from controller.notifica import NotificaController
 from controller.router import RouterController
+from controller.sanzione import SanzioneController
 from controller.statistiche import StatisticheController
 from model import LibroOsservato
 from model import PrenotazioneLibro
@@ -55,5 +56,8 @@ controller_gestione_operatori = AdminController.Gestione_Op_Controller()
 controller_crud_operatore = gestione_operatore.CRUD_operatore()
 controller_gestione_libri = gestione_libri.GestioneLibriController()
 controller_gestione_utenti = gestione_utenti.GestioneUtentiController()
+controller_sanzione = SanzioneController({"utenti": model_utente,
+                                          "prestiti": model_prestito,
+                                          "sanzioni": model_sanzioni})
 
 main_window.set_view(HomeGuestView())
