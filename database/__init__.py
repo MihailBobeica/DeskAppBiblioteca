@@ -83,6 +83,12 @@ class PrenotazioneAula(Base):
     codice_aula = Column(String)
     codice_utente = Column(String)
 
+    # aula_id = Column(Integer, ForeignKey('aule.id'))
+    # utente_id = Column(Integer, ForeignKey('utenti.id'))
+    #
+    # aula = relationship("Aula")
+    # utente = relationship("Utente")
+
 
 class PrenotazioneLibro(Base):
     __tablename__ = 'prenotazioni_libri'

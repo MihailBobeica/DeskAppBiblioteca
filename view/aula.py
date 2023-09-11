@@ -22,8 +22,23 @@ class DettaglioAulaView(View):
         # Crea un'istanza della classe Posto
         posto_instance = Posto()
 
+        durata_ore = int(self.durata)
+        durata_minuti = durata_ore * 60
+
+        # Converti self.data_selezionata in un oggetto datetime
+        data_selezionata_datetime = datetime.strptime(self.data_selezionata, "%Y-%m-%d %H:%M")
+
+        # Calcola ora_inizio e ora_fine in base alla data selezionata e alla durata
+        ora_inizio = data_selezionata_datetime
+        ora_fine = data_selezionata_datetime + timedelta(minutes=durata_minuti)
+
         # Ottieni i posti dal database utilizzando l'istanza di Posto per l'aula corrente
-        posti = posto_instance.get_posti_by_aula(self.nome_aula)
+        # posti = posto_instance.get_posti_by_aula(self.nome_aula)
+        prenotazione_controller = PrenotazioneController()
+        posti = prenotazione_controller.is_posto_disponibile(self.nome_aula,
+                                                             data_prenotazione=None,
+                                                             ora_inizio=ora_inizio,
+                                                             ora_fine=ora_fine)
 
         # Aggiungi i pulsanti dei posti dinamicamente
         for posto in posti:
@@ -38,15 +53,22 @@ class DettaglioAulaView(View):
         # Effettua la prenotazione solo se il posto è selezionato
         if posto_data and self.data_selezionata:
             # Converti la data selezionata in un oggetto datetime.date
-            data_prenotazione = datetime.strptime(self.data_selezionata, "%Y-%m-%d").date()
+            # data_prenotazione = datetime.strptime(self.data_selezionata, "%Y-%m-%d %H:%M").date()
 
             # Converti la durata in un numero intero rappresentante le ore e moltiplicala per 60 per ottenere i minuti
             durata_ore = int(self.durata)
             durata_minuti = durata_ore * 60
 
             # Crea oggetti datetime completi per ora_inizio e ora_fine
-            ora_inizio = datetime.combine(data_prenotazione, datetime.strptime("08:30", "%H:%M").time())
-            ora_fine = datetime.combine(data_prenotazione, datetime.strptime("08:30", "%H:%M").time()) + timedelta(minutes=durata_minuti)
+            # ora_inizio = datetime.combine(data_prenotazione, datetime.strptime("08:30", "%H:%M").time())
+            # ora_fine = datetime.combine(data_prenotazione, datetime.strptime("08:30", "%H:%M").time()) + timedelta(
+            #     minutes=durata_minuti)
+
+            data_prenotazione = datetime.strptime(self.data_selezionata, "%Y-%m-%d %H:%M")
+
+            # Calcola ora_inizio e ora_fine in base alla data selezionata e alla durata
+            ora_inizio = data_prenotazione
+            ora_fine = data_prenotazione + timedelta(minutes=durata_minuti)
 
             prenotazione_controller = PrenotazioneController()
             utente_id = prenotazione_controller.get_username_utente_loggato()
@@ -61,14 +83,14 @@ class DettaglioAulaView(View):
             )
 
             # Mostra un messaggio di conferma
-            QMessageBox.information(self,"Prenotazione effettuata",
-                         f"Prenotazione effettuata per il posto: {posto_data.nome} - Aula: {posto_data.aula}")
+            QMessageBox.information(self, "Prenotazione effettuata",
+                                    f"Prenotazione effettuata per il posto: {posto_data.nome} - Aula: {posto_data.aula}")
             self.popup_shown = True
             lista_prenotazioni_view = ListaPrenotazioniView()
             self.main_window.set_view(lista_prenotazioni_view)
-    #def clear_layout(self):
-       # while self.layout().count():
-          #  item = self.layout().takeAt(0)
-          #  widget = item.widget()
-            #if widget:
-             #   widget.deleteLater()
+    # def clear_layout(self):
+    # while self.layout().count():
+    #  item = self.layout().takeAt(0)
+    #  widget = item.widget()
+    # if widget:
+    #   widget.deleteLater()

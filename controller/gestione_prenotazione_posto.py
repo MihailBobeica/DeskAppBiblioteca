@@ -255,11 +255,20 @@ class PrenotazioneController(Controller):
 
         # db_session.commit()
         # db_session.close()
+
+    def get_all_aule(self):
+        db_session = Session()
+        aule = db_session.query(Aula).all()
+        db_session.close()
+        return aule
+
+
     def is_posto_disponibile(self,nome_aula, data_prenotazione, ora_inizio, ora_fine):
         db_session = Session()
 
         # Ottieni tutti i posti
-        tutti_posti = db_session.query(Posto).filter_by(aula=nome_aula).limit(POSTI_PER_AULA).all()
+        # tutti_posti = db_session.query(Posto).filter_by(aula=nome_aula).limit(POSTI_PER_AULA).all()
+        tutti_posti = db_session.query(Posto).filter_by(aula=nome_aula).all()
 
 
         # Controlla quali posti sono disponibili nella fascia oraria specificata
@@ -267,10 +276,10 @@ class PrenotazioneController(Controller):
         for posto in tutti_posti:
             prenotazioni_posto = db_session.query(PrenotazionePosto).filter(
                 and_(
-                    PrenotazionePosto.codice_posto == posto.id,
-                    PrenotazionePosto.data_prenotazione == data_prenotazione,
-                    PrenotazionePosto.ora_fine > ora_inizio,
-                    PrenotazionePosto.ora_inizio < ora_fine
+                    PrenotazionePosto.codice_posto == posto.nome,
+                    # PrenotazionePosto.data_prenotazione == data_prenotazione,
+                    PrenotazionePosto.ora_fine >= ora_inizio,
+                    PrenotazionePosto.ora_inizio <= ora_fine
                 )
             ).all()
             if not prenotazioni_posto:
@@ -290,23 +299,25 @@ class PrenotazioneController(Controller):
         for aula in tutte_aule:
             prenotazioni_aula = db_session.query(PrenotazioneAula).filter(
                 and_(
-                    PrenotazioneAula.codice_aula == aula.id,
-                    PrenotazioneAula.data_prenotazione == data_prenotazione,
-                    PrenotazioneAula.ora_fine > ora_inizio,
-                    PrenotazioneAula.ora_inizio < ora_fine
+                    PrenotazioneAula.codice_aula == aula.nome,
+                    # PrenotazioneAula.data_prenotazione == data_prenotazione,
+                    PrenotazioneAula.ora_fine >= ora_inizio,
+                    PrenotazioneAula.ora_inizio <= ora_fine
                 )
             ).all()
 
             if not prenotazioni_aula:
-                posti_aula = db_session.query(Posto).filter(Posto.aula == aula.id).all()
+                # aule_disponibili.append(aula)
+
+                posti_aula = db_session.query(Posto).filter(Posto.aula == aula.nome).all()
                 posti_disponibili = []
                 for posto in posti_aula:
                     prenotazioni_posto = db_session.query(PrenotazionePosto).filter(
                         and_(
-                            PrenotazionePosto.codice_posto == posto.id,
-                            PrenotazionePosto.data_prenotazione == data_prenotazione,
-                            PrenotazionePosto.ora_fine > ora_inizio,
-                            PrenotazionePosto.ora_inizio < ora_fine
+                            PrenotazionePosto.codice_posto == posto.nome,
+                            # PrenotazionePosto.data_prenotazione == data_prenotazione,
+                            PrenotazionePosto.ora_fine >= ora_inizio,
+                            PrenotazionePosto.ora_inizio <= ora_fine
                         )
                     ).all()
                     if not prenotazioni_posto:

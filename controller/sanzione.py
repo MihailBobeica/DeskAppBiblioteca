@@ -18,6 +18,7 @@ class SanzioneController(Controller):
         model_utente: Utente = self.models["utenti"]
         model_prestito: Prestito = self.models["prestiti"]
         model_sanzione: Sanzione = self.models["sanzioni"]
+
         utenti = model_utente.all()
         for utente in utenti:
             prestiti_scaduti = model_prestito.scaduti(utente)
@@ -30,6 +31,7 @@ class SanzioneController(Controller):
         model_utente: Utente = self.models["utenti"]
         model_prenotazione: PrenotazioneLibro = self.models["prenotazioni_libri"]
         model_sanzione: Sanzione = self.models["sanzioni"]
+
         utenti = model_utente.all()
         for utente in utenti:
             prenotazioni_scadute = model_prenotazione.scadute(utente)

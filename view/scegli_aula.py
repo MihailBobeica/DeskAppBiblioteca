@@ -20,7 +20,7 @@ class ScegliAulaView(View):
         self.popup_shown = False
         self.dettaglio_aula_view = None
         # Crea il layout delle aule solo all'inizializzazione della vista
-        self.create_layout()
+        # self.create_layout()
 
     def create_layout(self):
         layout = QVBoxLayout(self)
@@ -41,7 +41,10 @@ class ScegliAulaView(View):
 
         # Ottieni Aula
         prenotazione_controller = PrenotazioneController()
-        aule = prenotazione_controller.is_aula_disponibile(self.data_selezionata, ora_inizio, ora_fine)
+        if self.tipo_prenotazione == "prenota_aula":
+            aule = prenotazione_controller.is_aula_disponibile(data_selezionata_datetime, ora_inizio, ora_fine)
+        else:
+            aule = prenotazione_controller.get_all_aule()
 
         # Ottieni aule dal database utilizzando il modello Aula
        # db_session = Session()
@@ -102,10 +105,10 @@ class ScegliAulaView(View):
             # Rimuovi tutti i widget dal layout attuale
            # self.clear_layout()
             # Esegui lo split per ottenere solo la parte della data fino a "YYYY-MM-DD"
-            data_selezionata = self.data_selezionata.split(" ")[0]
+            # data_selezionata = self.data_selezionata.split(" ")[0]
 
             # Crea una nuova istanza della vista DettaglioAulaView e passa il nome dell'aula selezionata
-            self.dettaglio_aula_view = DettaglioAulaView(aula_data.nome, data_selezionata, self.durata)
+            self.dettaglio_aula_view = DettaglioAulaView(aula_data.nome, self.data_selezionata, self.durata)
 
             # Imposta la finestra principale come genitore della vista DettaglioAulaView
             self.dettaglio_aula_view.main_window = self.main_window
