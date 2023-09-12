@@ -6,10 +6,8 @@ from PySide6.QtWidgets import QLabel, QVBoxLayout
 from database import Utente as db_Utente
 from abstract.view import View
 from PySide6.QtCore import Qt
-from view.home_operatore import HomeOperatoreView
 from database import Prestito as db_prestito
 from model.sanzione import Sanzione
-from view.homepage.operatore import HomeOperatoreView
 
 
 
@@ -56,7 +54,7 @@ class Restituzione(View):
         if result == QMessageBox.Yes:
             from model.prestito import Prestito
             Prestito.restituzione(self, prestito)
-            self.redirect(HomeOperatoreView())
+            # self.main_window.set_view(HomeOperatoreView())
         else:
             pass
 

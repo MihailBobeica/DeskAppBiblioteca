@@ -49,7 +49,8 @@ controller_statistiche = StatisticheController()
 controller_catalogo = CatalogoController({"libri": model_libro,
                                           "prenotazioni_libri": model_prenotazione_libro,
                                           "osserva_libri": model_osserva_libro,
-                                          "sanzioni": model_sanzioni})
+                                          "sanzioni": model_sanzioni,
+                                          "prestiti": model_prestito})
 controller_login = LoginController({"utente": model_utente})
 controller_logout = LogoutController()
 controller_gestione_operatori = AdminController.Gestione_Op_Controller()

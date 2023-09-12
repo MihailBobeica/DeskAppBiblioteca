@@ -42,6 +42,7 @@ KEY_CONTEXT_CATALOGO_PRENOTAZIONI_LIBRI = "context_catalogo_prenotazioni_libri"
 
 class KeyDb(Enum):
     LIBRO = "db_libro"
+    PRESTITO = "db_prestito"
     PRENOTAZIONE_LIBRO = "db_prenotazione_libro"
 
 
@@ -64,6 +65,8 @@ class KeyLabelComponent(Enum):
     ISBN = "KEY_LABEL_COMPONENT_ISBN"
     DATA_PRENOTAZIONE_LIBRO = "KEY_LABEL_COMPONENT_DATA_PRENOTAZIONE_LIBRO"
     CODICE_PRENOTAZIONE_LIBRO = "KEY_LABEL_COMPONENT_CODICE_PRENOTAZIONE_LIBRO"
+    INIZIO_PRESTITO = "KEY_LABEL_COMPONENT_INIZIO_PRESTITO"
+    FINE_PRESTITO = "KEY_LABEL_COMPONENT_FINE_PRESTITO"
 
 
 class KeyButtonComponent(Enum):
@@ -73,7 +76,9 @@ class KeyButtonComponent(Enum):
     DETTAGLI_PRENOTAZIONE_LIBRO = "key_button_component_dettagli_prenotazione_libro"
     CANCELLA_PRENOTAZIONE_LIBRO = "key_button_component_cancella_prenotazione_libro"
     GO_TO_LIBRI_PRENOTATI = "key_button_component_go_to_libri_prenotati"
+    GO_TO_LIBRI_IN_PRESTITO = "key_button_component_go_to_libri_in_prestito"
     RIMUOVI_LIBRO_OSSERVATO = "KEY_BUTTON_RIMUOVI_LIBRO_OSSERVATO"
+    DETTAGLI_PRESTITO = "DETTAGLI_PRESTITO"
 
 
 class KeyContext(Enum):
@@ -81,3 +86,4 @@ class KeyContext(Enum):
     CATALOGO_LIBRI_UTENTE = "context_catalogo_libri_utente"
     CATALOGO_PRENOTAZIONI_LIBRI = "context_catalogo_prenotazioni_libri"
     CATALOGO_LIBRI_OSSERVATI = "context_catalogo_libri_osservati"
+    CATALOGO_LIBRI_IN_PRESTITO = "context_catalogo_libri_in_prestito"

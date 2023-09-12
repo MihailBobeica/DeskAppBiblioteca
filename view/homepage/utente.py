@@ -55,23 +55,7 @@ class HomeUtenteView(View):
         self.attach(controller_catalogo)
         self.attach(controller_router)
         self.attach(controller_notifica)
-        # self.prenotazione_controller = PrenotazioneController()  # CAUSA UN BUG PER CUI LAPP NON SI CHIUDE
 
-    # def show_prenota_schermata(self):
-    #     scegli_prenotazione_view = ScegliPrenotazione()
-    #     self.main_window.set_view(scegli_prenotazione_view)
-    #
-    # def show_lista_prenotazioni(self):
-    #     lista_prenotazioni_view = ListaPrenotazioniView(self.prenotazione_controller, self.main_window)
-    #     self.main_window.set_view(lista_prenotazioni_view)
-    #
-    # def libri_prenotati(self):
-    #     self.redirect(LibriPrenotatiView())
-    #     # from model.prenotazione_libro import PrenotazioneLibro
-    #     # prenotazioni = PrenotazioneLibro.ricerca(self)
-    #     # from .libri_prenotati import VisualizzaPrenotazioni
-    #     # self.redirect(VisualizzaPrenotazioni(prenotazioni))
-    #
     # def libri_in_prestito(self):
     #     libri = Prestito.by_utente(self, Auth.user.username)
     #     from .libri_in_prestito import VisualizzaPrestiti

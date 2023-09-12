@@ -43,5 +43,8 @@ class View(QFrame):
     def attach_controllers(self) -> None:
         pass
 
+    def redirect(self, view) -> None:
+        self.main_window.set_view(view)
+
     def logout(self):
         self.notify(Request.LOGOUT)

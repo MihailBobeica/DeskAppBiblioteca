@@ -3,6 +3,7 @@ from abc import abstractmethod
 from abstract import BoundedModel
 from model import PrenotazioneLibro, LibroOsservato
 from model.libro import Libro
+from model.prestito import Prestito
 from utils.auth import auth
 from utils.backend import is_empty, MODEL_PRENOTAZIONE_LIBRO, MODEL_LIBRO
 from utils.key import KeyDb
@@ -52,7 +53,7 @@ class CercaPrenotazioniValide(SearchStrategy):
 
 
 class CercaLibriOsservati(SearchStrategy):
-    def search(self, models: dict[str, BoundedModel], text: str) -> list[dict[str, object]]:
+    def search(self, models: dict[str, BoundedModel], text: str) -> list[dict[KeyDb, object]]:
         model_libro_osservato: LibroOsservato = models["osserva_libri"]
 
         if is_empty(text):
@@ -60,6 +61,21 @@ class CercaLibriOsservati(SearchStrategy):
         else:
             libri_osservati = model_libro_osservato.search_libri_osservati(auth.user, text)
         data = [{KeyDb.LIBRO: libro} for libro in libri_osservati]
+        return data
+
+    def __init__(self):
+        super().__init__()
+
+
+class CercaLibriInPrestito(SearchStrategy):
+    def search(self, models: dict[str, BoundedModel], text: str) -> list[dict[KeyDb, object]]:
+        model_prestito: Prestito = models["prestiti"]
+
+        if is_empty(text):
+            prestiti, libri_in_prestito = model_prestito.valide(auth.user)
+        else:
+            prestiti, libri_in_prestito = model_prestito.valide_by_text(auth.user, text)
+        data = [{KeyDb.LIBRO: libro, KeyDb.PRESTITO: prestito} for libro, prestito in zip(libri_in_prestito, prestiti)]
         return data
 
     def __init__(self):

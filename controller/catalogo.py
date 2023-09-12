@@ -15,9 +15,10 @@ from utils.key import KeyDb
 from utils.request import *
 from utils.strings import *
 from view.component.catalogo import CatalogoComponent
+from view.libri_in_prestito import LibriInPrestitoView
 from view.libri_osservati import LibriOsservatiView
 from view.libri_prenotati import LibriPrenotatiView
-from view.libro import PrenotazioneLibroView
+from view.libro import PrenotazioneLibroView, DettagliPrestitoView
 
 
 class CatalogoController(Controller):
@@ -34,6 +35,8 @@ class CatalogoController(Controller):
         self.action[Request.CANCELLA_PRENOTAZIONE_LIBRO] = self.cancella_prenotazione_libro
         self.action[Request.GO_TO_LIBRI_PRENOTATI] = self.visualizza_libri_prenotati
         self.action[Request.RIMUOVI_LIBRO_OSSERVATO] = self.rimuovi_libro_osservato
+        self.action[Request.GO_TO_DETTAGLI_PRESTITO] = self.visualizza_dettagli_prestito
+        self.action[Request.GO_TO_LIBRI_IN_PRESTITO] = self.visualizza_libri_in_prestito
 
     def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
         action = self.action.get(message)
@@ -144,6 +147,12 @@ class CatalogoController(Controller):
 
     def visualizza_libri_prenotati(self, data: Optional[dict] = None):
         self.redirect(LibriPrenotatiView())
+
+    def visualizza_libri_in_prestito(self, data: Optional[dict] = None):
+        self.redirect(LibriInPrestitoView())
+
+    def visualizza_dettagli_prestito(self, data: Optional[dict] = None):
+        self.redirect(DettagliPrestitoView(data))
 
     def rimuovi_libro_osservato(self, data: Optional[dict] = None):
         libro: DbLibro = data.get(KeyDb.LIBRO)

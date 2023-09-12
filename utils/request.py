@@ -25,6 +25,7 @@ class Request(Enum):
     GO_TO_POSTI_PRENOTATI = "go_to_posti_prenotati"
     GO_TO_CRONOLOGIA = "go_to_cronologia"
     GO_TO_SANZIONI = "go_to_sanzioni"
+    GO_TO_DETTAGLI_PRESTITO = "go_to_dettagli_prestito"
     GO_TO_VISUALIZZA_LIBRO = "go_to_visualizza_libro"
     GO_TO_STATISTICHE = "go_to_visualizza_statistiche"
     PRENOTA_LIBRO = "prenota_libro"

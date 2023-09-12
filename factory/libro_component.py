@@ -17,6 +17,7 @@ class LibroComponentFactory(Factory):
         from view.component.libro import LibroComponentUtente
         from view.component.libro import LibroPrenotatoComponent
         from view.component.libro import LibroOsservatoComponent
+        from view.component.libro import LibroInPrestitoComponent
 
         self.type: dict[KeyContext, Type[LibroComponentScaffold]] = dict()
 
@@ -24,6 +25,7 @@ class LibroComponentFactory(Factory):
         self.type[KeyContext.CATALOGO_LIBRI_UTENTE] = LibroComponentUtente
         self.type[KeyContext.CATALOGO_PRENOTAZIONI_LIBRI] = LibroPrenotatoComponent
         self.type[KeyContext.CATALOGO_LIBRI_OSSERVATI] = LibroOsservatoComponent
+        self.type[KeyContext.CATALOGO_LIBRI_IN_PRESTITO] = LibroInPrestitoComponent
 
     def create(self, key: KeyContext):
         libro_component = self.type.get(key)

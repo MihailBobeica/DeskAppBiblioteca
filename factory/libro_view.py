@@ -1,13 +1,9 @@
-from typing import Type, TypedDict
+from typing import Type
 
 from abstract import Factory
 from database import BoundedDbModel
 from utils.key import KeyAuth, KeyDb
 from view.scaffold import LibroViewScaffold
-
-
-class KwargsDict(TypedDict):
-    data: dict[str, BoundedDbModel]
 
 
 class LibroViewFactory(Factory):

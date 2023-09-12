@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QLabel
 
 from database import BoundedDbModel
 from database import Libro as DbLibro
+from database import Prestito as DbPrestito
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from utils.backend import DATE_FORMAT, YEAR_FORMAT
 from utils.key import KeyDb
@@ -74,3 +75,15 @@ class LabelCodicePrenotazioneLibro(QLabel):
     def __init__(self, data: dict[KeyDb, BoundedDbModel]):
         prenotazione_libro: DbPrenotazioneLibro = data[KeyDb.PRENOTAZIONE_LIBRO]
         super().__init__(f"Codice prenotazione:\n{prenotazione_libro.codice}")
+
+
+class LabelInizioPrestito(QLabel):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        prestito: DbPrestito = data.get(KeyDb.PRESTITO)
+        super().__init__(f"Inizio prestito:\n{prestito.data_inizio.strftime(DATE_FORMAT)}")
+
+
+class LabelFinePrestito(QLabel):
+    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
+        prestito: DbPrestito = data.get(KeyDb.PRESTITO)
+        super().__init__(f"Fine prestito:\n{prestito.data_scadenza.strftime(DATE_FORMAT)}")

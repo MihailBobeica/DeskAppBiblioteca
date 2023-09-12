@@ -52,3 +52,13 @@ class LibroOsservatoComponent(LibroComponentScaffold):
                          KeyLabelComponent.AUTORI))
 
         self.add_buttons((KeyButtonComponent.RIMUOVI_LIBRO_OSSERVATO,))
+
+
+class LibroInPrestitoComponent(LibroComponentScaffold):
+    def __init__(self, catalogo: BoundedView, data: dict[KeyDb, BoundedDbModel]):
+        super().__init__(catalogo=catalogo, data=data)
+
+        self.add_labels((KeyLabelComponent.TITOLO,
+                         KeyLabelComponent.AUTORI))
+
+        self.add_buttons((KeyButtonComponent.DETTAGLI_PRESTITO,))

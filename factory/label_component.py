@@ -25,6 +25,8 @@ class LabelComponentFactory(Factory):
         from view.component.label import LabelIsbn
         from view.component.label import LabelDataPrenotazioneLibro
         from view.component.label import LabelCodicePrenotazioneLibro
+        from view.component.label import LabelInizioPrestito
+        from view.component.label import LabelFinePrestito
 
         self.type: dict[KeyLabelComponent, Type[QLabel]] = dict()
 
@@ -39,6 +41,8 @@ class LabelComponentFactory(Factory):
         self.type[KeyLabelComponent.ISBN] = LabelIsbn
         self.type[KeyLabelComponent.DATA_PRENOTAZIONE_LIBRO] = LabelDataPrenotazioneLibro
         self.type[KeyLabelComponent.CODICE_PRENOTAZIONE_LIBRO] = LabelCodicePrenotazioneLibro
+        self.type[KeyLabelComponent.INIZIO_PRESTITO] = LabelInizioPrestito
+        self.type[KeyLabelComponent.FINE_PRESTITO] = LabelFinePrestito
 
     def create(self, key: KeyLabelComponent) -> QLabel:
         label_component = self.type.get(key)

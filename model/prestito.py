@@ -8,6 +8,7 @@ from .libro import Libro
 from sqlalchemy import or_, and_
 from model.sanzione import Sanzione
 from database import Utente as DbUtente
+from database import Libro as DbLibro
 
 
 
@@ -34,8 +35,30 @@ class Prestito(Model):
         db_session.commit()
         db_session.close()
 
+    def valide(self, utente: DbUtente):
+        db_session = Session()
+        prestiti = db_session.query(DbPrestito).filter(
+            and_(DbPrestito.utente_id == utente.id,
+                 DbPrestito.data_restituzione == None,
+                 DbPrestito.data_scadenza >= datetime.now())
+        ).all()
+        libri_in_prestito = [p.libro for p in prestiti]
+        db_session.close()
+        return prestiti, libri_in_prestito
 
-
+    def valide_by_text(self, utente: DbUtente, text: str):
+        db_session = Session()
+        prestiti = db_session.query(DbPrestito).join(DbLibro).filter(
+            and_(DbPrestito.utente_id == utente.id,
+                 DbPrestito.data_restituzione == None,
+                 DbPrestito.data_scadenza >= datetime.now(),
+                 or_(DbLibro.titolo.ilike(f"%{text}%"),
+                     DbLibro.autori.ilike(f"%{text}%"))
+                 )
+        ).all()
+        libri_in_prestito = [p.libro for p in prestiti]
+        db_session.close()
+        return prestiti, libri_in_prestito
 
     def restituzione(self, prestito):
 

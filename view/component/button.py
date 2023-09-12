@@ -87,6 +87,16 @@ class ButtonGoToLibriPrenotati(RequestButton):
         self.view.notify(message=Request.GO_TO_LIBRI_PRENOTATI)
 
 
+class ButtonGoToLibriInPrestito(RequestButton):
+    def __init__(self, view: BoundedView):
+        super().__init__(view=view)
+        self.setText("Indietro")
+
+    def send_request(self) -> None:
+        self.view: LibroScaffold
+        self.view.notify(message=Request.GO_TO_LIBRI_IN_PRESTITO)
+
+
 class ButtonRimuoviLibroOsservato(RequestButton):
     def __init__(self, view: BoundedView):
         super().__init__(view=view)
@@ -97,3 +107,17 @@ class ButtonRimuoviLibroOsservato(RequestButton):
         self.view.notify(message=Request.RIMUOVI_LIBRO_OSSERVATO,
                          data={"catalogo": self.view.catalogo,
                                KeyDb.LIBRO: self.view.libro})
+
+
+class ButtonDettagliPrestito(RequestButton):
+    def __init__(self, view: BoundedView):
+        super().__init__(view=view)
+        self.setText("Dettagli prestito")
+
+    def send_request(self) -> None:
+        self.view: LibroScaffold
+        self.view.notify(message=Request.GO_TO_DETTAGLI_PRESTITO,
+                         data={"catalogo": self.view.catalogo,
+                               KeyDb.LIBRO: self.view.libro,
+                               KeyDb.PRESTITO: self.view.prestito}
+                         )

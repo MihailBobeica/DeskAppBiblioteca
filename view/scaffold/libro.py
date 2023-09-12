@@ -60,6 +60,7 @@ class LibroScaffold(View):
         self.fullscreen = fullscreen
 
         self.libro: DbLibro = self.data.get(KeyDb.LIBRO)
+        self.prestito: DbPrenotazioneLibro = self.data.get(KeyDb.PRESTITO)
         self.prenotazione: DbPrenotazioneLibro = self.data.get(KeyDb.PRENOTAZIONE_LIBRO)
 
         self.label_component_factory = LabelComponentFactory(data=self.data)
