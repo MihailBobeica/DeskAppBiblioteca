@@ -1,5 +1,5 @@
 
-from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche, prenotazioni_libri
+from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche, prenotazioni_libri, prestito
 from controller.notifica import NotificaController
 from controller.router import RouterController
 from controller.sanzione import SanzioneController
@@ -62,6 +62,7 @@ controller_sanzione = SanzioneController({"utenti": model_utente,
                                           "sanzioni": model_sanzioni,
                                           "prenotazioni_libri": model_prenotazione_libro})
 controller_prenotazioni_libri = prenotazioni_libri.PrenotazioniLibri()
+controller_prestito = prestito.PrestitoController()
 
 
 main_window.set_view(HomeGuestView())

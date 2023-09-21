@@ -24,27 +24,31 @@ class Restituzione(View):
         label = QLabel("Lista libri in prestito:")
         layout.addWidget(label)
 
-        for j in self.lista_libri(self.utente.id):
-            clickable_label = QLabel("codice: "+j.codice+"\ntitolo: "+j.libro.titolo)
+        for j in self.lista_libri:
+            clickable_label = QLabel("codice: "+j.codice+"\ntitolo: ")
             clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-            clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)
+            clickable_label.mousePressEvent = lambda event: self.go_to_da_restituire(event, j)
 
             layout.addWidget(clickable_label)
 
         self.setLayout(layout)
 
 
-    def __init__(self, db_utente: db_Utente):
+    def __init__(self, db_utente: db_Utente, prestiti):
         self.utente = db_utente
+        self.lista_libri = prestiti
         super().__init__()
 
-    def lista_libri(self, id):
+    '''def lista_libri(self, id):
         from model.prestito import Prestito
         prestiti = Prestito.da_restituire(self,id)
-        return prestiti
+        return prestiti'''
 
-    def on_label_clicked(self, event, prestito):
-        confirm_dialog = QMessageBox()
+
+
+    def go_to_da_restituire(self, event, prestito):
+        self.notify(message="lista_libri_da_restituire", data={"prestito" : prestito})
+        '''confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")
         confirm_dialog.setText("Vuoi confermare l'avvenuto prestito del libro?")
@@ -56,7 +60,10 @@ class Restituzione(View):
             Prestito.restituzione(self, prestito)
             # self.main_window.set_view(HomeOperatoreView())
         else:
-            pass
+            pass'''
+
+
+
 
 
 

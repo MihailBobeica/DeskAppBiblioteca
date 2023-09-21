@@ -15,7 +15,7 @@ class RicercaRestituzione(View):
         grid_layout.addWidget(self.input, 0, 1)
         invia = QPushButton("Cerca")
         grid_layout.addWidget(invia, 1, 0)
-        invia.clicked.connect(self.cerca)
+        invia.clicked.connect(self.go_to_ricerca_prestito)
 
         layout.addLayout(grid_layout)
         self.setLayout(layout)
@@ -23,10 +23,14 @@ class RicercaRestituzione(View):
     def __init__(self):
         super().__init__()
 
+    def attach_controllers(self) -> None:
+        from app import controller_prestito
+        self.attach(controller_prestito)
 
 
-    def cerca(self):
-        self.notify("")
+
+    def go_to_ricerca_prestito(self):
+        self.notify(message="ricerca_prestito", data={"data": self.input.text()})
         '''if self.input.text():
             results = Utente.by_username(self, self.input.text())
             if results:
