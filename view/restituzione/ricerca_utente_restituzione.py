@@ -23,12 +23,15 @@ class RicercaRestituzione(View):
     def __init__(self):
         super().__init__()
 
+
+
     def cerca(self):
-        if self.input.text():
+        self.notify("")
+        '''if self.input.text():
             results = Utente.by_username(self, self.input.text())
             if results:
                 from .libro_restituzione import Restituzione
-                self.redirect(Restituzione(results))
+                self.redirect(Restituzione(results))'''
 
 
 
