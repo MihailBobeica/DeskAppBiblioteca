@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller
 from typing import Optional
-from view.CRUD_Operatore.crea_operatore import ProvaView
+from view.CRUD_Operatore.crea_operatore import CreaOperatoreView
 from view.CRUD_Operatore.ricerca_operatore import RicercaView
 from view.CRUD_Operatore.modifica_operatore import ModificaView
 from view.CRUD_Operatore.Visualizza_operatore import VisualizzaView
@@ -16,7 +16,7 @@ class CRUD_operatore(Controller):
 
     def receive_message(self, message: str, data: Optional[dict] = None) -> None:
         if message == "crea_operatore":
-            self.redirect(ProvaView())
+            self.redirect(CreaOperatoreView())
         elif message == "elimina_operatore":
             self.redirect(RicercaView({"metodo" : "elimina"}))
         elif message == "modifica_operatore":
@@ -49,4 +49,8 @@ class CRUD_operatore(Controller):
 
         elif message == "salva_modifiche":
             Utente.modifica(self, data)
+            self.redirect(HomeAdminView())
+
+        elif message == "salva_nuovo_opratore":
+            Utente.inserisci(self, data["dati"])
             self.redirect(HomeAdminView())

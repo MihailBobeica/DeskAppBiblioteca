@@ -53,7 +53,7 @@ controller_catalogo = CatalogoController({"libri": model_libro,
                                           "prestiti": model_prestito})
 controller_login = LoginController({"utente": model_utente})
 controller_logout = LogoutController()
-controller_gestione_operatori = AdminController.Gestione_Op_Controller()
+controller_admin = AdminController.AdminController()
 controller_crud_operatore = gestione_operatore.CRUD_operatore()
 controller_gestione_libri = gestione_libri.GestioneLibriController()
 controller_gestione_utenti = gestione_utenti.GestioneUtentiController()

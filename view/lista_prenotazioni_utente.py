@@ -49,8 +49,8 @@ class ListaPrenotazioniUtente(View):
         super().__init__()
 
     def attach_controllers(self) -> None:
-        from app import controller_prenotazioni_libri
-        self.attach(controller_prenotazioni_libri)
+        from app import controller_prestito
+        self.attach(controller_prestito)
 
     '''def lista_libri(self, utente: db_Utente):
         from model.prenotazione_libro import PrenotazioneLibro

@@ -6,7 +6,7 @@ from utils.auth import hash_password
 from view.homepage.admin import HomeAdminView
 
 
-class ProvaView(View):
+class CreaOperatoreView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Crea operatore')
         layout = QVBoxLayout()
@@ -62,11 +62,31 @@ class ProvaView(View):
         super().__init__()
 
     def go_back(self):
-        from .home_admin import HomeAdminView
+        from view.homepage.admin import HomeAdminView
         self.redirect(HomeAdminView())
+
+
+    def attach_controllers(self) -> None:
+        from app import controller_crud_operatore
+        self.attach(controller_crud_operatore)
 
     def invia(self):
         if self.input1.text() and self.input2.text() and self.input3.text() and self.input6.text():
+            dati = {"username": self.input1.text(),
+                    "nome": self.input2.text(),
+                    "cognome": self.input3.text(),
+                    "ruolo": "operatore",
+                    "password": hash_password(self.input6.text())
+                    }
+            self.notify(message="salva_nuovo_operatore",data=dati)
+        else:
+            alert_box = QMessageBox(self)
+            alert_box.setWindowTitle("Errore")
+            alert_box.setText("Devi fornire un valore per tutti i campi di input")
+            alert_box.setIcon(QMessageBox.Warning)
+            alert_box.addButton("Ok", QMessageBox.AcceptRole)
+            alert_box.exec()
+        '''if self.input1.text() and self.input2.text() and self.input3.text() and self.input6.text():
             dati = {"username": self.input1.text(),
                     "nome": self.input2.text(),
                     "cognome": self.input3.text(),
@@ -81,4 +101,4 @@ class ProvaView(View):
             alert_box.setText("Devi fornire un valore per tutti i campi di input")
             alert_box.setIcon(QMessageBox.Warning)
             alert_box.addButton("Ok", QMessageBox.AcceptRole)
-            alert_box.exec()
+            alert_box.exec()'''

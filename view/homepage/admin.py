@@ -21,9 +21,9 @@ class HomeAdminView(View):
         layout.addWidget(sidebar)
 
     def attach_controllers(self) -> None:
-        from app import controller_logout, controller_gestione_operatori
+        from app import controller_logout, controller_admin
         self.attach(controller_logout)
-        self.attach(controller_gestione_operatori)
+        self.attach(controller_admin)
         from app import controller_statistiche
         self.attach(controller_statistiche)
 

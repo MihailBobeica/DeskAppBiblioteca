@@ -7,18 +7,24 @@ from view.component import SidebarComponent
 class GestioneOperatori(View):
     def create_layout(self):
         sidebar = SidebarComponent()
-        sidebar.add_buttons_rm(labels=("Crea operatore",
+        '''sidebar.add_buttons_rm(labels=("Crea operatore",
                                     "Elimina operatore",
                                     "Modifica operatore",
                                     "Visualizza operatore",
                                     "Logout",),
-                               style="button")
+                               style="button")'''
+
+        sidebar.set_button("Crea operatore").clicked.connect(self.crea_operatore)
+        sidebar.set_button("Elimina operatore").clicked.connect(self.elimina_operatore)
+        sidebar.set_button("Modifica operatore").clicked.connect(self.modifica_operatore)
+        sidebar.set_button("Visualizza operatore").clicked.connect(self.visualizza_operatore)
+        sidebar.set_button("Logout").clicked.connect(self.logout)
 
         # layout
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
 
-    def connect_buttons(self):
+    '''def connect_buttons(self):
         logout_button = self.get_button("Logout")
         logout_button.clicked.connect(self.send_logout_request)
         inserisci_button = self.get_button("Crea operatore")
@@ -28,7 +34,7 @@ class GestioneOperatori(View):
         modifica_button = self.get_button("Modifica operatore")
         modifica_button.clicked.connect(self.modifica_operatore)
         visualizza_button = self.get_button("Visualizza operatore")
-        visualizza_button.clicked.connect(self.visualizza_operatore)
+        visualizza_button.clicked.connect(self.visualizza_operatore)'''
 
 
     def attach_controllers(self) -> None:

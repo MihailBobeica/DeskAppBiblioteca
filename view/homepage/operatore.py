@@ -28,8 +28,8 @@ class HomeOperatoreView(View):
         super().__init__()
 
     def ricerca_utente_prestito(self):
-        from view.ricerca_utente_prestito import RicercaPrestito
-        self.main_window.set_view(RicercaPrestito())
+        from view.ricerca_utente_prestito import RicercaPrenotazioneLibro
+        self.main_window.set_view(RicercaPrenotazioneLibro())
 
     def ricerca_utente(self):
         from view.restituzione.ricerca_utente_restituzione import RicercaRestituzione

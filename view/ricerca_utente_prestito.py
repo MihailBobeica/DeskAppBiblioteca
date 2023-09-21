@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 from database import Utente as db_Utente
 from model.utente import Utente
 
-class RicercaPrestito(View):
+class RicercaPrenotazioneLibro(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout()
         grid_layout = QGridLayout()

@@ -45,9 +45,14 @@ class Restituzione(View):
         return prestiti'''
 
 
+    def attach_controllers(self) -> None:
+        from app import controller_prestito
+        self.attach(controller_prestito)
+
+
 
     def go_to_da_restituire(self, event, prestito):
-        self.notify(message="lista_libri_da_restituire", data={"prestito" : prestito})
+        self.notify(message="restituito", data={"prestito" : prestito})
         '''confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")

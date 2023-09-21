@@ -15,8 +15,10 @@ class PrestitoController(Controller):
     def receive_message(self, message: str, data: Optional[dict] = None) -> None:
         if message == "ricerca_prestito":
             self.ricerca_prestito(data)
-        elif message == "lista_libri_da_restituire":
-            self.lista_libri_da_restituire(data)
+        elif message == "registra_prestito":
+            self.registra_prestito(data)
+        elif message == "restituito":
+            self.restituito(data)
 
 
 
@@ -29,7 +31,23 @@ class PrestitoController(Controller):
                 self.redirect(Restituzione(results,prestiti))
 
 
-    def lista_libri_da_restituire(self, data: Optional[dict] = None) -> None:
+    def restituito(self, data: Optional[dict] = None) -> None:
+        confirm_dialog = QMessageBox()
+        confirm_dialog.setIcon(QMessageBox.Question)
+        confirm_dialog.setWindowTitle("Conferma")
+        confirm_dialog.setText("Vuoi confermare l'avvenuta restituzione del prestito del libro?")
+        confirm_dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
+        result = confirm_dialog.exec_()
+        if result == QMessageBox.Yes:
+            from model.prestito import Prestito
+            Prestito.restituzione(self, data["prestito"])
+            self.redirect(HomeOperatoreView)
+        else:
+            pass
+
+
+    def registra_prestito(self, data: Optional[dict] = None) -> None:
         confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")
@@ -38,8 +56,13 @@ class PrestitoController(Controller):
 
         result = confirm_dialog.exec_()
         if result == QMessageBox.Yes:
-            from model.prestito import Prestito
-            Prestito.restituzione(self, data["prestito"])
-            self.redirect(HomeOperatoreView)
+            dati = {
+                "libro": data["libro"],
+                "utente": data["utente"]
+            }
+            Prestito.inserisci(self, dati)
+            from model.prenotazione_libro import PrenotazioneLibro
+            PrenotazioneLibro.cancella(self, data["prenotazione"])
+            self.redirect(HomeOperatoreView())
         else:
             pass

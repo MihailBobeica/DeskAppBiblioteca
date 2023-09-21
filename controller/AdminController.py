@@ -5,7 +5,7 @@ from view.inserisci_libro import InserisciView
 from view.gestione_libri_admin.catalogo_admin import CatalogoComponent
 from view.Gestione_utente.gestione_utenti import GestioneUtentiView
 
-class Gestione_Op_Controller(Controller):
+class AdminController(Controller):
     def __init__(self):
         super().__init__()
 
