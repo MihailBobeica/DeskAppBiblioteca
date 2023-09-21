@@ -28,29 +28,39 @@ class CRUD_operatore(Controller):
             utente = Utente.by_username(self, data["input"])
             if utente and utente.ruolo == "operatore":
                 if data["metodo"] == "elimina":
-                    msg_box = QMessageBox()
-                    msg_box.setIcon(QMessageBox.Question)
-                    msg_box.setText("Sei sicuro di voler eliminare l'operatore?")
-                    msg_box.setWindowTitle("Conferma")
-                    msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-                    msg_box.setDefaultButton(QMessageBox.Ok)
-                    response = msg_box.exec()
-                    if response == QMessageBox.Ok:
-                        Utente.elimina(self,utente)
-                    self.redirect(HomeAdminView())
+                    self.elimina_operatore(utente)
 
                 elif data["metodo"] == "modifica":
                     self.redirect(ModificaView(utente))
                 elif data["metodo"] == "visualizza":
                     self.redirect(VisualizzaView(utente))
-
             else:
                 view_errore("Errore","L'operatore non è presente nel sistema")
 
+
         elif message == "salva_modifiche":
-            Utente.modifica(self, data)
-            self.redirect(HomeAdminView())
+            self.modifica_operatore(data)
 
         elif message == "salva_nuovo_opratore":
-            Utente.inserisci(self, data["dati"])
-            self.redirect(HomeAdminView())
+            self.inserisci_operatore(data)
+
+    def inserisci_operatore(self, data: Optional[dict] = None) -> None:
+        Utente.inserisci(self, data["dati"])
+        self.redirect(HomeAdminView())
+
+    def elimina_operatore(self, utente) -> None:
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setText("Sei sicuro di voler eliminare l'operatore?")
+        msg_box.setWindowTitle("Conferma")
+        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        msg_box.setDefaultButton(QMessageBox.Ok)
+        response = msg_box.exec()
+        if response == QMessageBox.Ok:
+            Utente.elimina(self, utente)
+        self.redirect(HomeAdminView())
+
+    def modifica_operatore(self,data: Optional[dict] = None) -> None:
+        Utente.modifica(self, data)
+        self.redirect(HomeAdminView())
+

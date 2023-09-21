@@ -23,10 +23,10 @@ class GestioneUtentiController(Controller):
         elif message == "trova_utente":
             utente = Utente.by_username(self,data["username"])
             if utente and utente.ruolo=="utente":
-                prestiti = Prestito.by_utente(self,utente.id)
-                self.redirect(VisualizzaCronologia(prestiti))
+                self.visualizza_cronologia(utente)
             else:
                 view_errore("Errore","L'utente non è presente nel sistema")
 
-
-
+    def visualizza_cronologia(self, utente):
+        prestiti = Prestito.by_utente(self, utente.id)
+        self.redirect(VisualizzaCronologia(prestiti))
