@@ -26,10 +26,15 @@ class ListaPrenotazioniUtente(View):
         label = QLabel("Lista libri prenotati:")
         layout.addWidget(label)
 
-        for j in self.lista_libri(self.utente):
+        '''for j in self.lista_libri(self.utente):
             clickable_label = QLabel("codice: "+j.codice+"\nlibro: "+ j.libro.titolo)
             clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-            clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)
+            clickable_label.mousePressEvent = lambda event: self.on_label_clicked(event, j)'''
+
+        for j in self.lista_libri:
+            clickable_label = QLabel("codice: " + j.codice + "\nlibro: " + j.libro.titolo)
+            clickable_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            clickable_label.mousePressEvent = lambda event: self.registra_prestito(event, j)
 
 
 
@@ -38,16 +43,21 @@ class ListaPrenotazioniUtente(View):
         self.setLayout(layout)
 
 
-    def __init__(self, db_utente: db_Utente):
+    def __init__(self, db_utente: db_Utente, prenotazioni):
         self.utente = db_utente
+        self.lista_libri = prenotazioni
         super().__init__()
 
-    def lista_libri(self, utente: db_Utente):
+    def attach_controllers(self) -> None:
+        from app import controller_prenotazioni_libri
+        self.attach(controller_prenotazioni_libri)
+
+    '''def lista_libri(self, utente: db_Utente):
         from model.prenotazione_libro import PrenotazioneLibro
         prenotazioni = PrenotazioneLibro.query_prenotazioni_valide(self,utente)
-        return prenotazioni
+        return prenotazioni'''
 
-    def on_label_clicked(self, event, prenotazione):
+    '''def on_label_clicked(self, event, prenotazione):
         confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")
@@ -65,7 +75,11 @@ class ListaPrenotazioniUtente(View):
             PrenotazioneLibro.cancella(self,prenotazione)
             self.redirect(HomeOperatoreView())
         else:
-            pass
+            pass'''
+
+    def registra_prestito(self, event, prenotazione):
+        self.notify(message="registra_prestito", data= {"libro" : prenotazione.libro_id, "utente" : prenotazione.utente_id, "prenotazione" : prenotazione})
+
 
 
 
