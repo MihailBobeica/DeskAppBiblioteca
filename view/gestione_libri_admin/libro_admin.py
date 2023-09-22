@@ -119,6 +119,10 @@ class LibroView(View):
     def go_back(self):
         self.main_window.set_view(HomeAdminView())
 
+    def attach_controllers(self) -> None:
+        from app import controller_gestione_libri
+        self.attach(controller_gestione_libri)
+
     def modifica(self):
         dati = {
             "titolo": self.input1.text(),
@@ -127,20 +131,11 @@ class LibroView(View):
             "anno_pubblicazione": datetime.strptime(self.input4.text(), '%d/%m/%Y'),
             "editore": self.input5.text(),
             "dati": self.input7.text(),
-            "disponibili": self.input6.text()
+            "disponibili": self.input6.text(),
+            "isbn" : self.info.isbn
         }
-        ModelLibro().modifica(dati, self.info.isbn)
-        self.main_window.set_view(HomeAdminView())
+        self.notify(message="modifica_libro", data=dati)
 
     def elimina(self):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Question)
-        msg_box.setText("Conferma")
-        msg_box.setWindowTitle("Sei sicuro di voler rimuovere il libro?")
-        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        msg_box.setDefaultButton(QMessageBox.Ok)
-        response = msg_box.exec()
-        if response == QMessageBox.Ok:
-            ModelLibro().elimina(self.info)
+        self.notify(message="elimina_libro", data=self.info)
 
-        self.main_window.set_view(HomeAdminView())

@@ -21,3 +21,4 @@ class RouterController(Controller):
             self.redirect(LibriOsservatiView())
         elif message == Request.GO_TO_LIBRI_IN_PRESTITO:
             self.redirect(LibriInPrestitoView())
+

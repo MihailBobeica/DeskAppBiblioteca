@@ -41,7 +41,8 @@ class HomeUtenteView(View):
         self.notify(Request.GO_TO_POSTI_PRENOTATI)
 
     def go_to_cronologia(self):
-        self.notify(Request.GO_TO_CRONOLOGIA)
+        #self.notify(Request.GO_TO_CRONOLOGIA)
+        self.notify("mia_cronologia")
 
     def go_to_sanzioni(self):
         self.notify(Request.GO_TO_SANZIONI)
@@ -51,10 +52,12 @@ class HomeUtenteView(View):
         from app import controller_catalogo
         from app import controller_router
         from app import controller_notifica
+        from app import controller_gestione_utenti
         self.attach(controller_logout)
         self.attach(controller_catalogo)
         self.attach(controller_router)
         self.attach(controller_notifica)
+        self.attach(controller_gestione_utenti)
 
     # def libri_in_prestito(self):
     #     libri = Prestito.by_utente(self, Auth.user.username)

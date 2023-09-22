@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame
+from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
 
 from abstract.view import View
 from database import Libro
@@ -42,17 +42,21 @@ class LibroComponent(View):
 
         v_layout.addStretch(1)
 
-        self.add_buttons_rm(labels=("Visualizza",),
-                            layout=v_layout)
+        '''self.add_buttons_rm(labels=("Visualizza",),
+                            layout=v_layout)'''
+        button_visualizza = QPushButton("Visualizza",self)
+        layout.addWidget(button_visualizza)
+        button_visualizza.clicked.connect(self.visualizza)
+
 
         contenitore_dati.setLayout(v_layout)
 
         layout.addWidget(image_label)
         layout.addWidget(contenitore_dati)
 
-    def connect_buttons(self) -> None:
+    '''def connect_buttons(self) -> None:
         button_visualizza = self.get_button("Visualizza")
-        button_visualizza.clicked.connect(self.visualizza)
+        button_visualizza.clicked.connect(self.visualizza)'''
 
     def __init__(self, db_libro: Libro):
         self.info = db_libro

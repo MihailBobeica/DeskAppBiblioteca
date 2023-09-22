@@ -48,21 +48,24 @@ class PrestitoController(Controller):
 
 
     def registra_prestito(self, data: Optional[dict] = None) -> None:
-        confirm_dialog = QMessageBox()
-        confirm_dialog.setIcon(QMessageBox.Question)
-        confirm_dialog.setWindowTitle("Conferma")
-        confirm_dialog.setText("Vuoi confermare l'avvenuto prestito del libro?")
-        confirm_dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        if(Prestito.check_max(self,data["utente"])):
+            confirm_dialog = QMessageBox()
+            confirm_dialog.setIcon(QMessageBox.Question)
+            confirm_dialog.setWindowTitle("Conferma")
+            confirm_dialog.setText("Vuoi confermare l'avvenuto prestito del libro?")
+            confirm_dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
 
-        result = confirm_dialog.exec_()
-        if result == QMessageBox.Yes:
-            dati = {
-                "libro": data["libro"],
-                "utente": data["utente"]
-            }
-            Prestito.inserisci(self, dati)
-            from model.prenotazione_libro import PrenotazioneLibro
-            PrenotazioneLibro.cancella(self, data["prenotazione"])
-            self.redirect(HomeOperatoreView())
+            result = confirm_dialog.exec_()
+            if result == QMessageBox.Yes:
+                dati = {
+                    "libro": data["libro"],
+                    "utente": data["utente"]
+                }
+                Prestito.inserisci(self, dati)
+                from model.prenotazione_libro import PrenotazioneLibro
+                PrenotazioneLibro.cancella(self, data["prenotazione"])
+                self.redirect(HomeOperatoreView())
+            else:
+                pass
         else:
             pass

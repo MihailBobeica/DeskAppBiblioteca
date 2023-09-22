@@ -18,8 +18,33 @@ class GestioneLibriController(Controller):
         super().__init__(models=models)
 
     def receive_message(self, message: str, data: Optional[dict] = None) -> None:
-        self.inserisci_libro(message, data)
-
-    def inserisci_libro(self, message: str, data: Optional[dict] = None):
         if message == "inserisci_libro":
-            Libro.inserisci2(self,data)
+            self.inserisci_libro( data)
+        elif message == "modifica_libro":
+            self.modifica_libro(data)
+        elif message == "elimina_libro":
+            self.elimina_libro(data)
+
+    def inserisci_libro(self, data: Optional[dict] = None):
+        Libro.inserisci2(self,data)
+
+    def modifica_libro(self, data: dict):
+        Libro.modifica(self,data, data["isbn"])
+        from view.homepage.admin import HomeAdminView
+        self.redirect(HomeAdminView())
+        '''ModelLibro().modifica(dati, self.info.isbn)
+        self.main_window.set_view(HomeAdminView())'''
+
+    def elimina_libro(self, libro):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setText("Conferma")
+        msg_box.setWindowTitle("Sei sicuro di voler rimuovere il libro?")
+        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        msg_box.setDefaultButton(QMessageBox.Ok)
+        response = msg_box.exec()
+        if response == QMessageBox.Ok:
+            Libro.elimina(self,libro)
+
+        from view.homepage.admin import HomeAdminView
+        self.redirect(HomeAdminView())
