@@ -8,7 +8,8 @@ from database import PrenotazioneLibro as DbPrenotazioneLibro
 from model import Libro, PrenotazioneLibro
 from utils.auth import Auth
 from utils.strings import *
-from view.component.catalogo import CatalogoComponent
+from view.gestione_libri_admin.catalogo_admin import CatalogoComponent
+from view.inserisci_libro import InserisciView
 from view.libri_prenotati import LibriPrenotatiView
 from model.libro import Libro
 from database import Libro as db_Libro
@@ -24,6 +25,10 @@ class GestioneLibriController(Controller):
             self.modifica_libro(data)
         elif message == "elimina_libro":
             self.elimina_libro(data)
+        elif message == "go_to_inserisci_libro":
+            self.redirect(InserisciView())
+        elif message == "go_to_ricerca_libro":
+            self.redirect(CatalogoComponent())
 
     def inserisci_libro(self, data: Optional[dict] = None):
         Libro.inserisci2(self,data)

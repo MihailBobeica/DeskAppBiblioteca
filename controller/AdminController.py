@@ -10,14 +10,14 @@ class AdminController(Controller):
         super().__init__()
 
     def receive_message(self, message: str, data: Optional[dict] = None) -> None:
-        if message == "gestione_operatori":
+        '''if message == "gestione_operatori":
             self.redirect(GestioneOperatori())
         elif message == "inserisci_libro":
             self.redirect(InserisciView())
         elif message == "ricerca_libro":
             self.redirect(CatalogoComponent())
         elif message == "gestione_utenti":
-            self.redirect(GestioneUtentiView())
+            self.redirect(GestioneUtentiView())'''
 
 
 

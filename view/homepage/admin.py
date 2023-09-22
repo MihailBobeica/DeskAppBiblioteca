@@ -21,9 +21,11 @@ class HomeAdminView(View):
         layout.addWidget(sidebar)
 
     def attach_controllers(self) -> None:
-        from app import controller_logout, controller_admin
+        from app import controller_logout, controller_crud_operatore, controller_gestione_libri, controller_gestione_utenti
         self.attach(controller_logout)
-        self.attach(controller_admin)
+        self.attach(controller_crud_operatore)
+        self.attach(controller_gestione_libri)
+        self.attach(controller_gestione_utenti)
         from app import controller_statistiche
         self.attach(controller_statistiche)
 
@@ -31,16 +33,16 @@ class HomeAdminView(View):
         super().__init__()
 
     def gestione_operatori(self, text: Optional[str] = None) -> None:
-        self.notify(message="gestione_operatori")
+        self.notify(message="go_to_gestione_operatori")
 
     def inserisci_libro(self):
-        self.notify(message="inserisci_libro")
+        self.notify(message="go_to_inserisci_libro")
 
     def ricerca_libro(self):
-        self.notify(message="ricerca_libro")
+        self.notify(message="go_to_ricerca_libro")
 
     def gestione_utenti(self):
-        self.notify(message="gestione_utenti")
+        self.notify(message="go_to_gestione_utenti")
 
     def visualizza_statistiche(self):
         self.notify(message=Request.GO_TO_STATISTICHE)

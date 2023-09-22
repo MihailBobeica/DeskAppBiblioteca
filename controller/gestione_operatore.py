@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller
 from typing import Optional
 from view.CRUD_Operatore.crea_operatore import CreaOperatoreView
+from view.CRUD_Operatore.gestione_operatore import GestioneOperatori
 from view.CRUD_Operatore.ricerca_operatore import RicercaView
 from view.CRUD_Operatore.modifica_operatore import ModificaView
 from view.CRUD_Operatore.Visualizza_operatore import VisualizzaView
@@ -43,6 +44,8 @@ class CRUD_operatore(Controller):
 
         elif message == "salva_nuovo_opratore":
             self.inserisci_operatore(data)
+        elif message == "go_to_gestione_operatori":
+            self.redirect(GestioneOperatori())
 
     def inserisci_operatore(self, data: Optional[dict] = None) -> None:
         Utente.inserisci(self, data["dati"])

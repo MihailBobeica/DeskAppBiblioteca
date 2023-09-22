@@ -3,6 +3,7 @@ from typing import Optional
 from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller, BoundedModel
+from view.Gestione_utente.gestione_utenti import GestioneUtentiView
 from view.Gestione_utente.visualizza_utente import VisualizzaUtente
 from view.Gestione_utente.ricerca_utente import RicercaView
 from model.utente import Utente
@@ -28,6 +29,8 @@ class GestioneUtentiController(Controller):
                 view_errore("Errore","L'utente non è presente nel sistema")
         elif message == "mia_cronologia":
             pass
+        elif message == "go_to_gestione_utenti":
+            self.redirect(GestioneUtentiView())
 
     def visualizza_cronologia(self, utente):
         prestiti = Prestito.by_utente(self, utente.id)
