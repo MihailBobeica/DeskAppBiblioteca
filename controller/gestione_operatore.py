@@ -4,7 +4,7 @@ from abstract import Controller
 from typing import Optional
 from view.CRUD_Operatore.crea_operatore import CreaOperatoreView
 from view.CRUD_Operatore.gestione_operatore import GestioneOperatori
-from view.CRUD_Operatore.ricerca_operatore import RicercaView
+from view.CRUD_Operatore.ricerca_operatore import RicercaOperatoreView
 from view.CRUD_Operatore.modifica_operatore import ModificaView
 from view.CRUD_Operatore.Visualizza_operatore import VisualizzaView
 from model.utente import Utente
@@ -19,11 +19,11 @@ class CRUD_operatore(Controller):
         if message == "crea_operatore":
             self.redirect(CreaOperatoreView())
         elif message == "elimina_operatore":
-            self.redirect(RicercaView({"metodo" : "elimina"}))
+            self.redirect(RicercaOperatoreView({"metodo" : "elimina"}))
         elif message == "modifica_operatore":
-            self.redirect(RicercaView({"metodo" : "modifica"}))
+            self.redirect(RicercaOperatoreView({"metodo" : "modifica"}))
         elif message == "visualizza_operatore":
-            self.redirect(RicercaView({"metodo" : "visualizza"}))
+            self.redirect(RicercaOperatoreView({"metodo" : "visualizza"}))
 
         elif message == "trova_operatore":
             utente = Utente.by_username(self, data["input"])

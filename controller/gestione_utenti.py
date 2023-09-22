@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller, BoundedModel
 from view.Gestione_utente.gestione_utenti import GestioneUtentiView
 from view.Gestione_utente.visualizza_utente import VisualizzaUtente
-from view.Gestione_utente.ricerca_utente import RicercaView
+from view.Gestione_utente.ricerca_utente import RicercaUtenteView
 from model.utente import Utente
 from view.component.view_errore import view_errore
 from view.Gestione_utente.visualizza_cronologia import VisualizzaCronologia
@@ -20,7 +20,7 @@ class GestioneUtentiController(Controller):
         if message == "visualizza_utente":
             self.redirect(VisualizzaUtente())
         elif message == "ricerca_utente":
-            self.redirect(RicercaView())
+            self.redirect(RicercaUtenteView())
         elif message == "trova_utente":
             utente = Utente.by_username(self,data["username"])
             if utente and utente.ruolo=="utente":

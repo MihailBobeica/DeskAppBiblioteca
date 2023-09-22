@@ -1,6 +1,6 @@
 
 from PySide6.QtWidgets import QHBoxLayout
-from .ricerca_operatore import RicercaView
+#from .ricerca_operatore import RicercaView
 from abstract.view import View
 from view.component import SidebarComponent
 

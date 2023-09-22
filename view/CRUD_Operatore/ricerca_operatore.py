@@ -3,7 +3,7 @@ from typing import Dict
 from abstract.view import View
 from model.utente import Utente
 
-class RicercaView(View):
+class RicercaOperatoreView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Ricerca operatore')
         layout = QVBoxLayout()

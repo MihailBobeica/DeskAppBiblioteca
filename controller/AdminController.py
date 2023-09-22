@@ -2,7 +2,7 @@ from abstract import Controller, BoundedModel
 from typing import Optional
 from view.CRUD_Operatore.gestione_operatore import GestioneOperatori
 from view.inserisci_libro import InserisciView
-from view.gestione_libri_admin.catalogo_admin import CatalogoComponent
+#from view.gestione_libri_admin.catalogo_admin import CatalogoComponent
 from view.Gestione_utente.gestione_utenti import GestioneUtentiView
 
 class AdminController(Controller):

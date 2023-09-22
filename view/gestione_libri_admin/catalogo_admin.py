@@ -4,12 +4,12 @@ from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGrid
 from abstract.view import View
 from utils.ui import get_style, CATALOG_COLUMNS
 from utils.backend import is_empty
-from view.gestione_libri_admin.libri_admin import LibroComponent
+from view.gestione_libri_admin.libro_component_admin import LibroAdminView
 
 GRID_LABEL = "grid"
 
 
-class CatalogoComponent(View):
+class CatalogoAdminView(View):
     def create_layout(self) -> None:
         # content
         searchbar = QLineEdit()
@@ -54,7 +54,7 @@ class CatalogoComponent(View):
         for index, db_libro in enumerate(db_libri):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
-            libro = LibroComponent(db_libro)
+            libro = LibroAdminView(db_libro)
             grid_layout.addWidget(libro, row, col)
 
     def update_grid(self, text) -> None:
@@ -72,5 +72,5 @@ class CatalogoComponent(View):
             for index, db_libro in enumerate(db_libri):
                 row = index // CATALOG_COLUMNS
                 col = index % CATALOG_COLUMNS
-                libro = LibroComponent(db_libro)
+                libro = LibroAdminView(db_libro)
                 grid_layout.addWidget(libro, row, col)

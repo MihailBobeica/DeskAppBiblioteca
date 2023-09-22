@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPush
 from abstract.view import View
 from model.utente import Utente
 
-class RicercaView(View):
+class RicercaUtenteView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Ricerca operatore')
         layout = QVBoxLayout()

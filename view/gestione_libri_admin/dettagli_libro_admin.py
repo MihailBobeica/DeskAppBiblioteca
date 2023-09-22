@@ -10,7 +10,7 @@ from model.libro import Libro as ModelLibro
 from view.homepage.admin import HomeAdminView
 
 
-class LibroView(View):
+class DettagliLibroView(View):
     def create_layout(self) -> None:
         # content
         # copertina

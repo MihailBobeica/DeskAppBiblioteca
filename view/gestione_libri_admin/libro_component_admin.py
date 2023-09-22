@@ -7,7 +7,7 @@ from database import Libro
 from utils.ui import get_cover_image, label_autori
 
 
-class LibroComponent(View):
+class LibroAdminView(View):
     def create_layout(self) -> None:
         self.setFixedSize(400, 240)
 
@@ -63,5 +63,5 @@ class LibroComponent(View):
         super().__init__()
 
     def visualizza(self):
-        from view.gestione_libri_admin.libro_admin import LibroView
-        self.redirect(LibroView(self.info))
+        from view.gestione_libri_admin.dettagli_libro_admin import DettagliLibroView
+        self.redirect(DettagliLibroView(self.info))
