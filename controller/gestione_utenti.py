@@ -10,6 +10,7 @@ from model.utente import Utente
 from view.component.view_errore import view_errore
 from view.Gestione_utente.visualizza_cronologia import VisualizzaCronologia
 from model.prestito import Prestito
+from utils.auth import auth
 
 
 class GestioneUtentiController(Controller):
@@ -28,7 +29,7 @@ class GestioneUtentiController(Controller):
             else:
                 view_errore("Errore","L'utente non è presente nel sistema")
         elif message == "mia_cronologia":
-            pass
+            self.visualizza_cronologia(auth.user)
         elif message == "go_to_gestione_utenti":
             self.redirect(GestioneUtentiView())
 
