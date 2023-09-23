@@ -42,13 +42,13 @@ class CRUD_operatore(Controller):
         elif message == "salva_modifiche":
             self.modifica_operatore(data)
 
-        elif message == "salva_nuovo_opratore":
+        elif message == "salva_nuovo_operatore":
             self.inserisci_operatore(data)
         elif message == "go_to_gestione_operatori":
             self.redirect(GestioneOperatoriView())
 
     def inserisci_operatore(self, data: Optional[dict] = None) -> None:
-        Utente.inserisci(self, data["dati"])
+        Utente().inserisci( data)
         self.redirect(HomeAdminView())
 
     def elimina_operatore(self, utente) -> None:
@@ -60,10 +60,10 @@ class CRUD_operatore(Controller):
         msg_box.setDefaultButton(QMessageBox.Ok)
         response = msg_box.exec()
         if response == QMessageBox.Ok:
-            Utente.elimina(self, utente)
+            Utente().elimina( utente)
         self.redirect(HomeAdminView())
 
     def modifica_operatore(self,data: Optional[dict] = None) -> None:
-        Utente.modifica(self, data)
+        Utente().modifica( data)
         self.redirect(HomeAdminView())
 

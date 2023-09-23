@@ -79,4 +79,7 @@ class InserisciLibroView(View):
 
 
     def invia(self):
-        self.notify(message="inserisci_libro", data={"titolo" : self.input2.text(),"autori" : self.input3.text(), "editore": self.input4.text(), "isbn" : self.input5.text(), "disponibili" :self.input8.text(), "dati":self.input9.text(), "anno_edizione":datetime.strptime(self.input6.date().toString('yyyy-MM-dd'), '%Y-%m-%d'),"anno_pubblicazione":datetime.strptime(self.input7.date().toString('yyyy-MM-dd'), '%Y-%m-%d'), "immagine":"prova"})
+        if self.input2.text() and self.input2.text() and self.input3.text() and self.input4.text() and self.input5.text() and self.input6.text() and self.input7.text() and self.input8.text() and self.input9.text():
+            self.notify(message="inserisci_libro", data={"titolo" : self.input2.text(),"autori" : self.input3.text(), "editore": self.input4.text(), "isbn" : self.input5.text(), "disponibili" :self.input8.text(), "dati":self.input9.text(), "anno_edizione":datetime.strptime(self.input6.date().toString('yyyy-MM-dd'), '%Y-%m-%d'),"anno_pubblicazione":datetime.strptime(self.input7.date().toString('yyyy-MM-dd'), '%Y-%m-%d'), "immagine":"prova"})
+        else:
+            pass

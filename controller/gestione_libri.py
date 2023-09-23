@@ -32,6 +32,8 @@ class GestioneLibriController(Controller):
 
     def inserisci_libro(self, data: Optional[dict] = None):
         Libro.inserisci2(self,data)
+        from view.homepage.admin import HomeAdminView
+        self.redirect(HomeAdminView())
 
     def modifica_libro(self, data: dict):
         Libro.modifica(self,data, data["isbn"])
