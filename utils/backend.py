@@ -1,3 +1,5 @@
+import os
+import shutil
 import uuid
 from datetime import datetime
 
@@ -42,6 +44,24 @@ def to_year(year: str) -> datetime:
 
 def get_codice() -> str:
     return str(uuid.uuid4())[:13]
+
+
+def backup():
+    source_file = os.path.join(os.getcwd(), "database/db.sqlite")  # Replace with the path to your source file
+    t_name = datetime.now().strftime("%Y_%m_%d_%H_%M")
+    destination_file = os.path.join(os.getcwd(), f"backup/{t_name}.sqlite")  # Replace with the path to your destination file
+
+    try:
+        shutil.copy(source_file, destination_file)
+        print(f"File copied from {source_file} to {destination_file}")
+    except FileNotFoundError:
+        print("Source file not found.")
+    except PermissionError:
+        print("Permission denied. Check if you have write access to the destination directory.")
+    except shutil.SameFileError:
+        print("Source and destination files are the same.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 # @staticmethod
 # def create_search_strategy(context: str) -> SearchStrategy:

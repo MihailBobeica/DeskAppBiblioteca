@@ -1,12 +1,13 @@
 from typing import Optional
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QCloseEvent
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QPushButton, QFrame
 
 from abstract import BoundedView
 from factory import HomepageFactory
 from utils.auth import auth
+from utils.backend import backup
 from utils.strings import *
 from utils.ui import HOME_ICON, quick_alert
 
@@ -61,6 +62,10 @@ class MainWindow(QMainWindow):
 
         main_widget.setLayout(layout)
         self.setCentralWidget(main_widget)
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        # do backup
+        backup()
 
     def set_view(self, view: BoundedView) -> None:
         layout = self.centralWidget().layout()
