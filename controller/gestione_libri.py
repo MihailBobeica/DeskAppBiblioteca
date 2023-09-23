@@ -9,7 +9,7 @@ from model import Libro, PrenotazioneLibro
 from utils.auth import Auth
 from utils.strings import *
 from view.gestione_libri_admin.catalogo_admin import CatalogoAdminView
-from view.inserisci_libro import InserisciView
+from view.inserisci_libro import InserisciLibroView
 from view.libri_prenotati import LibriPrenotatiView
 from model.libro import Libro
 from database import Libro as db_Libro
@@ -26,7 +26,7 @@ class GestioneLibriController(Controller):
         elif message == "elimina_libro":
             self.elimina_libro(data)
         elif message == "go_to_inserisci_libro":
-            self.redirect(InserisciView())
+            self.redirect(InserisciLibroView())
         elif message == "go_to_ricerca_libro":
             self.redirect(CatalogoAdminView())
 

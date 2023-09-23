@@ -26,8 +26,8 @@ class PrenotazioniLibri(Controller):
             if results:
                 from model.prenotazione_libro import PrenotazioneLibro
                 prenotazioni = PrenotazioneLibro.query_prenotazioni_valide(self, results)
-                from view.lista_prenotazioni_utente import ListaPrenotazioniUtente
-                self.redirect(ListaPrenotazioniUtente(results, prenotazioni))
+                from view.lista_prenotazioni_utente import ListaPrenotazioniLibriUtente
+                self.redirect(ListaPrenotazioniLibriUtente(results, prenotazioni))
 
 
 

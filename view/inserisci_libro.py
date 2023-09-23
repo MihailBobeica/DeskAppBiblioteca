@@ -4,7 +4,7 @@ from datetime import datetime
 from abstract.view import View
 
 
-class InserisciView(View):
+class InserisciLibroView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Inserisci libro')
         layout = QVBoxLayout()

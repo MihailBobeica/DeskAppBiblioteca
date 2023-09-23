@@ -12,7 +12,7 @@ from model.sanzione import Sanzione
 from model.prenotazione_libro import PrenotazioneLibro
 
 
-class ListaPrenotazioniUtente(View):
+class ListaPrenotazioniLibriUtente(View):
     def create_layout(self) -> None:
 
         layout = QVBoxLayout(self)

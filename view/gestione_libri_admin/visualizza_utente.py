@@ -1,4 +1,4 @@
-from database import Utente as db_Utente
+'''from database import Utente as db_Utente
 from abstract.view import View
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 
@@ -32,4 +32,4 @@ class VisualizzaView(View):
 
     def __init__(self, db_utente: db_Utente):
         self.utente = db_utente
-        super().__init__()
+        super().__init__()'''
