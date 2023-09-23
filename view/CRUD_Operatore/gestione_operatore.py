@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QHBoxLayout
 from abstract.view import View
 from view.component import SidebarComponent
 
-class GestioneOperatori(View):
+class GestioneOperatoriView(View):
     def create_layout(self):
         sidebar = SidebarComponent()
         '''sidebar.add_buttons_rm(labels=("Crea operatore",

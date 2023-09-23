@@ -3,10 +3,10 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller
 from typing import Optional
 from view.CRUD_Operatore.crea_operatore import CreaOperatoreView
-from view.CRUD_Operatore.gestione_operatore import GestioneOperatori
+from view.CRUD_Operatore.gestione_operatore import GestioneOperatoriView
 from view.CRUD_Operatore.ricerca_operatore import RicercaOperatoreView
-from view.CRUD_Operatore.modifica_operatore import ModificaView
-from view.CRUD_Operatore.Visualizza_operatore import VisualizzaView
+from view.CRUD_Operatore.modifica_operatore import ModificaOperatoreView
+from view.CRUD_Operatore.Visualizza_operatore import VisualizzaOperatoreView
 from model.utente import Utente
 from view.homepage.admin import HomeAdminView
 from view.component.view_errore import view_errore
@@ -32,9 +32,9 @@ class CRUD_operatore(Controller):
                     self.elimina_operatore(utente)
 
                 elif data["metodo"] == "modifica":
-                    self.redirect(ModificaView(utente))
+                    self.redirect(ModificaOperatoreView(utente))
                 elif data["metodo"] == "visualizza":
-                    self.redirect(VisualizzaView(utente))
+                    self.redirect(VisualizzaOperatoreView(utente))
             else:
                 view_errore("Errore","L'operatore non è presente nel sistema")
 
@@ -42,13 +42,13 @@ class CRUD_operatore(Controller):
         elif message == "salva_modifiche":
             self.modifica_operatore(data)
 
-        elif message == "salva_nuovo_opratore":
+        elif message == "salva_nuovo_operatore":
             self.inserisci_operatore(data)
         elif message == "go_to_gestione_operatori":
-            self.redirect(GestioneOperatori())
+            self.redirect(GestioneOperatoriView())
 
     def inserisci_operatore(self, data: Optional[dict] = None) -> None:
-        Utente.inserisci(self, data["dati"])
+        Utente().inserisci( data)
         self.redirect(HomeAdminView())
 
     def elimina_operatore(self, utente) -> None:
@@ -60,10 +60,10 @@ class CRUD_operatore(Controller):
         msg_box.setDefaultButton(QMessageBox.Ok)
         response = msg_box.exec()
         if response == QMessageBox.Ok:
-            Utente.elimina(self, utente)
+            Utente().elimina( utente)
         self.redirect(HomeAdminView())
 
     def modifica_operatore(self,data: Optional[dict] = None) -> None:
-        Utente.modifica(self, data)
+        Utente().modifica( data)
         self.redirect(HomeAdminView())
 

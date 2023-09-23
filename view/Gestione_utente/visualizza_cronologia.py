@@ -4,7 +4,7 @@ from abstract.view import View
 from model.utente import Utente
 
 
-class VisualizzaCronologia(View):
+class VisualizzaCronologiaView(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout()
         grid_layout = QGridLayout()

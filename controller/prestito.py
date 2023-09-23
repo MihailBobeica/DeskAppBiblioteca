@@ -42,7 +42,7 @@ class PrestitoController(Controller):
         if result == QMessageBox.Yes:
             from model.prestito import Prestito
             Prestito.restituzione(self, data["prestito"])
-            self.redirect(HomeOperatoreView)
+            self.redirect(HomeOperatoreView())
         else:
             pass
 

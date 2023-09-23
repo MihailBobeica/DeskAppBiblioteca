@@ -97,10 +97,10 @@ class Prestito(Model):
         db_session.close()
         return prestiti_scaduti
 
-    def check_max(self, utente: DbUtente) -> bool:
+    def check_max(self, utente_id) -> bool:
         db_sesseion = Session()
         cont = 0
-        prestiti = db_sesseion.query(DbPrestito).filter(and_(DbPrestito.utente_id == utente.id,
+        prestiti = db_sesseion.query(DbPrestito).filter(and_(DbPrestito.utente_id == utente_id,
                                                              DbPrestito.data_scadenza < datetime.now(),
                                                              DbPrestito.data_restituzione is None)).all()
         db_sesseion.close()

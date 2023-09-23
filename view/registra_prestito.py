@@ -5,7 +5,7 @@ from abstract.view import View
 from view.homepage.operatore import HomeOperatoreView
 
 
-
+'''
 class RegistraPrestito(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Ricerca prenotazione')
@@ -33,5 +33,5 @@ class RegistraPrestito(View):
             dati = {"utente" : prenotazione.utente_id, "libro" : prenotazione.libro_id}
             from model.prestito import Prestito
             Prestito.inserisci(self,dati)
-            self.redirect(HomeOperatoreView())
+            self.redirect(HomeOperatoreView())'''
 

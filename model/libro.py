@@ -13,7 +13,8 @@ from utils.ui import RESULTS_LIMIT
 class Libro(Model):
     def inserisci(self, dati: dict[str, str]):
         db_session = Session()
-        libro = DbLibro(titolo=dati["titolo"],
+        libro = DbLibro(
+                        titolo=dati["titolo"],
                         autori=dati["autori"],
                         immagine=dati["immagine"],
                         editore=dati["editore"],

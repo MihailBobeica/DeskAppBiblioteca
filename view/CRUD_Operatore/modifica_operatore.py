@@ -5,7 +5,7 @@ from model.utente import Utente
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox
 from utils.auth import hash_password
 
-class ModificaView(View):
+class ModificaOperatoreView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Modifica operatore')
         layout = QVBoxLayout()

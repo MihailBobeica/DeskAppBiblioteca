@@ -3,7 +3,7 @@ from abstract.view import View
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QPushButton
 
 
-class VisualizzaView(View):
+class VisualizzaOperatoreView(View):
     def create_layout(self) -> None:
         self.setWindowTitle('Visualizza operatore')
         layout = QVBoxLayout()
