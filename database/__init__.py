@@ -58,7 +58,7 @@ class Libro(Base):
     id = Column(Integer, primary_key=True)
     titolo = Column(String)
     autori = Column(String)
-    immagine = Column(String)
+    immagine = Column(String, default="default.jpg")
     editore = Column(String)
     isbn = Column(String)
     anno_edizione = Column(DateTime)

@@ -1,7 +1,11 @@
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QGridLayout, QSpinBox, QDateEdit
+import os
+
+from PySide6.QtGui import QImage
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QGridLayout, QSpinBox, QDateEdit, QFileDialog
 from datetime import datetime
 
 from abstract.view import View
+from utils.ui import PATH_IMAGE, FOLDER_COVER
 
 
 class InserisciLibroView(View):
@@ -60,15 +64,19 @@ class InserisciLibroView(View):
         grid_layout.addWidget(label9, 8, 0)
         grid_layout.addWidget(self.input9, 8, 1)
 
+        # immagine
+        self.button = QPushButton("Select Image", self)
+        self.button.setGeometry(150, 80, 100, 40)
+        self.button.clicked.connect(self.show_file_dialog)
+        grid_layout.addWidget(self.button, 9, 0)
+
         layout.addLayout(grid_layout)
 
         invia = QPushButton('Aggiungi libro')
         invia.clicked.connect(self.invia)
         layout.addWidget(invia)
 
-
         self.setLayout(layout)
-
 
     def attach_controllers(self) -> None:
         from app import controller_gestione_libri
@@ -76,10 +84,46 @@ class InserisciLibroView(View):
 
     def __init__(self):
         super().__init__()
+        self.filename = None
 
+    def show_file_dialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_dialog = QFileDialog(self, options=options)
+        file_dialog.setNameFilter("Images (*.png *.jpg *.jpeg *.bmp *.gif *.ppm *.pgm)")
+        file_dialog.setViewMode(QFileDialog.List)
+
+        if file_dialog.exec_():
+            selected_file = file_dialog.selectedFiles()[0]
+            image = QImage(selected_file)
+
+            if not image.isNull():
+                path_copertine = os.path.join(os.path.join(os.getcwd(), PATH_IMAGE), FOLDER_COVER)
+                save_dialog = QFileDialog(self, "Save Image", path_copertine, "Images (*.png *.jpg *.jpeg *.bmp *.gif *.ppm *.pgm)")
+                save_dialog.setAcceptMode(QFileDialog.AcceptSave)
+
+                if save_dialog.exec_():
+                    save_file = save_dialog.selectedFiles()[0]
+                    self.filename = os.path.basename(save_file)
+                    if image.save(save_file):
+                        print(f"Image saved to: {save_file}")
+                    else:
+                        print("Failed to save image.")
+            else:
+                print("Failed to load the selected image.")
 
     def invia(self):
         if self.input2.text() and self.input2.text() and self.input3.text() and self.input4.text() and self.input5.text() and self.input6.text() and self.input7.text() and self.input8.text() and self.input9.text():
-            self.notify(message="inserisci_libro", data={"titolo" : self.input2.text(),"autori" : self.input3.text(), "editore": self.input4.text(), "isbn" : self.input5.text(), "disponibili" :self.input8.text(), "dati":self.input9.text(), "anno_edizione":datetime.strptime(self.input6.date().toString('yyyy-MM-dd'), '%Y-%m-%d'),"anno_pubblicazione":datetime.strptime(self.input7.date().toString('yyyy-MM-dd'), '%Y-%m-%d'), "immagine":"prova"})
+            self.notify(message="inserisci_libro",
+                        data={"titolo": self.input2.text(),
+                              "autori": self.input3.text(),
+                              "editore": self.input4.text(),
+                              "isbn": self.input5.text(),
+                              "disponibili": self.input8.text(),
+                              "dati": self.input9.text(),
+                              "anno_edizione": datetime.strptime(self.input6.date().toString('yyyy-MM-dd'), '%Y-%m-%d'),
+                              "anno_pubblicazione": datetime.strptime(self.input7.date().toString('yyyy-MM-dd'),
+                                                                      '%Y-%m-%d'),
+                              "immagine": self.filename})
         else:
             pass
