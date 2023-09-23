@@ -1,7 +1,7 @@
 from typing import Optional
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout
+from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QScrollArea, QFrame, QGridLayout, QLabel
 
 from abstract.view import View
 from database import BoundedDbModel
@@ -67,6 +67,10 @@ class CatalogoComponent(View):
             child = self.grid_layout.takeAt(0)
             if t := child.widget():
                 t.deleteLater()
+
+        if not data_list:
+            label_libri_non_trovati = QLabel("Non è stato trovato alcun libro.")
+            self.grid_layout.addWidget(label_libri_non_trovati, 0, 0)
 
         for index, data in enumerate(data_list):
             row = index // CATALOG_COLUMNS

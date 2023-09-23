@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.displayed_view: Optional[BoundedView] = None
         self.initialize()
-        self.create_menu()
+        # self.create_menu()
         self.create_layout()
 
     def initialize(self) -> None:
@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
 
         h_layout = QHBoxLayout()
         h_layout.setContentsMargins(0, 0, 0, 0)
+        h_layout.setSpacing(0)
 
         h_layout.addStretch()
         h_layout.addWidget(button_home)

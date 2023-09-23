@@ -84,7 +84,7 @@ class Prestito(Model):
     def da_restituire(self, id):
         db_session = Session()
         prestiti = db_session.query(DbPrestito).filter(and_(DbPrestito.utente_id == id), (DbPrestito.data_restituzione == None)).all()
-        print(prestiti)
+        # print(prestiti)
         db_session.close()
         return prestiti
 

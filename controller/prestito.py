@@ -31,7 +31,7 @@ class PrestitoController(Controller):
                 self.redirect(Restituzione(results,prestiti))
 
 
-    def restituito(self, data: Optional[dict] = None) -> None:
+    def restituito(self, data: Optional[dict] = None) -> None:  # TODO cambia il nome
         confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")
@@ -61,9 +61,9 @@ class PrestitoController(Controller):
                     "libro": data["libro"],
                     "utente": data["utente"]
                 }
-                Prestito.inserisci(self, dati)
+                Prestito().inserisci(dati)
                 from model.prenotazione_libro import PrenotazioneLibro
-                PrenotazioneLibro.cancella(self, data["prenotazione"])
+                PrenotazioneLibro().cancella(data["prenotazione"])
                 self.redirect(HomeOperatoreView())
             else:
                 pass

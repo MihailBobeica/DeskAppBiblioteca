@@ -17,15 +17,39 @@ Base = declarative_base()
 BoundedDbModel = TypeVar("BoundedDbModel", bound=Base)
 
 
+# Single Table Inheritance (STI):
 class Utente(Base):
     __tablename__ = 'utenti'
 
     id = Column(Integer, primary_key=True)
     nome = Column(String)
     cognome = Column(String)
-    ruolo = Column(Enum(ADMIN, OPERATORE, UTENTE))
+    ruolo = Column(String)
     username = Column(String)
     password = Column(String)
+
+    __mapper_args__ = {
+        'polymorphic_on': ruolo,
+        'polymorphic_identity': 'utente_generico'
+    }
+
+
+class Studente(Utente):
+    __mapper_args__ = {
+        'polymorphic_identity': 'utente'
+    }
+
+
+class Operatore(Utente):
+    __mapper_args__ = {
+        'polymorphic_identity': 'operatore'
+    }
+
+
+class Amministratore(Utente):
+    __mapper_args__ = {
+        'polymorphic_identity': 'admin'
+    }
 
 
 class Libro(Base):
