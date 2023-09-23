@@ -17,6 +17,7 @@ from model.prenotazione_aula import prenotazione_aula
 from view.homepage import HomeGuestView
 from view.main import MainWindow
 from model.prestito import Prestito
+from model.OperatoreModel import OperatoreModel
 
 # instantiate the main window
 main_window = MainWindow()
@@ -31,6 +32,7 @@ model_prenotazione_aula = prenotazione_aula()
 model_prenotazione_libro = PrenotazioneLibro()
 model_prestito = Prestito()
 model_sanzioni = Sanzione()
+model_operatore = OperatoreModel()
 
 # seeding
 model_utente.seed_db(UTENTI)
