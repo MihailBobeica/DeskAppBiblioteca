@@ -36,7 +36,10 @@ class GestioneUtentiController(Controller):
             view : VisualizzaUtenteView = data.get("view")
             text = data.get("text")
             utente = Utente().by_username(text)
-            view.update_results(utente)
+            if utente:
+                view.update_results(utente)
+            else:
+                view_errore("Errore","L'utente non è presente nel sistema")
 
 
     def visualizza_cronologia(self, utente):

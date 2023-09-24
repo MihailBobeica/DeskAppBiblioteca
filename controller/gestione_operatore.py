@@ -53,7 +53,7 @@ class CRUD_operatore(Controller):
         op = Utente().by_username(data["username"])
         if op:
             view_errore("errore","questo username è gia in uso")
-            self.redirect(CreaOperatoreView())
+
         else:
             OperatoreModel().inserisci( data)
             self.redirect(HomeAdminView())
