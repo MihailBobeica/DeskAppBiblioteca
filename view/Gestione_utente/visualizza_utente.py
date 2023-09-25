@@ -13,7 +13,7 @@ class VisualizzaUtenteView(View):
         grid_layout.addWidget(self.input,0,1)
         invia = QPushButton("Cerca")
         grid_layout.addWidget(invia,1,0)
-        invia.clicked.connect(self.cerca)
+        invia.clicked.connect(self.visualizza_utente)
 
         self.result_list = QListWidget()
         layout.addWidget(self.result_list)
@@ -36,9 +36,9 @@ class VisualizzaUtenteView(View):
             if results:
                 self.update_results(results)'''
 
-    def cerca(self):
+    def visualizza_utente(self):
         if self.input.text():
-            self.notify("prova", data={"text" : self.input.text(), "view" : self})
+            self.notify("visualizza_utente", data={"text" : self.input.text(), "view" : self})
 
 
     def update_results(self, results):

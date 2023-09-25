@@ -41,7 +41,7 @@ class GestioneUtentiView(View):
         super().__init__()
 
     def visualizza_utente(self):
-        self.notify(message = "visualizza_utente")
+        self.notify(message = "go_to_visualizza_utente")
 
     def visualizza_cronologia(self):
-        self.notify(message="ricerca_utente")
+        self.notify(message="go_to_ricerca_utente")
