@@ -31,7 +31,7 @@ class Utente(Model):
             db_session.commit()
             db_session.close()
 
-    def elimina(self, utente:DbUtente):
+    '''def elimina(self, utente:DbUtente):
         db_session = Session()
         db_session.delete(utente)
         db_session.commit()
@@ -44,7 +44,7 @@ class Utente(Model):
         utente.cognome = dati['cognome']
         db_session.merge(utente)
         db_session.commit()
-        db_session.close()
+        db_session.close()'''
 
     def all(self) -> list[DbUtente]:
         db_session = Session()
@@ -52,14 +52,14 @@ class Utente(Model):
         db_session.close()
         return utenti
 
-    def ricerca(self,input):
+    '''def ricerca(self,input):
         db_session = Session()
         utenti = db_session.query(DbUtente).filter(or_(DbUtente.username.ilike(f"%{input}%"),
                                                      DbUtente.nome.ilike(f"%{input}%"),
                                                        DbUtente.cognome.ilike(f"%{input}%")),
                                                    and_(DbUtente.ruolo=="utente")).all()
         db_session.close()
-        return utenti
+        return utenti'''
 
 
 
