@@ -4,26 +4,27 @@ from PySide6.QtWidgets import QMessageBox
 from sqlalchemy import or_,and_
 from abstract.model import Model
 from database import Session
-from database import Utente as DbUtente
+from database import Operatore as DbOp
 from database import Prestito
+from model.utente import Utente
 
 
+class OperatoreModel(Model):
 
-class Utente(Model):
     def by_username(self, username):
         db_session = Session()
-        utente = db_session.query(DbUtente).filter_by(username=username).first()
+        utente = db_session.query(DbOp).filter_by(username=username).first()
         db_session.close()
         return utente
 
     def inserisci(self, dati: Dict[str, str]):
         db_session = Session()
-        utente = DbUtente(nome=dati["nome"],
+        utente = DbOp(nome=dati["nome"],
                           cognome=dati["cognome"],
                           ruolo=dati["ruolo"],
                           username=dati["username"],
                           password=dati["password"])
-        if Utente.by_username(self, utente.username):
+        if OperatoreModel().by_username(utente.username):
             from view.component.view_errore import view_errore
             view_errore.create_layout(self, "Errore", "L'operatore è già presente nel sistema")
         else:
@@ -31,7 +32,7 @@ class Utente(Model):
             db_session.commit()
             db_session.close()
 
-    '''def elimina(self, utente:DbUtente):
+    def elimina(self, utente:DbOp):
         db_session = Session()
         db_session.delete(utente)
         db_session.commit()
@@ -39,31 +40,9 @@ class Utente(Model):
 
     def modifica(self, dati: Dict[str, str]):
         db_session = Session()
-        utente = Utente.by_username(self,dati['username'])
+        utente = OperatoreModel().by_username(dati['username'])
         utente.nome = dati['nome']
         utente.cognome = dati['cognome']
         db_session.merge(utente)
         db_session.commit()
-        db_session.close()'''
-
-    def all(self) -> list[DbUtente]:
-        db_session = Session()
-        utenti = db_session.query(DbUtente).all()
         db_session.close()
-        return utenti
-
-    '''def ricerca(self,input):
-        db_session = Session()
-        utenti = db_session.query(DbUtente).filter(or_(DbUtente.username.ilike(f"%{input}%"),
-                                                     DbUtente.nome.ilike(f"%{input}%"),
-                                                       DbUtente.cognome.ilike(f"%{input}%")),
-                                                   and_(DbUtente.ruolo=="utente")).all()
-        db_session.close()
-        return utenti'''
-
-
-
-    def __init__(self):
-        super().__init__()
-
-

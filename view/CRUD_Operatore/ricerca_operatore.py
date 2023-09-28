@@ -19,7 +19,7 @@ class RicercaOperatoreView(View):
         layout.addLayout(grid_layout)
 
         invia = QPushButton('Invia')
-        invia.clicked.connect(self.invia)
+        invia.clicked.connect(self.trova_operatore)
         layout.addWidget(invia)
 
         self.setLayout(layout)
@@ -32,7 +32,7 @@ class RicercaOperatoreView(View):
         self.metodo = metodo["metodo"]
         super().__init__()
 
-    def invia(self):
+    def trova_operatore(self):
         self.notify(message="trova_operatore" , data={"input":self.input1.text(), "metodo" : self.metodo})
 
 

@@ -15,7 +15,10 @@ class VisualizzaCronologiaView(View):
         for res in self.results:
             item2 = QListWidgetItem("Data inizio: " + str(res.data_inizio))
             item3 = QListWidgetItem("Data scadenza: " + str(res.data_scadenza))
-            item7 = QListWidgetItem("Data restituzione: " + str(res.data_restituzione))
+            if res.data_restituzione is not None:
+                item7 = QListWidgetItem("Data restituzione: " + str(res.data_restituzione))
+            else:
+                item7 = QListWidgetItem("Data restituzione: ")
             item4 = QListWidgetItem("ID libro: " + str(res.libro_id))
             item8 = QListWidgetItem("Titolo: " + res.libro.titolo)
             item5 = QListWidgetItem("Codice: " + res.codice)

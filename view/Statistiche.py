@@ -20,7 +20,7 @@ class StatsWindow(QMainWindow):
         loans = QLabel(f"Prestiti totali: {prestiti}")
         sosp = QLabel(f"Sospensioni totali: {sospensioni}")
 
-        title_label = QLabel("Top 3 Titoli più presi in prestito:")
+        title_label = QLabel("Titoli più presi in prestito:")
         title_list = QListWidget()
         for title in titoli:
             title_list.addItem(title)

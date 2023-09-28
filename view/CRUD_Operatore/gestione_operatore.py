@@ -14,10 +14,10 @@ class GestioneOperatoriView(View):
                                     "Logout",),
                                style="button")'''
 
-        sidebar.set_button("Crea operatore").clicked.connect(self.crea_operatore)
-        sidebar.set_button("Elimina operatore").clicked.connect(self.elimina_operatore)
-        sidebar.set_button("Modifica operatore").clicked.connect(self.modifica_operatore)
-        sidebar.set_button("Visualizza operatore").clicked.connect(self.visualizza_operatore)
+        sidebar.set_button("Crea operatore").clicked.connect(self.go_to_crea_operatore)
+        sidebar.set_button("Elimina operatore").clicked.connect(self.go_to_elimina_operatore)
+        sidebar.set_button("Modifica operatore").clicked.connect(self.go_to_modifica_operatore)
+        sidebar.set_button("Visualizza operatore").clicked.connect(self.go_to_visualizza_operatore)
         sidebar.set_button("Logout").clicked.connect(self.logout)
 
         # layout
@@ -45,18 +45,18 @@ class GestioneOperatoriView(View):
     def __init__(self):
         super().__init__()
 
-    def crea_operatore(self):
+    def go_to_crea_operatore(self):
         self.notify(message="crea_operatore")
 
 
-    def elimina_operatore(self):
+    def go_to_elimina_operatore(self):
         #self.redirect(RicercaView(metodo="elimina"))
         self.notify(message="elimina_operatore", data={"metodo" : "elimina"})
 
-    def modifica_operatore(self):
+    def go_to_modifica_operatore(self):
         self.notify(message="modifica_operatore", data={"metodo" : "modifica"})
 
-    def visualizza_operatore(self):
+    def go_to_visualizza_operatore(self):
         self.notify(message="visualizza_operatore", data={"metodo" : "visualizza"})
 
 

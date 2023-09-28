@@ -18,9 +18,9 @@ class GestioneUtentiController(Controller):
         super().__init__(models=models)
 
     def receive_message(self, message: str, data: Optional[dict] = None) -> None:
-        if message == "visualizza_utente":
+        if message == "go_to_visualizza_utente":
             self.redirect(VisualizzaUtenteView())
-        elif message == "ricerca_utente":
+        elif message == "go_to_ricerca_utente":
             self.redirect(RicercaUtenteView())
         elif message == "trova_utente":
             utente = Utente.by_username(self,data["username"])
@@ -32,13 +32,21 @@ class GestioneUtentiController(Controller):
             self.visualizza_cronologia(auth.user)
         elif message == "go_to_gestione_utenti":
             self.redirect(GestioneUtentiView())
-        elif message == "prova":
-            view : VisualizzaUtenteView = data.get("view")
-            text = data.get("text")
-            utente = Utente().by_username(text)
-            view.update_results(utente)
+        elif message == "visualizza_utente":
+            self.visualizza_utente(data)
+
 
 
     def visualizza_cronologia(self, utente):
         prestiti = Prestito.by_utente(self, utente.id)
         self.redirect(VisualizzaCronologiaView(prestiti))
+
+    def visualizza_utente(self, data: Optional[dict] = None) -> None:
+        view: VisualizzaUtenteView = data.get("view")
+        text = data.get("text")
+        utente = Utente().by_username(text)
+        if utente:
+            view.update_results(utente)
+        else:
+            view_errore("Errore", "L'utente non è presente nel sistema")
+

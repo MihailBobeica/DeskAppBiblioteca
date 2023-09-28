@@ -2,12 +2,14 @@ from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller
 from typing import Optional
+
+from model.utente import Utente
 from view.CRUD_Operatore.crea_operatore import CreaOperatoreView
 from view.CRUD_Operatore.gestione_operatore import GestioneOperatoriView
 from view.CRUD_Operatore.ricerca_operatore import RicercaOperatoreView
 from view.CRUD_Operatore.modifica_operatore import ModificaOperatoreView
 from view.CRUD_Operatore.Visualizza_operatore import VisualizzaOperatoreView
-from model.utente import Utente
+from model.OperatoreModel import OperatoreModel
 from view.homepage.admin import HomeAdminView
 from view.component.view_errore import view_errore
 
@@ -26,7 +28,7 @@ class CRUD_operatore(Controller):
             self.redirect(RicercaOperatoreView({"metodo" : "visualizza"}))
 
         elif message == "trova_operatore":
-            utente = Utente.by_username(self, data["input"])
+            utente = OperatoreModel().by_username( data["input"])
             if utente and utente.ruolo == "operatore":
                 if data["metodo"] == "elimina":
                     self.elimina_operatore(utente)
@@ -48,8 +50,13 @@ class CRUD_operatore(Controller):
             self.redirect(GestioneOperatoriView())
 
     def inserisci_operatore(self, data: Optional[dict] = None) -> None:
-        Utente().inserisci( data)
-        self.redirect(HomeAdminView())
+        op = Utente().by_username(data["username"])
+        if op:
+            view_errore("errore","questo username è gia in uso")
+
+        else:
+            OperatoreModel().inserisci( data)
+            self.redirect(HomeAdminView())
 
     def elimina_operatore(self, utente) -> None:
         msg_box = QMessageBox()
@@ -60,10 +67,10 @@ class CRUD_operatore(Controller):
         msg_box.setDefaultButton(QMessageBox.Ok)
         response = msg_box.exec()
         if response == QMessageBox.Ok:
-            Utente().elimina( utente)
+            OperatoreModel().elimina( utente)
         self.redirect(HomeAdminView())
 
     def modifica_operatore(self,data: Optional[dict] = None) -> None:
-        Utente().modifica( data)
+        OperatoreModel().modifica( data)
         self.redirect(HomeAdminView())
 
