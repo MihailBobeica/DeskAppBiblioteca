@@ -15,5 +15,5 @@ class LibriPrenotatiView(View):
         self.catalogo: CatalogoComponent = CatalogoComponent(context=KeyContext.CATALOGO_PRENOTAZIONI_LIBRI)
         super().__init__()
 
-    def update(self):
-        self.catalogo.update()
+    def refresh(self):
+        self.catalogo.refresh()

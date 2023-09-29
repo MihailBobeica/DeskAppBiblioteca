@@ -18,7 +18,7 @@ BoundedDbModel = TypeVar("BoundedDbModel", bound=Base)
 
 
 # Single Table Inheritance (STI):
-class Utente(Base):
+class User(Base):
     __tablename__ = 'utenti'
 
     id = Column(Integer, primary_key=True)
@@ -34,19 +34,19 @@ class Utente(Base):
     }
 
 
-class Studente(Utente):
+class Utente(User):
     __mapper_args__ = {
         'polymorphic_identity': 'utente'
     }
 
 
-class Operatore(Utente):
+class Operatore(User):
     __mapper_args__ = {
         'polymorphic_identity': 'operatore'
     }
 
 
-class Amministratore(Utente):
+class Amministratore(User):
     __mapper_args__ = {
         'polymorphic_identity': 'admin'
     }

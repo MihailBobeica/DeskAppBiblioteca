@@ -2,7 +2,7 @@ from typing import Optional
 
 import bcrypt
 
-from database import Utente as DbUtente
+from database import User as DbUtente
 from utils.key import KeyAuth
 from utils.role import *
 

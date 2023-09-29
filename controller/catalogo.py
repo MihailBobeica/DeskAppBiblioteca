@@ -141,7 +141,7 @@ class CatalogoController(Controller):
 
                 catalogo: CatalogoComponent = data.get("catalogo")
                 if catalogo:
-                    catalogo.update()
+                    catalogo.refresh()
                 else:
                     self.visualizza_libri_prenotati()
 
@@ -159,4 +159,4 @@ class CatalogoController(Controller):
         catalogo: CatalogoComponent = data.get("catalogo")
         model_osserva_libro: LibroOsservato = self.models["osserva_libri"]
         model_osserva_libro.rimuovi(auth.user, libro)
-        catalogo.update()
+        catalogo.refresh()

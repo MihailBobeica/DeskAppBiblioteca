@@ -7,7 +7,7 @@ from view.component.view_errore import view_errore
 from .libro import Libro
 from sqlalchemy import or_, and_
 from model.sanzione import Sanzione
-from database import Utente as DbUtente
+from database import User as DbUtente
 from database import Libro as DbLibro
 
 

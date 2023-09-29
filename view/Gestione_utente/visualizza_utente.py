@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout
-from database import Utente as db_Utente
+from database import User as db_Utente
 from abstract.view import View
 from model.utente import Utente
 

@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QVBoxLayout
 
 from abstract.view import View
-from database import Utente as db_Utente
+from database import User as db_Utente
 
 
 class ConfermaPrenotazioneLibroView(View):

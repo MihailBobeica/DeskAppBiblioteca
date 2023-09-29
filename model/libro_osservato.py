@@ -4,7 +4,7 @@ from abstract import Model
 from database import Libro as DbLibro
 from database import OsservaLibro as DbOsservaLibro
 from database import Session
-from database import Utente as DbUtente
+from database import User as DbUtente
 from utils.backend import MAX_OSSERVAZIONI
 
 

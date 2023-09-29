@@ -3,7 +3,7 @@ from datetime import datetime
 
 from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout, QMessageBox
 from PySide6.QtWidgets import QLabel, QVBoxLayout
-from database import Utente as db_Utente
+from database import User as db_Utente
 from abstract.view import View
 from PySide6.QtCore import Qt
 from database import Prestito as db_prestito

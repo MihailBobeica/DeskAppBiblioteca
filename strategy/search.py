@@ -10,9 +10,6 @@ from utils.key import KeyDb
 
 
 class SearchStrategy:
-    def __init__(self):
-        pass
-
     @abstractmethod
     def search(self, models: dict[str, BoundedModel], text: str) -> list[dict[str, object]]:
         pass
