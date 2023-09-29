@@ -17,8 +17,8 @@ class PrestitoController(Controller):
             self.ricerca_prestito(data)
         elif message == "registra_prestito":
             self.registra_prestito(data)
-        elif message == "restituito":
-            self.restituito(data)
+        elif message == "registra_restituzione":
+            self.registra_restituzione(data)
 
 
 
@@ -27,11 +27,11 @@ class PrestitoController(Controller):
             results = Utente.by_username(self, data["data"])
             if results:
                 prestiti = Prestito.da_restituire(self,results.id)
-                from view.restituzione.libro_restituzione import Restituzione
-                self.redirect(Restituzione(results,prestiti))
+                from view.restituzione.libro_restituzione import ConfermaRestituzioneView
+                self.redirect(ConfermaRestituzioneView(results, prestiti))
 
 
-    def restituito(self, data: Optional[dict] = None) -> None:  # TODO cambia il nome
+    def registra_restituzione(self, data: Optional[dict] = None) -> None:  # TODO cambia il nome
         confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")

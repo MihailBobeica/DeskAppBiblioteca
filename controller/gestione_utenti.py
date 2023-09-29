@@ -28,7 +28,7 @@ class GestioneUtentiController(Controller):
                 self.visualizza_cronologia(utente)
             else:
                 view_errore("Errore","L'utente non è presente nel sistema")
-        elif message == "mia_cronologia":
+        elif message == "visualizza_mia_cronologia":
             self.visualizza_cronologia(auth.user)
         elif message == "go_to_gestione_utenti":
             self.redirect(GestioneUtentiView())

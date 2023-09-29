@@ -11,7 +11,7 @@ class RicercaPrenotazioneLibroView(View):
         grid_layout.addWidget(label, 0, 0)
         grid_layout.addWidget(self.text_input, 0, 1)
         invia = QPushButton("Cerca")
-        invia.clicked.connect(self.go_to_lista_prenotazioni)
+        invia.clicked.connect(self.go_to_conferma_prenotazioni)
         grid_layout.addWidget(invia, 1, 0)
 
         layout.addLayout(grid_layout)
@@ -25,5 +25,5 @@ class RicercaPrenotazioneLibroView(View):
         from app import controller_prenotazioni_libri
         self.attach(controller_prenotazioni_libri)
 
-    def go_to_lista_prenotazioni(self):
+    def go_to_conferma_prenotazioni(self):
         self.notify(message="ricerca_prenotazioni", data={"data": self.text_input.text()})

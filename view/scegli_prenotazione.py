@@ -27,7 +27,7 @@ class ScegliPrenotazione(View):
         self.main_window.set_view(scegli_data_view)  # Imposta la nuova vista come vista attiva
 
     def on_prenota_singolo_clicked(self):
-        self.tipo_prenotazione = "prenota_singolo"  # Imposta il tipo di prenotazione a "prenota_singolo"
+        self.tipo_prenotazione = "prenotasingolo"  # Imposta il tipo di prenotazione a "prenota_singolo"
         scegli_data_view = ScegliDataView(self.tipo_prenotazione)  # Passa il tipo di prenotazione alla vista ScegliDataView
         self.main_window.set_view(scegli_data_view)  # Imposta la nuova vista come vista attiva
 

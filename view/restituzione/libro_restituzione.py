@@ -11,7 +11,7 @@ from model.sanzione import Sanzione
 
 
 
-class Restituzione(View):
+class ConfermaRestituzioneView(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout(self)
 
@@ -52,7 +52,7 @@ class Restituzione(View):
 
 
     def go_to_da_restituire(self, event, prestito):
-        self.notify(message="restituito", data={"prestito" : prestito})
+        self.notify(message="registra_restituzione", data={"prestito" : prestito})
         '''confirm_dialog = QMessageBox()
         confirm_dialog.setIcon(QMessageBox.Question)
         confirm_dialog.setWindowTitle("Conferma")

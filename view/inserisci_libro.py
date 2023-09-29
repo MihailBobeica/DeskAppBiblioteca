@@ -73,7 +73,7 @@ class InserisciLibroView(View):
         layout.addLayout(grid_layout)
 
         invia = QPushButton('Aggiungi libro')
-        invia.clicked.connect(self.invia)
+        invia.clicked.connect(self.inserisci_libro)
         layout.addWidget(invia)
 
         self.setLayout(layout)
@@ -112,7 +112,7 @@ class InserisciLibroView(View):
             else:
                 print("Failed to load the selected image.")
 
-    def invia(self):
+    def inserisci_libro(self):
         if self.input2.text() and self.input2.text() and self.input3.text() and self.input4.text() and self.input5.text() and self.input6.text() and self.input7.text() and self.input8.text() and self.input9.text():
             self.notify(message="inserisci_libro",
                         data={"titolo": self.input2.text(),

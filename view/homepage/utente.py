@@ -42,7 +42,7 @@ class HomeUtenteView(View):
 
     def go_to_cronologia(self):
         #self.notify(Request.GO_TO_CRONOLOGIA)
-        self.notify("mia_cronologia")
+        self.notify("visualizza_mia_cronologia")
 
     def go_to_sanzioni(self):
         self.notify(Request.GO_TO_SANZIONI)
