@@ -50,7 +50,7 @@ class CatalogoComponent(View):
 
         self.search()
 
-    def update(self):
+    def refresh(self):
         self.search(self.searchbar.text())
 
     def attach_controllers(self) -> None:

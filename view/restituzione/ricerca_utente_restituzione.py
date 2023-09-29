@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget, QGridL
     QListWidget
 from abstract.view import View
 from PySide6.QtCore import Qt
-from database import Utente as db_Utente
+from database import User as db_Utente
 from model.utente import Utente
 
 class RicercaRestituzione(View):

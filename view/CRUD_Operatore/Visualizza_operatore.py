@@ -1,4 +1,4 @@
-from database import Utente as db_Utente
+from database import User as db_Utente
 from abstract.view import View
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QPushButton
 

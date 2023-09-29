@@ -6,7 +6,7 @@ from abstract.model import Model
 from database import Libro as DbLibro
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Session
-from database import Utente as DbUtente
+from database import User as DbUtente
 from utils.ui import RESULTS_LIMIT
 
 

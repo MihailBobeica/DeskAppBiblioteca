@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QMessageBox
 from sqlalchemy import or_,and_
 from abstract.model import Model
 from database import Session
-from database import Utente as DbUtente
+from database import User as DbUtente
 from database import Prestito
 
 

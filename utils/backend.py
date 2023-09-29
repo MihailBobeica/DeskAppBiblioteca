@@ -48,7 +48,7 @@ def get_codice() -> str:
 
 def backup():
     source_file = os.path.join(os.getcwd(), "database/db.sqlite")  # Replace with the path to your source file
-    t_name = datetime.now().strftime("%Y_%m_%d_%H_%M")
+    t_name = datetime.now().strftime("%Y_%m_%d")
     destination_file = os.path.join(os.getcwd(), f"backup/{t_name}.sqlite")  # Replace with the path to your destination file
 
     try:

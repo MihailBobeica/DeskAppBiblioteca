@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import and_, or_
 
 from abstract.model import Model
-from database import Libro as DbLibro, Utente as DbUtente
+from database import Libro as DbLibro, User as DbUtente
 from database import PrenotazioneLibro as DbPrenotazioneLibro
 from database import Session
 from utils.auth import auth

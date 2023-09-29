@@ -9,20 +9,18 @@ from view.component import SidebarComponent
 
 class HomeUtenteView(View):
     def create_layout(self):
-        sidebar = SidebarComponent()
-
-        sidebar.set_button("Libri in prestito").clicked.connect(self.go_to_libri_in_prestito)
-        sidebar.set_button("Libri prenotati").clicked.connect(self.go_to_libri_prenotati)
-        sidebar.set_button("Lista di osservazione").clicked.connect(self.go_to_lista_di_osservazione)
-        sidebar.set_button("Prenota posto").clicked.connect(self.go_to_prenota_posto)
-        sidebar.set_button("Posti prenotati").clicked.connect(self.go_to_posti_prenotati)
-        sidebar.set_button("Cronologia").clicked.connect(self.go_to_cronologia)
-        sidebar.set_button("Sanzioni").clicked.connect(self.go_to_sanzioni)
-        sidebar.set_button("Logout").clicked.connect(self.logout)
+        self.sidebar.set_button("Libri in prestito").clicked.connect(self.go_to_libri_in_prestito)
+        self.sidebar.set_button("Libri prenotati").clicked.connect(self.go_to_libri_prenotati)
+        self.sidebar.set_button("Lista di osservazione").clicked.connect(self.go_to_lista_di_osservazione)
+        self.sidebar.set_button("Prenota posto").clicked.connect(self.go_to_prenota_posto)
+        self.sidebar.set_button("Posti prenotati").clicked.connect(self.go_to_posti_prenotati)
+        self.sidebar.set_button("Cronologia").clicked.connect(self.go_to_cronologia)
+        self.sidebar.set_button("Sanzioni").clicked.connect(self.go_to_sanzioni)
+        self.sidebar.set_button("Logout").clicked.connect(self.logout)
 
         # layout
         layout = QHBoxLayout(self)
-        layout.addWidget(sidebar)
+        layout.addWidget(self.sidebar)
         layout.addWidget(self.catalogo)
 
     def go_to_libri_in_prestito(self):
@@ -70,11 +68,12 @@ class HomeUtenteView(View):
     #     self.redirect(VisualizzaCronologia(libri))
 
     def __init__(self):
+        self.sidebar = SidebarComponent()
         self.catalogo = CatalogoComponent(context=KeyContext.CATALOGO_LIBRI_UTENTE)
         super().__init__()
 
         self.notify(Request.CHECK_LIBRI_OSSERVATI)
         self.notify(Request.CHECK_SCADENZA_PRENOTAZIONI)
 
-    def update(self):
-        self.catalogo.update()
+    def refresh(self):
+        self.catalogo.refresh()

@@ -37,7 +37,7 @@ class View(QFrame):
 
         self.create_layout()
 
-    def update(self):
+    def refresh(self):
         pass
 
     def attach_controllers(self) -> None:

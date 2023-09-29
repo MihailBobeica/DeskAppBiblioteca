@@ -6,7 +6,7 @@ from abstract.model import Model
 from database import Sanzione as DbSanzione
 from database import Session, Prestito as DbPrestito
 from database import PrenotazioneLibro as DbPrenotazioneLibro
-from database import Utente as DbUtente
+from database import User as DbUtente
 from utils.backend import DURATA_PRENOTAZIONE
 
 
