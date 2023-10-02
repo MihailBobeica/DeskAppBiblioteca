@@ -7,8 +7,7 @@ from abstract.view import View
 from database import BoundedDbModel
 from factory.libro_component import LibroComponentFactory
 from factory.search_strategy import SearchStrategyFactory
-from utils.key import KeyContext, KeyDb
-from utils.request import Request
+from utils.key import KeyContext
 from utils.ui import get_style, CATALOG_COLUMNS
 
 
@@ -58,11 +57,11 @@ class CatalogoComponent(View):
         self.attach(controller_catalogo)
 
     def search(self, text: Optional[str] = None) -> None:
-        self.notify(message=Request.SEARCH,
+        self.notify(message="search",
                     data={"catalogo": self,
                           "text": text})
 
-    def load_grid(self, data_list: list[dict[KeyDb, BoundedDbModel]]) -> None:
+    def load_grid(self, data_list: list[dict[str, BoundedDbModel]]) -> None:
         while self.grid_layout.count():
             child = self.grid_layout.takeAt(0)
             if t := child.widget():
@@ -75,6 +74,6 @@ class CatalogoComponent(View):
         for index, data in enumerate(data_list):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
-            libro_component_factory = LibroComponentFactory(catalogo=self, data=data)
+            libro_component_factory = LibroComponentFactory(catalogo=self, dati=data)
             libro = libro_component_factory.create(self.context)
             self.grid_layout.addWidget(libro, row, col)

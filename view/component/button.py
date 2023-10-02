@@ -3,15 +3,13 @@ from abc import abstractmethod
 from PySide6.QtWidgets import QPushButton
 
 from abstract import BoundedView
-from utils.key import KeyDb
-from utils.request import Request
-from view.scaffold import LibroScaffold
+from view.scaffold import DettagliScaffold
 
 
 class RequestButton(QPushButton):
     def __init__(self, view: BoundedView):
         super().__init__()
-        self.view = view
+        self.view: DettagliScaffold = view
         self.clicked.connect(self.send_request)
 
     @abstractmethod
@@ -19,15 +17,24 @@ class RequestButton(QPushButton):
         ...
 
 
-class ButtonVisualizzaLibro(RequestButton):
+class ButtonGoToDettagliLibroGuest(RequestButton):
     def __init__(self, view: BoundedView):
         super().__init__(view=view)
         self.setText("Visualizza")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.GO_TO_VISUALIZZA_LIBRO,
-                         data=self.view.data)
+        self.view.notify(message="go_to_dettagli_libro_guest",
+                         data={"libro": self.view.libro})
+
+
+class ButtonGoToDettagliLibroUtente(RequestButton):
+    def __init__(self, view: BoundedView):
+        super().__init__(view=view)
+        self.setText("Visualizza")
+
+    def send_request(self) -> None:
+        self.view.notify(message="go_to_dettagli_libro_utente",
+                         data={"libro": self.view.libro})
 
 
 class ButtonPrenotaLibro(RequestButton):
@@ -36,9 +43,8 @@ class ButtonPrenotaLibro(RequestButton):
         self.setText("Prenota libro")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.PRENOTA_LIBRO,
-                         data={KeyDb.LIBRO: self.view.libro})
+        self.view.notify(message="prenota_libro",
+                         data={"libro": self.view.libro})
 
 
 class ButtonOsservaLibro(RequestButton):
@@ -47,21 +53,19 @@ class ButtonOsservaLibro(RequestButton):
         self.setText("Osserva libro")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.OSSERVA_LIBRO,
-                         data={KeyDb.LIBRO: self.view.libro})
+        self.view.notify(message="osserva_libro",
+                         data={"libro": self.view.libro})
 
 
-class ButtonDettagliPrenotazioneLibro(RequestButton):
+class ButtonGoToDettagliPrenotazioneLibro(RequestButton):
     def __init__(self, view: BoundedView):
         super().__init__(view=view)
         self.setText("Dettagli prenotazione")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.GO_TO_DETTAGLI_PRENOTAZIONE_LIBRO,
-                         data={KeyDb.LIBRO: self.view.libro,
-                               KeyDb.PRENOTAZIONE_LIBRO: self.view.prenotazione})
+        self.view.notify(message="go_to_dettagli_prenotazione_libro",
+                         data={"libro": self.view.libro,
+                               "prenotazione_libro": self.view.prenotazione_libro})
 
 
 class ButtonCancellaPrenotazioneLibro(RequestButton):
@@ -70,11 +74,9 @@ class ButtonCancellaPrenotazioneLibro(RequestButton):
         self.setText("Cancella prenotazione")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.CANCELLA_PRENOTAZIONE_LIBRO,
+        self.view.notify(message="cancella_prenotazione_libro",
                          data={"catalogo": self.view.catalogo,
-                               KeyDb.LIBRO: self.view.libro,
-                               KeyDb.PRENOTAZIONE_LIBRO: self.view.prenotazione})
+                               "prenotazione_libro": self.view.prenotazione_libro})
 
 
 class ButtonGoToLibriPrenotati(RequestButton):
@@ -83,8 +85,7 @@ class ButtonGoToLibriPrenotati(RequestButton):
         self.setText("Indietro")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.GO_TO_LIBRI_PRENOTATI)
+        self.view.notify(message="go_to_libri_prenotati")
 
 
 class ButtonGoToLibriInPrestito(RequestButton):
@@ -93,8 +94,7 @@ class ButtonGoToLibriInPrestito(RequestButton):
         self.setText("Indietro")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.GO_TO_LIBRI_IN_PRESTITO)
+        self.view.notify(message="go_to_libri_in_prestito")
 
 
 class ButtonRimuoviLibroOsservato(RequestButton):
@@ -103,21 +103,18 @@ class ButtonRimuoviLibroOsservato(RequestButton):
         self.setText("Rimuovi")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.RIMUOVI_LIBRO_OSSERVATO,
+        self.view.notify(message="rimuovi_libro_osservato",
                          data={"catalogo": self.view.catalogo,
-                               KeyDb.LIBRO: self.view.libro})
+                               "libro": self.view.libro})
 
 
-class ButtonDettagliPrestito(RequestButton):
+class ButtonGoToDettagliPrestito(RequestButton):
     def __init__(self, view: BoundedView):
         super().__init__(view=view)
         self.setText("Dettagli prestito")
 
     def send_request(self) -> None:
-        self.view: LibroScaffold
-        self.view.notify(message=Request.GO_TO_DETTAGLI_PRESTITO,
-                         data={"catalogo": self.view.catalogo,
-                               KeyDb.LIBRO: self.view.libro,
-                               KeyDb.PRESTITO: self.view.prestito}
+        self.view.notify(message="go_to_dettagli_prestito",
+                         data={"libro": self.view.libro,
+                               "prestito": self.view.prestito}
                          )

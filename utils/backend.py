@@ -9,6 +9,7 @@ DURATA_PRENOTAZIONE = 3  # in giorni
 MINIMO_COPIE_DISPONIBILI = 1
 MAX_PRENOTAZIONI = 2
 MAX_OSSERVAZIONI = 5
+DURATA_PRESTITO = 21  # giorni
 CATALOGO = "catalogo"
 
 # TODO maybe put context in a separate file

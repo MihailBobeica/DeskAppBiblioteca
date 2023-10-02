@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller
 from typing import Optional
 
-from model.utente import Utente
+from model.utenti import ModelUtenti
 from view.CRUD_Operatore.crea_operatore import CreaOperatoreView
 from view.CRUD_Operatore.gestione_operatore import GestioneOperatoriView
 from view.CRUD_Operatore.ricerca_operatore import RicercaOperatoreView
@@ -50,7 +50,7 @@ class CRUD_operatore(Controller):
             self.redirect(GestioneOperatoriView())
 
     def inserisci_operatore(self, data: Optional[dict] = None) -> None:
-        op = Utente().by_username(data["username"])
+        op = ModelUtenti().by_username(data["username"])
         if op:
             view_errore("errore","questo username è gia in uso")
 

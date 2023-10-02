@@ -5,7 +5,6 @@ from PySide6.QtWidgets import QFrame
 
 from protocol import Observer
 from utils.backend import get_label
-from utils.request import Request
 
 
 class View(QFrame):
@@ -16,11 +15,11 @@ class View(QFrame):
     def detach(self, label: str) -> None:
         del self.controllers[label]
 
-    def notify(self, message: Request, data: Optional[dict] = None) -> None:
+    def notify(self, message: str, data: Optional[dict] = None) -> None:
         for controller in self.controllers.values():
             controller.receive_message(message, data)
 
-    def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
+    def receive_message(self, message: str, data: Optional[dict] = None) -> None:
         pass
 
     @abstractmethod
@@ -43,8 +42,8 @@ class View(QFrame):
     def attach_controllers(self) -> None:
         pass
 
-    def redirect(self, view) -> None:
+    def redirect(self, view) -> None:  # TODO remove
         self.main_window.set_view(view)
 
-    def logout(self):
-        self.notify(Request.LOGOUT)
+    def logout(self):  # TODO remove
+        self.notify("logout")

@@ -1,6 +1,6 @@
 from typing import Protocol, Optional
+
 from protocol.observer import Observer
-from utils.request import Request
 
 
 class Observable(Protocol):
@@ -10,5 +10,5 @@ class Observable(Protocol):
     def detach(self, observer: Observer):
         ...
 
-    def notify(self, message: Request, data: Optional[dict] = None):
+    def notify(self, message: str, data: Optional[dict] = None):
         ...

@@ -2,13 +2,13 @@ from typing import Type
 
 from abstract import Factory
 from database import BoundedDbModel
-from utils.key import KeyContext, KeyDb
+from utils.key import KeyContext
 
 
 class LibroComponentFactory(Factory):
-    def __init__(self, catalogo, data: dict[KeyDb, BoundedDbModel]):
+    def __init__(self, catalogo, dati: dict[str, BoundedDbModel]):
         self.catalogo = catalogo
-        self.data = data
+        self.dati = dati
 
         super().__init__()
 
@@ -31,5 +31,5 @@ class LibroComponentFactory(Factory):
         libro_component = self.type.get(key)
         if libro_component:
             return libro_component(catalogo=self.catalogo,
-                                   data=self.data)
+                                   dati=self.dati)
         raise ValueError("Invalid libro component type")

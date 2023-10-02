@@ -1,7 +1,8 @@
-from typing import Type
+from typing import Callable
+
+from PySide6.QtWidgets import QPushButton
 
 from abstract import BoundedView, Factory
-from utils.key import KeyButtonComponent
 
 
 class ButtonComponentFactory(Factory):
@@ -10,31 +11,49 @@ class ButtonComponentFactory(Factory):
 
         super().__init__()
 
-        from view.component.button import ButtonCancellaPrenotazioneLibro
-        from view.component.button import ButtonDettagliPrenotazioneLibro
-        from view.component.button import ButtonGoToLibriPrenotati
-        from view.component.button import ButtonOsservaLibro
+    def create(self, button: str) -> QPushButton:
+        try:
+            create_button_component: Callable[[], QPushButton] = self.__getattribute__(f"create_{button}")
+            return create_button_component()
+        except AttributeError as e:
+            print(e)
+
+    def create_go_to_dettagli_libro_guest(self) -> QPushButton:
+        from view.component.button import ButtonGoToDettagliLibroGuest
+        return ButtonGoToDettagliLibroGuest(self.view)
+
+    def create_go_to_dettagli_libro_utente(self) -> QPushButton:
+        from view.component.button import ButtonGoToDettagliLibroUtente
+        return ButtonGoToDettagliLibroUtente(self.view)
+
+    def create_prenota_libro(self) -> QPushButton:
         from view.component.button import ButtonPrenotaLibro
-        from view.component.button import ButtonVisualizzaLibro
-        from view.component.button import ButtonRimuoviLibroOsservato
-        from view.component.button import ButtonDettagliPrestito
+        return ButtonPrenotaLibro(self.view)
+
+    def create_osserva_libro(self) -> QPushButton:
+        from view.component.button import ButtonOsservaLibro
+        return ButtonOsservaLibro(self.view)
+
+    def create_go_to_dettagli_prenotazione_libro(self) -> QPushButton:
+        from view.component.button import ButtonGoToDettagliPrenotazioneLibro
+        return ButtonGoToDettagliPrenotazioneLibro(self.view)
+
+    def create_cancella_prenotazione_libro(self) -> QPushButton:
+        from view.component.button import ButtonCancellaPrenotazioneLibro
+        return ButtonCancellaPrenotazioneLibro(self.view)
+
+    def create_go_to_libri_prenotati(self) -> QPushButton:
+        from view.component.button import ButtonGoToLibriPrenotati
+        return ButtonGoToLibriPrenotati(self.view)
+
+    def create_go_to_libri_in_prestito(self) -> QPushButton:
         from view.component.button import ButtonGoToLibriInPrestito
-        from view.component.button import RequestButton
+        return ButtonGoToLibriInPrestito(self.view)
 
-        self.type: dict[KeyButtonComponent, Type[RequestButton]] = dict()
+    def create_rimuovi_libro_osservato(self) -> QPushButton:
+        from view.component.button import ButtonRimuoviLibroOsservato
+        return ButtonRimuoviLibroOsservato(self.view)
 
-        self.type[KeyButtonComponent.VISUALIZZA_LIBRO] = ButtonVisualizzaLibro
-        self.type[KeyButtonComponent.PRENOTA_LIBRO] = ButtonPrenotaLibro
-        self.type[KeyButtonComponent.OSSERVA_LIBRO] = ButtonOsservaLibro
-        self.type[KeyButtonComponent.DETTAGLI_PRENOTAZIONE_LIBRO] = ButtonDettagliPrenotazioneLibro
-        self.type[KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO] = ButtonCancellaPrenotazioneLibro
-        self.type[KeyButtonComponent.GO_TO_LIBRI_PRENOTATI] = ButtonGoToLibriPrenotati
-        self.type[KeyButtonComponent.GO_TO_LIBRI_IN_PRESTITO] = ButtonGoToLibriInPrestito
-        self.type[KeyButtonComponent.RIMUOVI_LIBRO_OSSERVATO] = ButtonRimuoviLibroOsservato
-        self.type[KeyButtonComponent.DETTAGLI_PRESTITO] = ButtonDettagliPrestito
-
-    def create(self, key: KeyButtonComponent):
-        button_component = self.type.get(key)
-        if button_component:
-            return button_component(view=self.view)
-        raise ValueError("Invalid button component type")
+    def create_go_to_dettagli_prestito(self) -> QPushButton:
+        from view.component.button import ButtonGoToDettagliPrestito
+        return ButtonGoToDettagliPrestito(self.view)

@@ -1,65 +1,66 @@
+from database import Libro, PrenotazioneLibro, Prestito
 from utils.backend import MINIMO_COPIE_DISPONIBILI
-from utils.key import *
 from utils.ui import font_16
-from view.component.label import *
-from view.scaffold import LibroViewScaffold
+from view.scaffold import DettagliViewScaffold
 
 
-class LibroViewGuest(LibroViewScaffold):
-    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
-        super().__init__(data=data)
+class DettagliLibroGuestView(DettagliViewScaffold):
+    def __init__(self, libro: Libro):
+        super().__init__(libro=libro)
 
-        self.add_labels((KeyLabelComponent.TITOLO,
-                         KeyLabelComponent.AUTORI,
-                         KeyLabelComponent.ANNO_EDIZIONE,
-                         KeyLabelComponent.ANNO_PUBBLICAZIONE,
-                         KeyLabelComponent.EDITORE),
+        self.add_labels(("titolo",
+                         "autori",
+                         "anno_edizione",
+                         "anno_pubblicazione",
+                         "editore"),
                         transform=font_16)
 
 
-class LibroViewUtente(LibroViewScaffold):
-    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
-        super().__init__(data=data)
+class DettagliLibroUtenteView(DettagliViewScaffold):
+    def __init__(self, libro: Libro):
+        super().__init__(libro=libro)
 
-        self.add_labels((KeyLabelComponent.TITOLO,
-                         KeyLabelComponent.AUTORI,
-                         KeyLabelComponent.ANNO_EDIZIONE,
-                         KeyLabelComponent.ANNO_PUBBLICAZIONE,
-                         KeyLabelComponent.EDITORE,
-                         KeyLabelComponent.DISPONIBILI,
-                         KeyLabelComponent.DATI,
-                         KeyLabelComponent.ISBN),
+        self.add_labels(("titolo",
+                         "autori",
+                         "anno_edizione",
+                         "anno_pubblicazione",
+                         "editore",
+                         "disponibili",
+                         "dati",
+                         "isbn"),
                         transform=font_16)
 
         if self.libro.disponibili > MINIMO_COPIE_DISPONIBILI:
-            self.add_buttons((KeyButtonComponent.PRENOTA_LIBRO,))
+            self.add_buttons(("prenota_libro",))
         else:
-            self.add_buttons((KeyButtonComponent.OSSERVA_LIBRO,))
+            self.add_buttons(("osserva_libro",))
 
 
-class PrenotazioneLibroView(LibroViewScaffold):
-    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
-        super().__init__(data=data)
+class DettagliPrenotazioneLibroView(DettagliViewScaffold):
+    def __init__(self, libro: Libro, prenotazione_libro: PrenotazioneLibro):
+        super().__init__(libro=libro,
+                         prenotazione_libro=prenotazione_libro)
 
-        self.add_labels((KeyLabelComponent.TITOLO,
-                         KeyLabelComponent.AUTORI,
-                         KeyLabelComponent.DATA_PRENOTAZIONE_LIBRO,
-                         KeyLabelComponent.SCADENZA_PRENOTAZIONE_LIBRO,
-                         KeyLabelComponent.CODICE_PRENOTAZIONE_LIBRO),
+        self.add_labels(("titolo",
+                         "autori",
+                         "data_prenotazione_libro",
+                         "scadenza_prenotazione_libro",
+                         "codice_prenotazione_libro"),
                         transform=font_16)
 
-        self.add_buttons((KeyButtonComponent.CANCELLA_PRENOTAZIONE_LIBRO,
-                          KeyButtonComponent.GO_TO_LIBRI_PRENOTATI))
+        self.add_buttons(("cancella_prenotazione_libro",
+                          "go_to_libri_prenotati"))
 
 
-class DettagliPrestitoView(LibroViewScaffold):
-    def __init__(self, data: dict[KeyDb, BoundedDbModel]):
-        super().__init__(data=data)
+class DettagliPrestitoView(DettagliViewScaffold):
+    def __init__(self, libro: Libro, prestito: Prestito):
+        super().__init__(libro=libro,
+                         prestito=prestito)
 
-        self.add_labels((KeyLabelComponent.TITOLO,
-                         KeyLabelComponent.AUTORI,
-                         KeyLabelComponent.INIZIO_PRESTITO,
-                         KeyLabelComponent.FINE_PRESTITO),
+        self.add_labels(("titolo",
+                         "autori",
+                         "inizio_prestito",
+                         "fine_prestito"),
                         transform=font_16)
 
-        self.add_buttons((KeyButtonComponent.GO_TO_LIBRI_IN_PRESTITO,))
+        self.add_buttons(("go_to_libri_in_prestito",))

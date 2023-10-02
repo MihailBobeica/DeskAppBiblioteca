@@ -1,39 +1,36 @@
 import uuid
-from datetime import datetime,timedelta
-from typing import Dict, Type
+from datetime import datetime, timedelta
+from typing import Dict, Type, Any
 from abstract.model import Model
 from database import Session, PrenotazioneLibro as db_prenotazione_libro, Prestito as DbPrestito
-from view.component.view_errore import view_errore
-from .libro import Libro
+from utils.backend import get_codice, DURATA_PRESTITO
+# from view.component.view_errore import view_errore
+from .libri import ModelLibri
 from sqlalchemy import or_, and_
-from model.sanzione import Sanzione
+from model.sanzioni import ModelSanzioni
 from database import User as DbUtente
 from database import Libro as DbLibro
 
 
-
-class Prestito(Model):
-
-    '''def inserisci(self, codice_prenotazione):
+class ModelPrestiti(Model):
+    def inserisci(self,
+                  data_inizio: datetime,
+                  data_restituzione: datetime,
+                  utente_id: int,
+                  libro_id: int):
         db_session = Session()
-        prenotazione = db_session.query(db_prenotazione_libro).filter_by(codice=codice_prenotazione).first()
-        if prenotazione:
-            if prenotazione.data_scadenza<=datetime.now():
-                view_errore.create_layout(self,"ERRORE","La prenotazione è scaduta")
-            else:
-                prestito = db_prestito(libro= prenotazione.libro, utente=prenotazione.utente)
-                db_session.add(prestito)
-                db_session.commit()
-                db_session.close()
-        else:
-            view_errore.create_layout(self, "ERRORE", "Prenotaione non trovata")'''
-
-    def inserisci(self, dati:Dict):
-        db_session = Session()
-        prestito = DbPrestito(data_inizio = datetime.now(), data_scadenza=datetime.now() + timedelta(days=21), libro_id=dati["libro"], utente_id=dati["utente"], codice =str(uuid.uuid4())[:12])
+        prestito = DbPrestito(data_inizio=data_inizio,
+                              data_scadenza=data_inizio + timedelta(days=DURATA_PRESTITO),
+                              data_restituzione=data_restituzione,
+                              codice=get_codice(),
+                              utente_id=utente_id,
+                              libro_id=libro_id)
         db_session.add(prestito)
         db_session.commit()
         db_session.close()
+
+    def __init__(self):
+        super().__init__()
 
     def valide(self, utente: DbUtente):
         db_session = Session()
@@ -64,16 +61,25 @@ class Prestito(Model):
 
         db_session = Session()
         prestito.data_restituzione = datetime.now()
-       
+
         if prestito.data_restituzione > prestito.data_scadenza:
-            Sanzione.new_sanzione(prestito)
-            
+            ModelSanzioni.new_sanzione(prestito)
+
         db_session.merge(prestito)
-        libro = Libro.by_id(self,prestito.libro_id)
+        libro = ModelLibri.by_id(self, prestito.libro_id)
         libro.disponibili += 1
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
+
+    def passati(self, id_utente: int) -> list[DbPrestito]:
+        db_session = Session()
+        prestiti = db_session.query(DbPrestito).filter(
+            and_(DbPrestito.utente_id == id_utente,
+                 DbPrestito.data_restituzione != None)
+        ).order_by(DbPrestito.data_inizio.desc()).all()
+        db_session.close()
+        return prestiti
 
     def by_utente(self, utente_id):
         db_session = Session()
@@ -83,7 +89,8 @@ class Prestito(Model):
 
     def da_restituire(self, id):
         db_session = Session()
-        prestiti = db_session.query(DbPrestito).filter(and_(DbPrestito.utente_id == id), (DbPrestito.data_restituzione == None)).all()
+        prestiti = db_session.query(DbPrestito).filter(and_(DbPrestito.utente_id == id),
+                                                       (DbPrestito.data_restituzione == None)).all()
         # print(prestiti)
         db_session.close()
         return prestiti
@@ -105,12 +112,9 @@ class Prestito(Model):
                                                              DbPrestito.data_restituzione is None)).all()
         db_sesseion.close()
         for i in prestiti:
-            cont+=1
+            cont += 1
         print(cont)
-        if cont>3:
+        if cont > 3:
             return False
         else:
             return True
-
-
-

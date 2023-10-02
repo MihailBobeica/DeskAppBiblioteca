@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QLabel, QLineEdit, QDateEdit, QSpinBox, QGridLayou
 
 from abstract.view import View
 from database import Libro
-from model.libro import Libro as ModelLibro
+from model.libri import ModelLibri as ModelLibro
 from view.homepage.admin import HomeAdminView
 
 

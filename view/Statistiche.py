@@ -1,10 +1,8 @@
+from PySide6.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QListWidget
 
-
-import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QListWidget
 
 class StatsWindow(QMainWindow):
-    def __init__(self, utenti, libri, prestiti, sospensioni,titoli):
+    def __init__(self, utenti, libri, prestiti, sospensioni, titoli):
         super().__init__()
 
         self.setWindowTitle("Statistiche")
@@ -33,4 +31,3 @@ class StatsWindow(QMainWindow):
         layout.addWidget(title_list)
 
         central_widget.setLayout(layout)
-

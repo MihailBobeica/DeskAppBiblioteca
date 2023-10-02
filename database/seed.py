@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from utils.auth import hash_password
 from utils.backend import to_year, POSTI_PER_AULA
@@ -23,6 +23,11 @@ UTENTI = [
      "cognome": "Minimi",
      "ruolo": "utente",
      "username": "S004",
+     "password": hash_password("utente")},
+    {"nome": "Filippo",
+     "cognome": "Finzi",
+     "ruolo": "utente",
+     "username": "S005",
      "password": hash_password("utente")},
 ]
 
@@ -74,9 +79,9 @@ LIBRI = [
      "dati": "332 p., ill., brossura"},
 ]
 AULE = [
-    {"nome": "Acquario_1"},
-    {"nome": "Acquario_2"},
-    {"nome": "Acquario_3"},
+    {"nome": "Acquario 1"},
+    {"nome": "Acquario 2"},
+    {"nome": "Acquario 3"},
     {"nome": "Salone"}
 ]
 
@@ -84,19 +89,55 @@ POSTI = []
 for aula in AULE:
     nome_aula = aula["nome"]
     for numero_posto in range(1, POSTI_PER_AULA + 1):
-        posto = {"nome": f"{numero_posto}{nome_aula}", "aula": nome_aula}
+        posto = {"nome": f"Aula: {nome_aula}, Posto: {numero_posto}", "aula": nome_aula}
         POSTI.append(posto)
 
-PRESTITI = [
+PRESTITI_PASSATI = [
     {
-        "data_restituzione": None,
-        "utente": 3,
-        "libro": 1
+        "data_inizio": datetime(day=1, month=1, year=2023),
+        "data_restituzione": datetime(day=7, month=1, year=2023),
+        "utente_id": 3,
+        "libro_id": 1
     }, {
+        "data_inizio": datetime(day=1, month=2, year=2023),
+        "data_restituzione": datetime(day=8, month=2, year=2023),
+        "utente_id": 3,
+        "libro_id": 4
+    }, {
+        "data_inizio": datetime(day=1, month=3, year=2023),
+        "data_restituzione": datetime(day=9, month=3, year=2023),
+        "utente_id": 3,
+        "libro_id": 3
+    }, {
+        "data_inizio": datetime(day=1, month=4, year=2023),
+        "data_restituzione": datetime(day=10, month=4, year=2023),
+        "utente_id": 4,
+        "libro_id": 2
+    }, {
+        "data_inizio": datetime(day=1, month=5, year=2023),
+        "data_restituzione": datetime(day=11, month=5, year=2023),
+        "utente_id": 4,
+        "libro_id": 1
+    }, {
+        "data_inizio": datetime.now(),
         "data_restituzione": None,
-        "utente": 3,
-        "libro": 2
+        "utente_id": 4,
+        "libro_id": 5
+    }, {
+        "data_inizio": datetime.now() - timedelta(days=30),
+        "data_restituzione": None,
+        "utente_id": 5,
+        "libro_id": 2
     }
+]
+
+PRENOTAZIONI_LIBRI = [
+    {
+        "data_prenotazione": datetime.now() - timedelta(days=4),
+        "codice": "asdfghjkl",
+        "utente_id": 4,
+        "libro_id": 1
+    },
 ]
 
 PRENOTAZIONI_AULE = []

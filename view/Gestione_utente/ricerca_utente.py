@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QVBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton
 from abstract.view import View
-from model.utente import Utente
+from model.utenti import ModelUtenti
 
 class RicercaUtenteView(View):
     def create_layout(self) -> None:

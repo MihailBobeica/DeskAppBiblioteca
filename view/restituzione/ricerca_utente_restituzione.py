@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget, QGridL
 from abstract.view import View
 from PySide6.QtCore import Qt
 from database import User as db_Utente
-from model.utente import Utente
+from model.utenti import ModelUtenti
 
 class RicercaRestituzione(View):
     def create_layout(self) -> None:
@@ -24,8 +24,8 @@ class RicercaRestituzione(View):
         super().__init__()
 
     def attach_controllers(self) -> None:
-        from app import controller_prestito
-        self.attach(controller_prestito)
+        from app import controller_prestiti
+        self.attach(controller_prestiti)
 
 
 

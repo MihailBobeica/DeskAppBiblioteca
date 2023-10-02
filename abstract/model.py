@@ -1,9 +1,8 @@
 from abc import abstractmethod
-from typing import Optional
+from typing import Optional, Any
 
 from protocol import Observer
 from utils.backend import get_label
-from utils.request import Request
 
 
 class Model:
@@ -14,7 +13,7 @@ class Model:
     def detach(self, label: str) -> None:
         del self.views[label]
 
-    def notify(self, message: Request, data: Optional[dict] = None) -> None:
+    def notify(self, message: str, data: Optional[dict] = None) -> None:
         for view in self.views.values():
             view.receive_message(message, data)
 
@@ -22,9 +21,9 @@ class Model:
         self.views: dict[str, Observer] = dict()
 
     @abstractmethod
-    def inserisci(self, dati: dict[str, str]):
+    def inserisci(self, **kwargs):
         pass
 
-    def seed_db(self, lista_dati: list[dict[str, str]]):
+    def seed_db(self, lista_dati: list[dict[str, Any]]):
         for dati in lista_dati:
-            self.inserisci(dati)
+            self.inserisci(**dati)

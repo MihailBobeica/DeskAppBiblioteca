@@ -2,20 +2,46 @@ from sqlalchemy import or_, and_
 
 from abstract import Model
 from database import Libro as DbLibro
-from database import OsservaLibro as DbOsservaLibro
+from database import LibroOsservato as DbOsservaLibro
 from database import Session
 from database import User as DbUtente
 from utils.backend import MAX_OSSERVAZIONI
 
 
-class LibroOsservato(Model):
-    def __init__(self):
-        super().__init__()
-
+class ModelLibriOsservati(Model):
     def inserisci(self, dati: dict[str, str]):
         pass
 
-    def registra(self, utente: DbUtente, libro: DbLibro):
+    def __init__(self):
+        super().__init__()
+
+    def by_utente(self, utente: DbUtente) -> list[DbLibro]:
+        db_session = Session()
+        osservazioni_libri = db_session.query(DbOsservaLibro).filter_by(utente_id=utente.id).all()
+        libri_osservati = [ol.libro for ol in osservazioni_libri]
+        return libri_osservati
+
+    def rimuovi(self, utente: DbUtente, libro: DbLibro):
+        db_session = Session()
+
+        libro_osservato = db_session.query(DbOsservaLibro).filter(
+            and_(DbOsservaLibro.utente_id == utente.id,
+                 DbOsservaLibro.libro_id == libro.id)
+        ).first()
+
+        db_session.delete(libro_osservato)
+        db_session.commit()
+        db_session.close()
+
+    def limite_raggiunto(self, utente: DbUtente) -> bool:
+        db_session = Session()
+
+        numero_libri_osservati = db_session.query(DbOsservaLibro).filter_by(utente_id=utente.id).count()
+
+        db_session.close()
+        return numero_libri_osservati > MAX_OSSERVAZIONI
+
+    def aggiungi(self, utente: DbUtente, libro: DbLibro):
         db_session = Session()
 
         osserva_libro = DbOsservaLibro(utente_id=utente.id,
@@ -25,16 +51,7 @@ class LibroOsservato(Model):
         db_session.commit()
         db_session.close()
 
-    def get_libri_ossevati(self, utente: DbUtente) -> list[DbLibro]:
-        db_session = Session()
-
-        osservazioni_libri = db_session.query(DbOsservaLibro).filter_by(utente_id=utente.id).all()
-
-        libri_osservati = [ol.libro for ol in osservazioni_libri]
-
-        return libri_osservati
-
-    def search_libri_osservati(self, utente: DbUtente, text: str):
+    def search_libri_osservati(self, utente: DbUtente, text: str):  ######
         db_session = Session()
 
         libri_osservati = db_session.query(DbLibro).join(DbOsservaLibro).filter(
@@ -44,14 +61,6 @@ class LibroOsservato(Model):
         ).all()
 
         return libri_osservati
-
-    def raggiunto_limite(self, utente: DbUtente):
-        db_session = Session()
-
-        numero_libri_osservati = db_session.query(DbOsservaLibro).filter_by(utente_id=utente.id).count()
-
-        db_session.close()
-        return numero_libri_osservati > MAX_OSSERVAZIONI
 
     def by_libro(self, utente: DbUtente, libro: DbLibro):
         db_session = Session()
@@ -70,15 +79,3 @@ class LibroOsservato(Model):
         n = self.by_libro(utente, libro).count()
         db_session.close()
         return n >= 1
-
-    def rimuovi(self, utente: DbUtente, libro: DbLibro):
-        db_session = Session()
-
-        libro_osservato = db_session.query(DbOsservaLibro).filter(
-            and_(DbOsservaLibro.utente_id == utente.id,
-                 DbOsservaLibro.libro_id == libro.id)
-        ).first()
-
-        db_session.delete(libro_osservato)
-        db_session.commit()
-        db_session.close()

@@ -1,7 +1,7 @@
 from abstract.view import View
 
 from database import User as db_Utente
-from model.utente import Utente
+from model.utenti import ModelUtenti
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QGridLayout, QMessageBox
 from utils.auth import hash_password
 

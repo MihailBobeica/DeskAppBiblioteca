@@ -7,7 +7,7 @@ from database import User as db_Utente
 from abstract.view import View
 from PySide6.QtCore import Qt
 from database import Prestito as db_prestito
-from model.sanzione import Sanzione
+from model.sanzioni import ModelSanzioni
 
 
 
@@ -46,8 +46,8 @@ class ConfermaRestituzioneView(View):
 
 
     def attach_controllers(self) -> None:
-        from app import controller_prestito
-        self.attach(controller_prestito)
+        from app import controller_prestiti
+        self.attach(controller_prestiti)
 
 
 

@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout, QListWidgetItem
 from database import PrenotazioneLibro as db_prenotazioni
 from abstract.view import View
-from model.utente import Utente
+from model.utenti import ModelUtenti
 
 
 class VisualizzaCronologiaView(View):

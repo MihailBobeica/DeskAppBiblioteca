@@ -1,12 +1,9 @@
-import uuid
 from typing import TypeVar
 
-from sqlalchemy import Column, Integer, String, Enum, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime, timedelta
-from utils.role import *
 
 db_engine = create_engine('sqlite:///./database/db.sqlite')
 
@@ -90,7 +87,7 @@ class PrenotazionePosto(Base):
     ora_inizio = Column(DateTime)
     ora_fine = Column(DateTime)
     ora_attivazione = Column(DateTime)
-    durata = Column(Integer)
+    durata = Column(Integer, nullable=True)
     codice_posto = Column(String)
     codice_utente = Column(String)
 
@@ -103,15 +100,9 @@ class PrenotazioneAula(Base):
     ora_inizio = Column(DateTime)
     ora_fine = Column(DateTime)
     ora_attivazione = Column(DateTime)
-    durata = Column(Integer)
+    durata = Column(Integer, nullable=True)
     codice_aula = Column(String)
     codice_utente = Column(String)
-
-    # aula_id = Column(Integer, ForeignKey('aule.id'))
-    # utente_id = Column(Integer, ForeignKey('utenti.id'))
-    #
-    # aula = relationship("Aula")
-    # utente = relationship("Utente")
 
 
 class PrenotazioneLibro(Base):
@@ -151,7 +142,7 @@ class Sanzione(Base):
     id = Column(Integer, primary_key=True)
     data_fine = Column(DateTime, nullable=True)
     durata = Column(DateTime, nullable=True)
-    tipo = Column(String)
+    tipo = Column(String, nullable=True)
     utente_id = Column(Integer, ForeignKey('utenti.id'))
     prestito_id = Column(Integer, ForeignKey('prestiti.id'), nullable=True)
     prenotazione_id = Column(Integer, ForeignKey('prenotazioni_libri.id'), nullable=True)
@@ -161,7 +152,7 @@ class Sanzione(Base):
     prenotazione = relationship("PrenotazioneLibro")
 
 
-class OsservaLibro(Base):
+class LibroOsservato(Base):
     __tablename__ = "osservazioni"
 
     id = Column(Integer, primary_key=True)

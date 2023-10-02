@@ -38,8 +38,8 @@ class ConfermaPrenotazioneLibroView(View):
         super().__init__()
 
     def attach_controllers(self) -> None:
-        from app import controller_prestito
-        self.attach(controller_prestito)
+        from app import controller_prestiti
+        self.attach(controller_prestiti)
 
     def registra_prestito(self, event, prenotazione):
         self.notify(message="registra_prestito", data={"libro": prenotazione.libro_id, "utente": prenotazione.utente_id,

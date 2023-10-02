@@ -5,18 +5,18 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller, BoundedModel
 from database import Libro as DbLibro
 from database import PrenotazioneLibro as DbPrenotazioneLibro
-from model import Libro, PrenotazioneLibro
+from model import ModelLibri, ModelPrenotazioniLibri
 from utils.auth import Auth
 from utils.strings import *
 from view.gestione_libri_admin.catalogo_admin import CatalogoAdminView
 from view.inserisci_libro import InserisciLibroView
-from view.libri_prenotati import LibriPrenotatiView
-from model.libro import Libro
+from model.libri import ModelLibri
 from database import Libro as db_Libro
 
 class GestioneLibriController(Controller):
     def __init__(self, models: Optional[dict[str, BoundedModel]] = None):
-        super().__init__(models=models)
+        self.models = models
+        super().__init__()
 
     def receive_message(self, message: str, data: Optional[dict] = None) -> None:
         if message == "inserisci_libro":
@@ -31,12 +31,12 @@ class GestioneLibriController(Controller):
             self.redirect(CatalogoAdminView())
 
     def inserisci_libro(self, data: Optional[dict] = None):
-        Libro.inserisci2(self,data)
+        ModelLibri.aggiungi(self, data)
         from view.homepage.admin import HomeAdminView
         self.redirect(HomeAdminView())
 
     def modifica_libro(self, data: dict):
-        Libro.modifica(self,data, data["isbn"])
+        ModelLibri.modifica(self, data, data["isbn"])
         from view.homepage.admin import HomeAdminView
         self.redirect(HomeAdminView())
         '''ModelLibro().modifica(dati, self.info.isbn)
@@ -51,7 +51,7 @@ class GestioneLibriController(Controller):
         msg_box.setDefaultButton(QMessageBox.Ok)
         response = msg_box.exec()
         if response == QMessageBox.Ok:
-            Libro.elimina(self,libro)
+            ModelLibri.elimina(self, libro)
 
         from view.homepage.admin import HomeAdminView
         self.redirect(HomeAdminView())

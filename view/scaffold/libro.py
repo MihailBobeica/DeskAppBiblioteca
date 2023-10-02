@@ -5,19 +5,14 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel, QHBoxLayout, QFrame, QVBoxLayout
 
 from abstract import View
-from database import BoundedDbModel
-from database import Libro as DbLibro
-from database import PrenotazioneLibro as DbPrenotazioneLibro
+from database import Libro, BoundedDbModel, Prestito, PrenotazioneLibro
 from factory.button_component import ButtonComponentFactory
 from factory.label_component import LabelComponentFactory
-from utils.key import KeyButtonComponent
-from utils.key import KeyDb
-from utils.key import KeyLabelComponent
 from utils.ui import get_cover_image
 from view.component import CatalogoComponent
 
 
-class LibroScaffold(View):
+class DettagliScaffold(View):
     def create_layout(self) -> None:
         # content
         # copertina
@@ -50,30 +45,34 @@ class LibroScaffold(View):
         layout.addWidget(contenitore_dati)
 
     def __init__(self, catalogo: Optional[CatalogoComponent],
-                 data: dict[KeyDb, BoundedDbModel],
+                 dati: dict[str, BoundedDbModel],
                  box_size: tuple[int, int],
-                 fullscreen: bool):
+                 fullscreen: bool, **kwargs):
         self.catalogo = catalogo
-        self.data = data
+        self.dati = dati
         self.box_width, self.box_height = box_size
         self.half_box_width = self.box_width // 2
         self.fullscreen = fullscreen
 
-        self.libro: DbLibro = self.data.get(KeyDb.LIBRO)
-        self.prestito: DbPrenotazioneLibro = self.data.get(KeyDb.PRESTITO)
-        self.prenotazione: DbPrenotazioneLibro = self.data.get(KeyDb.PRENOTAZIONE_LIBRO)
+        self.libro: Libro = self.dati.get("libro")
+        self.prestito: Prestito = self.dati.get("prestito")
+        self.prenotazione_libro: PrenotazioneLibro = self.dati.get("prenotazione_libro")
 
-        self.label_component_factory = LabelComponentFactory(data=self.data)
+        self.label_component_factory = LabelComponentFactory(self.dati)
         self.button_component_factory = ButtonComponentFactory(view=self)
 
         self.v_layout = QVBoxLayout()
         super().__init__()
 
     def attach_controllers(self) -> None:
-        from app import controller_catalogo
-        self.attach(controller_catalogo)
+        from app import controller_router
+        from app import controller_prenotazioni_libri
+        from app import controller_libri_osservati
+        self.attach(controller_router)
+        self.attach(controller_prenotazioni_libri)
+        self.attach(controller_libri_osservati)
 
-    def add_labels(self, label_keys: tuple[KeyLabelComponent, ...], transform: Optional[Callable] = None) -> None:
+    def add_labels(self, label_keys: tuple[str, ...], transform: Optional[Callable] = None) -> None:
         for label_key in label_keys:
             label = self.label_component_factory.create(label_key)
             if transform:
@@ -81,7 +80,7 @@ class LibroScaffold(View):
             self.v_layout.addWidget(label)
         self.v_layout.addStretch(1)
 
-    def add_buttons(self, button_keys: tuple[KeyButtonComponent, ...]) -> None:
+    def add_buttons(self, button_keys: tuple[str, ...]) -> None:
         for button_key in button_keys:
             button = self.button_component_factory.create(button_key)
             self.v_layout.addWidget(button)

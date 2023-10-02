@@ -186,23 +186,6 @@ class PrenotazioneController(Controller):
         db_session.commit()
         db_session.close()
 
-    # def is_aula_disponibile(self,ora_inizio, ora_fine):
-    #     # Interroga il database per ottenere le prenotazioni sovrapposte
-    #     prenotazioni_sovrapposte = session.query(PrenotazioneAula).filter(
-    #         and_(
-    #             PrenotazioneAula.data_prenotazione <= ora_inizio,
-    #             PrenotazioneAula.ora_fine >= ora_fine
-    #         )
-    #     ).all()
-    #
-    #     # Ottieni l'elenco degli id delle aule prenotate in modo da poter escluderle dalle aule disponibili
-    #     id_aule_prenotate = [prenotazione.codice_aula for prenotazione in prenotazioni_sovrapposte]
-    #
-    #     # Ottieni l'elenco delle aule disponibili escludendo quelle già prenotate
-    #     aule_disponibili = session.query(Aula).filter(Aula.id.notin_(id_aule_prenotate)).all()
-    #
-    #     return aule_disponibili
-
     def has_prenotazione_in_fascia_oraria(self,username, data_prenotazione, ora_inizio, ora_fine):
         db_session = Session()
 
@@ -227,34 +210,6 @@ class PrenotazioneController(Controller):
 
         db_session.close()
         return prenotazioni_esistentia_posto+prenotazioni_esistenti_aula
-
-        # def modifica_prenotazione_data(self, id_prenotazione, posto, aula, data, utente_id, durata, ora_inizio, ora_fine):
-        #db_session = Session()
-
-        # # Cerca la prenotazione esistente per l'ID specificato
-        # prenotazione_posto = db_session.query(PrenotazionePosto).filter_by(id=id_prenotazione).first()
-        # prenotazione_aula = db_session.query(PrenotazioneAula).filter_by(id=id_prenotazione).first()
-
-        #if prenotazione_posto:
-        #   # Modifica i campi della prenotazione del posto
-        #  prenotazione_posto.codice_posto = posto
-        #  prenotazione_posto.data_prenotazione = data
-        # prenotazione_posto.codice_utente = utente_id
-        # prenotazione_posto.durata = durata
-        #  prenotazione_posto.ora_inizio = ora_inizio
-        #  prenotazione_posto.ora_fine = ora_fine
-
-        # if prenotazione_aula:
-        #  # Modifica i campi della prenotazione dell'aula
-        #  prenotazione_aula.codice_aula = aula
-        #  prenotazione_aula.data_prenotazione = data
-        # prenotazione_aula.codice_utente = utente_id
-        # prenotazione_aula.durata = durata
-        #  prenotazione_aula.ora_inizio = ora_inizio
-        #  prenotazione_aula.ora_fine = ora_fine
-
-        # db_session.commit()
-        # db_session.close()
 
     def get_all_aule(self):
         db_session = Session()

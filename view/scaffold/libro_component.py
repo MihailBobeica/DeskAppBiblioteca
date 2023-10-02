@@ -1,12 +1,11 @@
 from database import BoundedDbModel
-from utils.key import KeyDb
 from view.component import CatalogoComponent
-from view.scaffold.libro import LibroScaffold
+from view.scaffold.libro import DettagliScaffold
 
 
-class LibroComponentScaffold(LibroScaffold):
-    def __init__(self, catalogo: CatalogoComponent, data: dict[KeyDb, BoundedDbModel]):
+class LibroComponentScaffold(DettagliScaffold):
+    def __init__(self, catalogo: CatalogoComponent, dati: dict[str, BoundedDbModel]):
         super().__init__(catalogo=catalogo,
-                         data=data,
+                         dati=dati,
                          box_size=(400, 240),
                          fullscreen=False)

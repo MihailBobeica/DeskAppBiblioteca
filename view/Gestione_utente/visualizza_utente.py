@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QLabel, QLineEdit, QVBoxLayout, QPushButton, QListWidget, QGridLayout
 from database import User as db_Utente
 from abstract.view import View
-from model.utente import Utente
+from model.utenti import ModelUtenti
 
 class VisualizzaUtenteView(View):
     def create_layout(self) -> None:

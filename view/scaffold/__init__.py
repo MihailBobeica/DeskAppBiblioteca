@@ -1,3 +1,3 @@
-from .libro import LibroScaffold
+from .libro import DettagliScaffold
 from .libro_component import LibroComponentScaffold
-from .libro_view import LibroViewScaffold
+from .libro_view import DettagliViewScaffold

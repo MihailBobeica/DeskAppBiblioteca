@@ -1,0 +1,156 @@
+from datetime import datetime
+
+from sqlalchemy import and_
+
+from abstract import Model
+from database import PrenotazionePosto, PrenotazioneAula, Session, Aula, Posto, Utente
+
+
+class ModelPrenotazioniPosti(Model):
+    def inserisci(self, dati: dict[str, str]):
+        pass
+
+    def __init__(self):
+        super().__init__()
+
+    def posti_singoli_by_username(self, username: str) -> list[PrenotazionePosto]:
+        db_session = Session()
+        prenotazioni_posti_singoli = db_session.query(PrenotazionePosto).filter(
+            PrenotazionePosto.codice_utente == username
+        ).all()
+        db_session.close()
+        return prenotazioni_posti_singoli
+
+    def aule_by_username(self, username: str) -> list[PrenotazioneAula]:
+        db_session = Session()
+        prenotazioni_aule = db_session.query(PrenotazioneAula).filter(
+            PrenotazioneAula.codice_utente == username
+        ).all()
+        db_session.close()
+        return prenotazioni_aule
+
+    def get_aule_disponibili(self, ora_inizio: datetime, ora_fine: datetime) -> list[Aula]:
+        db_session = Session()
+
+        # Ottieni tutte le aule
+        tutte_aule = db_session.query(Aula).all()
+
+        # Controlla quali aule sono disponibili nella fascia oraria specificata
+        aule_disponibili = []
+        for aula in tutte_aule:
+            prenotazioni_aula = db_session.query(PrenotazioneAula).filter(
+                and_(
+                    PrenotazioneAula.codice_aula == aula.nome,
+                    PrenotazioneAula.ora_fine >= ora_inizio,
+                    PrenotazioneAula.ora_inizio <= ora_fine
+                )
+            ).all()
+
+            if not prenotazioni_aula:
+                posti_aula = db_session.query(Posto).filter(Posto.aula == aula.nome).all()
+                posti_disponibili = []
+                for posto in posti_aula:
+                    prenotazioni_posto = db_session.query(PrenotazionePosto).filter(
+                        and_(
+                            PrenotazionePosto.codice_posto == posto.nome,
+                            PrenotazionePosto.ora_fine >= ora_inizio,
+                            PrenotazionePosto.ora_inizio <= ora_fine
+                        )
+                    ).all()
+                    if not prenotazioni_posto:
+                        posti_disponibili.append(posto)
+
+                if len(posti_disponibili) == len(posti_aula):
+                    aule_disponibili.append(aula)
+
+        db_session.close()
+        return aule_disponibili
+
+    def get_posti_disponibili(self, codice_aula: str, ora_inizio: datetime, ora_fine: datetime) -> list[Posto]:
+        db_session = Session()
+
+        # Ottieni tutti i posti
+        tutti_posti = db_session.query(Posto).filter_by(aula=codice_aula).all()
+
+        # Controlla quali posti sono disponibili nella fascia oraria specificata
+        posti_disponibili: list[Posto] = list()
+        for posto in tutti_posti:
+            prenotazioni_posto = db_session.query(PrenotazionePosto).filter(
+                and_(
+                    PrenotazionePosto.codice_posto == posto.nome,
+                    PrenotazionePosto.ora_fine >= ora_inizio,
+                    PrenotazionePosto.ora_inizio <= ora_fine
+                )
+            ).all()
+            if not prenotazioni_posto:
+                posti_disponibili.append(posto)
+
+        db_session.close()
+        return posti_disponibili
+
+    def crea_prenotazione_aula(self, utente: Utente, codice_aula: str, ora_inizio: datetime, ora_fine: datetime):
+        db_session = Session()
+        prenotazione_aula = PrenotazioneAula(
+            codice_aula=codice_aula,
+            data_prenotazione=datetime.now(),
+            codice_utente=utente.username,
+            ora_inizio=ora_inizio,
+            ora_fine=ora_fine
+        )
+        db_session.add(prenotazione_aula)
+        db_session.commit()
+        db_session.close()
+
+    def crea_prenotazione_posto_singolo(self, utente: Utente, codice_posto_singolo: str, ora_inizio: datetime, ora_fine: datetime):
+        db_session = Session()
+        prenotazione_posto_singolo = PrenotazionePosto(
+            codice_posto=codice_posto_singolo,
+            data_prenotazione=datetime.now(),
+            codice_utente=utente.username,
+            ora_inizio=ora_inizio,
+            ora_fine=ora_fine
+        )
+        db_session.add(prenotazione_posto_singolo)
+        db_session.commit()
+        db_session.close()
+
+    def has_prenotazione_in_fascia_oraria(self, utente: Utente, ora_inizio, ora_fine) -> bool:
+        db_session = Session()
+
+        # Controlla se esistono prenotazioni sovrapposte per l'utente nella data specificata
+        prenotazioni_esistenti_aula = db_session.query(PrenotazioneAula).filter(
+            and_(
+                PrenotazioneAula.codice_utente == utente.username,
+                PrenotazioneAula.ora_fine > ora_inizio,
+                PrenotazioneAula.ora_inizio < ora_fine
+            )
+        ).all()
+
+        prenotazioni_esistenti_posto_singolo = db_session.query(PrenotazionePosto).filter(
+            and_(
+                PrenotazionePosto.codice_utente == utente.username,
+                PrenotazionePosto.ora_fine > ora_inizio,
+                PrenotazionePosto.ora_inizio < ora_fine
+            )
+        ).all()
+
+        prenotazioni_posti = prenotazioni_esistenti_aula + prenotazioni_esistenti_posto_singolo
+
+        db_session.close()
+        return len(prenotazioni_posti) > 0
+
+    def cancella_prenotazione_posto_singolo(self, id_prenotazione_posto_singolo):
+        db_session = Session()
+        prenotazione_posto = db_session.query(PrenotazionePosto).get(id_prenotazione_posto_singolo)
+        if prenotazione_posto:
+            db_session.delete(prenotazione_posto)
+            db_session.commit()
+        db_session.close()
+
+    def cancella_prenotazione_aula(self, id_prenotazione_aula):
+        db_session = Session()
+        prenotazione_aula = db_session.query(PrenotazioneAula).get(id_prenotazione_aula)
+        if prenotazione_aula:
+            db_session.delete(prenotazione_aula)
+            db_session.commit()
+        db_session.close()

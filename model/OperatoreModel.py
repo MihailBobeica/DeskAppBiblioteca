@@ -6,7 +6,7 @@ from abstract.model import Model
 from database import Session
 from database import Operatore as DbOp
 from database import Prestito
-from model.utente import Utente
+from model.utenti import ModelUtenti
 
 
 class OperatoreModel(Model):

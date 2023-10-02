@@ -1,7 +1,7 @@
 from abstract import Controller, BoundedModel
 from typing import Optional
 from model.statistiche import Statistiche
-from model.libro import Libro
+from model.libri import ModelLibri
 from utils.request import Request
 
 
@@ -23,7 +23,7 @@ class StatisticheController(Controller):
         results = Statistiche().libri_piu_prestati()
         libri = []
         for res in results:
-            libri.append(Libro().by_id( res.libro_id).titolo)
+            libri.append(ModelLibri().by_id(res.libro_id).titolo)
         from view.Statistiche import StatsWindow
         self.redirect(StatsWindow(num_utenti, num_libri, num_prestiti, num_sospensioni, libri))
 

@@ -1,70 +1,72 @@
-
-from controller import LoginController, LogoutController, CatalogoController, AdminController, gestione_operatore ,gestione_libri, gestione_utenti, statistiche, prenotazioni_libri, prestito
-from controller.notifica import NotificaController
+from controller import LoginController, LogoutController, CatalogoController, gestione_operatore, \
+    gestione_libri, gestione_utenti, statistiche, prenotazioni_libri, prestiti, ControllerLibriOsservati, \
+    ControllerPrenotazioniLibri, ControllerPosti
+from controller.notifica import ControllerNotifica
+from controller.prestiti import ControllerPrestiti
 from controller.router import RouterController
-from controller.sanzione import SanzioneController
+from controller.sanzioni import ControllerSanzioni
 from controller.statistiche import StatisticheController
-from model import LibroOsservato
-from model import PrenotazioneLibro
-from database.seed import UTENTI, LIBRI, AULE, POSTI, PRESTITI, PRENOTAZIONI_AULE
-from model.aula import Aula
-from model.libro import Libro
-from model.posto import Posto
-from model.sanzione import Sanzione
-from model.utente import Utente
-from model.prestito import Prestito
+from model import ModelLibriOsservati, ModelUsers
+from model import ModelPrenotazioniLibri
+from database.seed import *
+from model.aule import ModelAule
+from model.libri import ModelLibri
+from model.posti import ModelPosti
+from model.prenotazioni_posti import ModelPrenotazioniPosti
+from model.sanzioni import ModelSanzioni
+from model.utenti import ModelUtenti
+from model.prestiti import ModelPrestiti
 from model.prenotazione_aula import prenotazione_aula
 from view.homepage import HomeGuestView
 from view.main import MainWindow
-from model.prestito import Prestito
+from model.prestiti import ModelPrestiti
 from model.OperatoreModel import OperatoreModel
 
 # instantiate the main window
 main_window = MainWindow()
 
 # instantiate all the models
-model_utente = Utente()
-model_libro = Libro()
-model_osserva_libro = LibroOsservato()
-model_aula = Aula()
-model_posto = Posto()
+model_users = ModelUsers()
+model_utente = ModelUtenti()
+model_libri = ModelLibri()
+model_libri_osservati = ModelLibriOsservati()
+model_aule = ModelAule()
+model_posti = ModelPosti()
 model_prenotazione_aula = prenotazione_aula()
-model_prenotazione_libro = PrenotazioneLibro()
-model_prestito = Prestito()
-model_sanzioni = Sanzione()
+model_prenotazioni_libri = ModelPrenotazioniLibri()
+model_prestiti = ModelPrestiti()
+model_sanzioni = ModelSanzioni()
 model_operatore = OperatoreModel()
+model_prenotazioni_posti = ModelPrenotazioniPosti()
 
 # seeding
-model_utente.seed_db(UTENTI)
-
-model_libro.seed_db(LIBRI)
-model_aula.seed_db(AULE)
-model_posto.seed_db(POSTI)
-model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
-model_prestito.seed_db(PRESTITI)
+model_users.seed_db(UTENTI)
+model_libri.seed_db(LIBRI)
+model_aule.seed_db(AULE)
+model_posti.seed_db(POSTI)
+model_prestiti.seed_db(PRESTITI_PASSATI)
+model_prenotazioni_libri.seed_db(PRENOTAZIONI_LIBRI)
+# model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
 
 # instantiate all controllers
-controller_notifica = NotificaController({"osserva_libri": model_osserva_libro,
-                                          "prenotazioni_libri": model_prenotazione_libro})
+controller_notifica = ControllerNotifica(model_libri_osservati, model_prenotazioni_libri)
+controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati, model_prenotazioni_libri)
 controller_router = RouterController()
 controller_statistiche = StatisticheController()
-controller_catalogo = CatalogoController({"libri": model_libro,
-                                          "prenotazioni_libri": model_prenotazione_libro,
-                                          "osserva_libri": model_osserva_libro,
+controller_catalogo = CatalogoController({"libri": model_libri,
+                                          "prenotazioni_libri": model_prenotazioni_libri,
+                                          "osserva_libri": model_libri_osservati,
                                           "sanzioni": model_sanzioni,
-                                          "prestiti": model_prestito})
-controller_login = LoginController({"utente": model_utente})
+                                          "prestiti": model_prestiti})
+controller_login = LoginController(model_users)
 controller_logout = LogoutController()
-#controller_admin = AdminController.AdminController()
+# controller_admin = AdminController.AdminController()
 controller_crud_operatore = gestione_operatore.CRUD_operatore()
 controller_gestione_libri = gestione_libri.GestioneLibriController()
 controller_gestione_utenti = gestione_utenti.GestioneUtentiController()
-controller_sanzione = SanzioneController({"utenti": model_utente,
-                                          "prestiti": model_prestito,
-                                          "sanzioni": model_sanzioni,
-                                          "prenotazioni_libri": model_prenotazione_libro})
-controller_prenotazioni_libri = prenotazioni_libri.PrenotazioniLibri()
-controller_prestito = prestito.PrestitoController()
-
+controller_sanzioni = ControllerSanzioni(model_sanzioni)
+controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri, model_sanzioni)
+controller_prestiti = ControllerPrestiti(model_prestiti, model_libri)
+controller_posti = ControllerPosti(model_prenotazioni_posti)
 
 main_window.set_view(HomeGuestView())

@@ -4,8 +4,6 @@ from PySide6.QtWidgets import QMessageBox
 
 from abstract.model import Model
 from abstract.view import View
-# from utils.key import KeyModel  # TODO
-from utils.request import Request
 
 BoundedModel = TypeVar("BoundedModel", bound=Model)
 BoundedView = TypeVar("BoundedView", bound=View)
@@ -13,11 +11,18 @@ BoundedView = TypeVar("BoundedView", bound=View)
 
 class Controller:
     # protocol methods
-    def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
-        pass
+    def receive_message(self, message: str, data: Optional[dict] = None) -> None:
+        from datetime import datetime
+        print(datetime.now(), message)
+        try:
+            f = self.__getattribute__(message)
+            if data is None:
+                data = dict()
+            f(**data)
+        except AttributeError:
+            pass
 
-    def __init__(self, models: Optional[dict[str, BoundedModel]] = None):
-        self.models = models
+    def __init__(self):
         from app import main_window
         self.main_window = main_window
 

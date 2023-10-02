@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QPushButton, QMessag
 
 from abstract import View
 from controller.gestione_prenotazione_posto import PrenotazioneController
-from model.posto import Posto
+from model.posti import ModelPosti
 from view.lista_prenotazioni import ListaPrenotazioniView
 
 
@@ -20,7 +20,7 @@ class DettaglioAulaView(View):
         layout.addWidget(label)
 
         # Crea un'istanza della classe Posto
-        posto_instance = Posto()
+        posto_instance = ModelPosti()
 
         durata_ore = int(self.durata)
         durata_minuti = durata_ore * 60

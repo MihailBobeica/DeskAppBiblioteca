@@ -149,7 +149,7 @@ class CatalogoAdminView(View):
         for index, data in enumerate(data_list):
             row = index // CATALOG_COLUMNS
             col = index % CATALOG_COLUMNS
-            libro_component_factory = LibroComponentFactory(catalogo=self, data=data)
+            libro_component_factory = LibroComponentFactory(catalogo=self, dati=data)
             libro = libro_component_factory.create(self.context)
             self.grid_layout.addWidget(libro, row, col)
 

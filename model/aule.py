@@ -1,13 +1,12 @@
-from typing import Dict
 from abstract.model import Model
-from database import Session
 from database import Aula as DbAula
+from database import Session
 
 
-class Aula(Model):
-    def inserisci(self, dati: Dict[str, str]):
+class ModelAule(Model):
+    def inserisci(self, nome):
         db_session = Session()
-        aula = DbAula(nome=dati["nome"])
+        aula = DbAula(nome=nome)
         db_session.add(aula)
         db_session.commit()
         db_session.close()

@@ -1,35 +1,28 @@
-from typing import Optional
-
-from abstract import Controller, BoundedModel
-from model import LibroOsservato, PrenotazioneLibro
+from abstract import Controller
+from model import ModelPrenotazioniLibri, ModelLibriOsservati
 from utils.auth import auth
 from utils.backend import MINIMO_COPIE_DISPONIBILI
-from utils.request import Request
 from utils.strings import *
 
 
-class NotificaController(Controller):
-    def __init__(self, models: Optional[dict[str, BoundedModel]] = None):
-        super().__init__(models=models)
-
-    def receive_message(self, message: Request, data: Optional[dict] = None) -> None:
-        if message == Request.CHECK_LIBRI_OSSERVATI:
-            self.check_libri_osservati()
-        elif message == Request.CHECK_SCADENZA_PRENOTAZIONI:
-            self.check_scadenza_prenotazioni()
+class ControllerNotifica(Controller):
+    def __init__(self,
+                 model_libri_osservati: ModelLibriOsservati,
+                 model_prenotazioni_libri: ModelPrenotazioniLibri):
+        self.model_libri_osservati = model_libri_osservati
+        self.model_prenotazioni_libri = model_prenotazioni_libri
+        super().__init__()
 
     def check_libri_osservati(self):
-        model_osserva_libro: LibroOsservato = self.models["osserva_libri"]
-        libri_osservati = model_osserva_libro.get_libri_ossevati(auth.user)
+        libri_osservati = self.model_libri_osservati.by_utente(auth.user)
         for libro_osservato in libri_osservati:
             if libro_osservato.disponibili > MINIMO_COPIE_DISPONIBILI:
-                model_osserva_libro.rimuovi(auth.user, libro_osservato)
+                self.model_libri_osservati.rimuovi(auth.user, libro_osservato)
                 self.alert(title=ALERT_LIBRO_ORA_DISPONIBILE_TITLE,
                            message=ALERT_LIBRO_ORA_DISPONIBILE_MESSAGE.format(libro_osservato.titolo))
 
     def check_scadenza_prenotazioni(self):
-        model_prenotazione_libro: PrenotazioneLibro = self.models["prenotazioni_libri"]
-        prenotazioni_quasi_scadute = model_prenotazione_libro.quasi_scadute(auth.user)
+        prenotazioni_quasi_scadute = self.model_prenotazioni_libri.quasi_scadute(auth.user)
         for p in prenotazioni_quasi_scadute:
             self.alert(title="Prenotazione quasi scaduta",
                        message=f"Hai una prenotazione che sta"

@@ -15,21 +15,21 @@ QUICK_ALERT_GO_BACK_TITLE = "Cronologia vuota"
 QUICK_ALERT_GO_BACK_MESSAGE = "La tua cronologia di navigazione" \
                               "\nè attualmente vuota."
 
-LOGOUT_TITLE = "Logout"
-LOGOUT_MESSAGE = "Sei sicuro di voler uscire?"
+BOX_TITLE_LOGOUT = "Logout"
+BOX_MESSAGE_LOGOUT = "Sei sicuro di voler uscire?"
 
 ACCESS_DENIED_TITLE = "Accesso non riuscito"
 BAD_CREDENTIALS_MESSAGE = "Credenziali di accesso errate."
 NO_USERNAME_MESSAGE = "Non hai inserito l'username."
 NO_PASSWORD_MESSAGE = "Non hai inserito la password."
 
-ALERT_PRENOTAZIONE_NEGATA_TITLE = "Prenotazione non riuscita"
-ALERT_UTENTE_SANZIONATO_MESSAGE = "Al momento, risulti sospeso." \
+ALERT_TITLE_PRENOTAZIONE_NEGATA = "Prenotazione non riuscita"
+ALERT_MESSAGE_UTENTE_SANZIONATO = "Al momento, risulti sospeso." \
                                   "\nPer maggiori informazioni," \
                                   "\nvisita l'area `Sospensioni`."
 ALERT_MAX_PRENOTAZIONI_MESSAGE = "Hai già effettuato il numero massimo" \
                                  "\ndi prenotazioni."
-ALERT_LIBRO_GIA_PRENOTATO_MESSAGE = "Hai già prenotato questo libro."
+ALERT_MESSAGE_LIBRO_GIA_PRENOTATO = "Hai già prenotato questo libro."
 
 OBJECT_NAME_CATALOGO = "catalogo"
 OBJECT_NAME_GRID = "grid"
@@ -46,14 +46,32 @@ CONFIRM_CANCELLA_PRENOTAZIONE_MESSAGE = "Sei sicuro di voler cancellare la" \
 CANCELLAZIONE_PRENOTAZIONE_RIUSCITA_MESSAGE = "La cancellazione della prenotazione" \
                                               "\ndel libro è stata portata a termine."
 
-ALERT_OSSERVA_LIBRO_TITLE = "Osserva libro"
+ALERT_TITLE_OSSERVA_LIBRO = "Osserva libro"
 
 ALERT_MAX_OSSERVAZIONI_MESSAGE = "Hai raggiunto il numero massimo di" \
                                  "\nlibri osservati."
 
-ALERT_LIBRO_GIA_OSSERVATO_MESSAGE = "Stai già osservando questo libro."
+ALERT_MESSAGE_LIBRO_GIA_OSSERVATO = "Stai già osservando questo libro."
 
 ALERT_LIBRO_ORA_DISPONIBILE_TITLE = "Libro ora disponibile"
 ALERT_LIBRO_ORA_DISPONIBILE_MESSAGE = "Il seguente libro" \
                                       "\n`{}`" \
                                       "\nè ora disponibile."
+
+ALERT_TITLE_PRENOTAZIONE_AULA = "Prenotazione aula"
+ALERT_MESSAGE_PRENOTAZIONE_AULA = "Hai prenotato la seguente aula:" \
+                                  "\n{}"
+
+ALERT_TITLE_PRENOTAZIONE_POSTO_SINGOLO = "Prenotazione posto singolo"
+ALERT_MESSAGE_PRENOTAZIONE_POSTO_SINGOLO = "Hai prenotato il seguente posto:" \
+                                           "\n{}"
+
+ALERT_TITLE_PRENOTAZIONE_POSTO = "Prenotazione posto"
+ALERT_MESSAGE_PRENOTAZIONE_POSTO_FASCIA_ORARIA = "Hai già effettuato una prenotazione posto" \
+                                                 "\nin questa fascia oraria." \
+                                                 "\nSi prega di scegliere un giorno o" \
+                                                 "\nuna fascia oraria diversi."
+
+CONFIRM_TITLE_CANCELLA_PRENOTAZIONE_POSTO = "Cancella prenotazione posto"
+CONFIRM_MESSAGE_CANCELLA_PRENOTAZIONE_POSTO = "Sei sicuro di voler cancellare" \
+                                              "\nquesta prenotazione?"
