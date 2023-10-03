@@ -226,3 +226,10 @@ class ModelPrenotazioniPosti(Model):
         prenotazione_aula.ora_attivazione = datetime.now()
         db_session.commit()
         db_session.close()
+
+    def get_aule(self) -> list[Aula]:
+        db_session = Session()
+        aule = db_session.query(Aula).all()
+        db_session.close()
+        return aule
+

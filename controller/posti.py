@@ -82,9 +82,16 @@ class ControllerPosti(Controller):
             view.search(view.searchbar.text())
 
     def _fill_view_scegli_aula(self, view: ScegliAulaView):
-        aule_disponibili = self.model_prenotazioni_posti.get_aule_disponibili(view.ora_inizio, view.ora_fine)
-        for aula in aule_disponibili:
-            view.add_aula(aula.nome)
+        if view.metodo == "posto_singolo":
+            aule = self.model_prenotazioni_posti.get_aule()
+            for aula in aule:
+                view.add_aula(aula.nome)
+        elif view.metodo == "aula":
+            aule_disponibili = self.model_prenotazioni_posti.get_aule_disponibili(view.ora_inizio, view.ora_fine)
+            for aula in aule_disponibili:
+                view.add_aula(aula.nome)
+        else:
+            raise ValueError("metodo view scegli aula errato!")
 
     def _fill_view_scegli_posto_singolo(self, view: ScegliPostoSingoloView):
         posti_disponibili = self.model_prenotazioni_posti.get_posti_disponibili(view.codice_aula, view.ora_inizio,
