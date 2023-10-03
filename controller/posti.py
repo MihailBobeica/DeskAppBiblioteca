@@ -1,3 +1,5 @@
+import threading
+import time
 from datetime import datetime
 
 from PySide6.QtWidgets import QMessageBox
@@ -17,6 +19,14 @@ class ControllerPosti(Controller):
     def __init__(self,
                  model_prenotazioni_posti: ModelPrenotazioniPosti):
         self.model_prenotazioni_posti = model_prenotazioni_posti
+        self.flag_thread_exit = threading.Event()
+        self.thread_cancella_prenotazioni_posti_non_attivate_in_tempo = threading.Thread(
+            target=self.cancella_prenotazioni_posti_non_attivate_in_tempo
+        )
+        self.thread_cancella_prenotazioni_posti_non_attivate_in_tempo.start()
+
+        # cancella le prenotazioni posti scadute
+        self.model_prenotazioni_posti.cancella_prenotazioni_posti_scadute()
         super().__init__()
 
     def prenota_aula(self, codice_aula: str, ora_inizio: datetime, ora_fine: datetime):
@@ -69,7 +79,7 @@ class ControllerPosti(Controller):
         response = self.confirm(title=CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO,
                                 message=CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO)
         if response == QMessageBox.StandardButton.Yes:
-            self.model_prenotazioni_posti.conferma_prenotazione_posto_singolo(id_prenotazione)
+            self.model_prenotazioni_posti.attiva_prenotazione_posto_singolo(id_prenotazione)
 
             view.search(view.searchbar.text())
 
@@ -77,9 +87,15 @@ class ControllerPosti(Controller):
         response = self.confirm(title=CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO,
                                 message=CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO)
         if response == QMessageBox.StandardButton.Yes:
-            self.model_prenotazioni_posti.conferma_prenotazione_aula(id_prenotazione)
+            self.model_prenotazioni_posti.attiva_prenotazione_aula(id_prenotazione)
 
             view.search(view.searchbar.text())
+
+    def cancella_prenotazioni_posti_non_attivate_in_tempo(self):
+        while not self.flag_thread_exit.is_set():
+            print("esecuzione thread cancella prenotazioni posti non attivate in tempo ...")
+            self.model_prenotazioni_posti.cancella_prenotazioni_posti_non_attivate_in_tempo()
+            time.sleep(30)
 
     def _fill_view_scegli_aula(self, view: ScegliAulaView):
         if view.metodo == "posto_singolo":

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy import and_, or_
 
@@ -101,7 +101,8 @@ class ModelPrenotazioniPosti(Model):
         db_session.commit()
         db_session.close()
 
-    def crea_prenotazione_posto_singolo(self, utente: Utente, codice_posto_singolo: str, ora_inizio: datetime, ora_fine: datetime):
+    def crea_prenotazione_posto_singolo(self, utente: Utente, codice_posto_singolo: str, ora_inizio: datetime,
+                                        ora_fine: datetime):
         db_session = Session()
         prenotazione_posto_singolo = PrenotazionePosto(
             codice_posto=codice_posto_singolo,
@@ -161,13 +162,13 @@ class ModelPrenotazioniPosti(Model):
         utenti_con_prenotazioni_posti_singoli_oggi = db_session.query(Utente).join(
             PrenotazionePosto, Utente.username == PrenotazionePosto.codice_utente).filter(
             and_(
-                 # Utente.username == PrenotazionePosto.codice_utente,
-                 PrenotazionePosto.ora_attivazione == None,
-                 PrenotazionePosto.ora_inizio < adesso,
-                 PrenotazionePosto.ora_fine > adesso,
-                 or_(Utente.username.ilike(f"%{text}%"),
-                     Utente.nome.ilike(f"%{text}%"),
-                     Utente.cognome.ilike(f"%{text}%")))
+                # Utente.username == PrenotazionePosto.codice_utente,
+                PrenotazionePosto.ora_attivazione == None,
+                PrenotazionePosto.ora_inizio < adesso,
+                PrenotazionePosto.ora_fine > adesso,
+                or_(Utente.username.ilike(f"%{text}%"),
+                    Utente.nome.ilike(f"%{text}%"),
+                    Utente.cognome.ilike(f"%{text}%")))
         ).limit(3).all()
         db_session.close()
         return utenti_con_prenotazioni_posti_singoli_oggi
@@ -178,13 +179,13 @@ class ModelPrenotazioniPosti(Model):
         utenti_con_prenotazioni_aule_oggi = db_session.query(Utente).join(
             PrenotazioneAula, Utente.username == PrenotazioneAula.codice_utente).filter(
             and_(
-                 # Utente.username == PrenotazioneAula.codice_utente,
-                 PrenotazioneAula.ora_attivazione == None,
-                 PrenotazioneAula.ora_inizio < adesso,
-                 PrenotazioneAula.ora_fine > adesso,
-                 or_(Utente.username.ilike(f"%{text}%"),
-                     Utente.nome.ilike(f"%{text}%"),
-                     Utente.cognome.ilike(f"%{text}%"),))
+                # Utente.username == PrenotazioneAula.codice_utente,
+                PrenotazioneAula.ora_attivazione == None,
+                PrenotazioneAula.ora_inizio < adesso,
+                PrenotazioneAula.ora_fine > adesso,
+                or_(Utente.username.ilike(f"%{text}%"),
+                    Utente.nome.ilike(f"%{text}%"),
+                    Utente.cognome.ilike(f"%{text}%"), ))
         ).limit(3).all()
         db_session.close()
         return utenti_con_prenotazioni_aule_oggi
@@ -213,14 +214,14 @@ class ModelPrenotazioniPosti(Model):
         db_session.close()
         return prenotazioni_posti_singoli_oggi
 
-    def conferma_prenotazione_posto_singolo(self, id_prenotazione: int):
+    def attiva_prenotazione_posto_singolo(self, id_prenotazione: int) -> None:
         db_session = Session()
         prenotazione_posto_singolo: PrenotazionePosto = db_session.query(PrenotazionePosto).get(id_prenotazione)
         prenotazione_posto_singolo.ora_attivazione = datetime.now()
         db_session.commit()
         db_session.close()
 
-    def conferma_prenotazione_aula(self, id_prenotazione: int):
+    def attiva_prenotazione_aula(self, id_prenotazione: int) -> None:
         db_session = Session()
         prenotazione_aula: PrenotazioneAula = db_session.query(PrenotazioneAula).get(id_prenotazione)
         prenotazione_aula.ora_attivazione = datetime.now()
@@ -233,3 +234,49 @@ class ModelPrenotazioniPosti(Model):
         db_session.close()
         return aule
 
+    def cancella_prenotazioni_posti_non_attivate_in_tempo(self):
+        db_session = Session()
+        mia = timedelta(30)  # minuti_intervallo_attivazione (mia)
+        adesso = datetime.now()
+
+        # prenotazioni posti singoli (pps) non attivate in tempo da cancellare
+        pps_da_cancellare: list[PrenotazionePosto] = db_session.query(PrenotazionePosto).filter(
+            and_(PrenotazionePosto.ora_attivazione == None,
+                 PrenotazionePosto.ora_inizio + mia < adesso)
+        ).all()
+        for pps in pps_da_cancellare:
+            print(f"cancellata la prenotazione posto singolo non attivata in tempo dell'utente {pps.codice_utente}")
+            db_session.delete(pps)
+
+        # prenotazioni aule (pa) non attivate in tempo
+        pa_da_cancellare: list[PrenotazioneAula] = db_session.query(PrenotazioneAula).filter(
+            and_(PrenotazioneAula.ora_attivazione == None,
+                 PrenotazioneAula.ora_inizio + mia < adesso)
+        ).all()
+        for pa in pa_da_cancellare:
+            print(f"cancellata la prenotazione aula non attivata in tempo dell'utente {pa.codice_utente}")
+            db_session.delete(pa)
+
+        db_session.commit()
+        db_session.close()
+
+    def cancella_prenotazioni_posti_scadute(self) -> None:
+        db_session = Session()
+        adesso = datetime.now()
+
+        # prenotazioni posti singoli (pps) scadute
+        pps_scadute = db_session.query(PrenotazionePosto).filter(
+            PrenotazionePosto.ora_fine < adesso
+        ).all()
+        for pps in pps_scadute:
+            print("cancellata una prenotazione posto singolo scaduta")
+            db_session.delete(pps)
+
+        # prenotazioni aule (pa) scadute
+        pa_scadute = db_session.query(PrenotazioneAula).filter(
+            PrenotazioneAula.ora_fine < adesso
+        ).all()
+        for pa in pa_scadute:
+            print("cancellata una prenotazione aula scaduta")
+            db_session.delete(pa)
+        db_session.close()

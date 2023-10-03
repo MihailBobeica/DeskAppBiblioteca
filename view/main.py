@@ -67,6 +67,11 @@ class MainWindow(QMainWindow):
         # do backup
         backup()
 
+        # signal the thread to exit gracefully
+        from app import controller_posti
+        controller_posti.flag_thread_exit.set()
+        controller_posti.thread_cancella_prenotazioni_posti_non_attivate_in_tempo.join()
+
     def set_view(self, view: BoundedView) -> None:
         layout = self.centralWidget().layout()
 
