@@ -3,6 +3,7 @@ from controller import LoginController, LogoutController, CatalogoController, ge
     ControllerPrenotazioniLibri, ControllerPosti
 from controller.libri import ControllerLibri
 from controller.notifica import ControllerNotifica
+from controller.operatori import ControllerOperatori
 from controller.prestiti import ControllerPrestiti
 from controller.router import RouterController
 from controller.sanzioni import ControllerSanzioni
@@ -12,6 +13,7 @@ from model import ModelPrenotazioniLibri
 from database.seed import *
 from model.aule import ModelAule
 from model.libri import ModelLibri
+from model.operatori import ModelOperatori
 from model.posti import ModelPosti
 from model.prenotazioni_posti import ModelPrenotazioniPosti
 from model.sanzioni import ModelSanzioni
@@ -39,6 +41,7 @@ model_prestiti = ModelPrestiti()
 model_sanzioni = ModelSanzioni()
 model_operatore = OperatoreModel()
 model_prenotazioni_posti = ModelPrenotazioniPosti()
+model_operatori = ModelOperatori()
 
 # seeding
 model_users.seed_db(UTENTI)
@@ -69,5 +72,6 @@ controller_sanzioni = ControllerSanzioni(model_sanzioni)
 controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri, model_sanzioni, model_prestiti)
 controller_prestiti = ControllerPrestiti(model_prestiti, model_libri, model_utenti, model_prenotazioni_libri, model_sanzioni)
 controller_posti = ControllerPosti(model_prenotazioni_posti)
+controller_operatori = ControllerOperatori(model_operatori, model_users)
 
 main_window.set_view(HomeGuestView())

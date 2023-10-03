@@ -72,4 +72,3 @@ class ControllerLibri(Controller):
         if response == QMessageBox.StandardButton.Yes:
             self.model_libri.elimina(id_libro)
             view.search(view.searchbar.text())
-

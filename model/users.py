@@ -28,3 +28,11 @@ class ModelUsers(Model):
         user = db_session.query(User).filter(User.username == username).first()
         db_session.close()
         return user
+
+    def is_username_univoco(self, username: str) -> bool:
+        db_session = Session()
+        utente = db_session.query(User).filter(
+            User.username == username
+        ).first()
+        db_session.close()
+        return utente is None

@@ -95,3 +95,10 @@ ALERT_MESSAGE_LIBRO_IN_PRESTITO = "Al momento, hai questo libro in prestito."
 CONFIRM_TITLE_ELIMINA_LIBRO = "Elimina libro"
 CONFIRM_MESSAGE_ELIMINA_LIBRO = "Sei sicuro di voler eliminare" \
                                 "\nquesto libro?"
+
+CONFIRM_TITLE_ELIMINA_OPERATORE = "Elimina operatore"
+CONFIRM_MESSAGE_ELIMINA_OPERATORE = "Sei sicuro di voler eliminare" \
+                                    "\nquesto operatore?"
+
+ALERT_TITLE_AGGIUNGI_OPERATORE = "Operazione non riuscita"
+ALERT_MESSAGE_USERNAME_NON_UNIVOCO = "Lo username fornito è già usato."
