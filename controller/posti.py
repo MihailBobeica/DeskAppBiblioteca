@@ -93,7 +93,7 @@ class ControllerPosti(Controller):
 
     def cancella_prenotazioni_posti_non_attivate_in_tempo(self):
         while not self.flag_thread_exit.is_set():
-            print(f"{datetime.now()}: esecuzione thread cancella prenotazioni posti non attivate in tempo ...")
+            # print(f"{datetime.now()}: esecuzione thread cancella prenotazioni posti non attivate in tempo ...")
             self.model_prenotazioni_posti.cancella_prenotazioni_posti_non_attivate_in_tempo()
             time.sleep(1)
 

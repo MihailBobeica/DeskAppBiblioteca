@@ -9,7 +9,6 @@ from model import ModelLibri, ModelPrenotazioniLibri
 from utils.auth import Auth
 from utils.strings import *
 from view.gestione_libri_admin.catalogo_admin import CatalogoAdminView
-from view.inserisci_libro import InserisciLibroView
 from model.libri import ModelLibri
 from database import Libro as db_Libro
 
@@ -24,14 +23,15 @@ class GestioneLibriController(Controller):
         elif message == "modifica_libro":
             self.modifica_libro(data)
         elif message == "elimina_libro":
-            self.elimina_libro(data)
+            pass
+            # self.elimina_libro(data)
         elif message == "go_to_inserisci_libro":
-            self.redirect(InserisciLibroView())
+            pass
         elif message == "go_to_ricerca_libro":
             self.redirect(CatalogoAdminView())
 
     def inserisci_libro(self, data: Optional[dict] = None):
-        ModelLibri.aggiungi(self, data)
+        # ModelLibri.aggiungi(self, data)
         from view.homepage.admin import HomeAdminView
         self.redirect(HomeAdminView())
 

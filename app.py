@@ -1,6 +1,7 @@
 from controller import LoginController, LogoutController, CatalogoController, gestione_operatore, \
     gestione_libri, gestione_utenti, statistiche, prenotazioni_libri, prestiti, ControllerLibriOsservati, \
     ControllerPrenotazioniLibri, ControllerPosti
+from controller.libri import ControllerLibri
 from controller.notifica import ControllerNotifica
 from controller.prestiti import ControllerPrestiti
 from controller.router import RouterController
@@ -51,6 +52,7 @@ model_prenotazioni_libri.seed_db(PRENOTAZIONI_LIBRI)
 # instantiate all controllers
 controller_notifica = ControllerNotifica(model_libri_osservati, model_prenotazioni_libri)
 controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati, model_prenotazioni_libri, model_prestiti)
+controller_libri = ControllerLibri(model_libri)
 controller_router = RouterController()
 controller_statistiche = StatisticheController()
 controller_catalogo = CatalogoController({"libri": model_libri,

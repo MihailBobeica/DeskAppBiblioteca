@@ -20,7 +20,7 @@ class CercaLibriCatalogo(SearchStrategy):
         if is_empty(text):
             libri = model_libro.get()
         else:
-            libri = model_libro.search(text)
+            libri = model_libro.by_text(text)
         data = [{"libro": libro} for libro in libri]
         return data
 

@@ -38,6 +38,9 @@ class RouterController(Controller):
     def go_to_aggiungi_libro(self):
         self.redirect(AggiungiModificaLibroView(metodo="aggiungi"))
 
+    def go_to_modifica_libro(self, libro: Libro):
+        self.redirect(AggiungiModificaLibroView(metodo="modifica", libro=libro))
+
     def go_to_gestione_libri(self):
         self.redirect(GestioneLibriView())
 

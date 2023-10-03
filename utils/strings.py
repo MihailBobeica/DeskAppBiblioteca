@@ -91,3 +91,7 @@ CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO = "Prenotazione posto"
 CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO = "Vuoi attivare questa prenotazione?"
 
 ALERT_MESSAGE_LIBRO_IN_PRESTITO = "Al momento, hai questo libro in prestito."
+
+CONFIRM_TITLE_ELIMINA_LIBRO = "Elimina libro"
+CONFIRM_MESSAGE_ELIMINA_LIBRO = "Sei sicuro di voler eliminare" \
+                                "\nquesto libro?"

@@ -37,27 +37,34 @@ class ModelLibri(Model):
     def __init__(self):
         super().__init__()
 
-    def aggiungi(self, dati: dict[str, str]):
+    def aggiungi(self,
+                 titolo: str,
+                 autori: str,
+                 editore: str,
+                 isbn: str,
+                 anno_edizione: datetime,
+                 anno_pubblicazione: datetime,
+                 disponibili: int,
+                 dati: str,
+                 copertina: str):
         db_session = Session()
-        libro = Libro(titolo=dati["titolo"],
-                      autori=dati["autori"],
-                      immagine=dati["immagine"],
-                      editore=dati["editore"],
-                      isbn=dati["isbn"],
-                      anno_edizione=dati["anno_edizione"],
-                      anno_pubblicazione=dati["anno_pubblicazione"],
-                      disponibili=dati["disponibili"],
-                      dati=dati["dati"])
-        res = ModelLibri.by_isbn(self, dati["isbn"])
-        if res:
-            res.disponibili += int(dati["disponibili"])
-            db_session.merge(res)
-            db_session.commit()
-            db_session.close()
+        libro = Libro(titolo=titolo,
+                      autori=autori,
+                      immagine=copertina,
+                      editore=editore,
+                      isbn=isbn,
+                      anno_edizione=anno_edizione,
+                      anno_pubblicazione=anno_pubblicazione,
+                      disponibili=disponibili,
+                      dati=dati)
+        libro_presente = self.by_isbn(isbn)
+        if libro_presente:
+            libro_presente.disponibili += disponibili
+            db_session.merge(libro_presente)
         else:
             db_session.add(libro)
-            db_session.commit()
-            db_session.close()
+        db_session.commit()
+        db_session.close()
 
     def by_id_prestito(self, id_prestito: int) -> Libro:
         db_session = Session()
@@ -79,41 +86,54 @@ class ModelLibri(Model):
         db_session.close()
         return libro
 
-    def search(self, text) -> list[Libro]:
+    def by_text(self, text) -> list[Libro]:
         db_session = Session()
         libri = db_session.query(Libro).filter(or_(Libro.titolo.ilike(f"%{text}%"),
                                                    Libro.autori.ilike(f"%{text}%"))).limit(RESULTS_LIMIT).all()
         db_session.close()
         return libri
 
-    def by_isbn(self, isbn):
+    def by_isbn(self, isbn: str) -> Libro:
         db_session = Session()
         libro = db_session.query(Libro).filter_by(isbn=isbn).first()
         db_session.close()
         return libro
 
-    def by_id(self, id):
+    def by_id(self, id_libro: int) -> Libro:
         db_session = Session()
-        libro = db_session.query(Libro).filter_by(id=id).first()
+        libro = db_session.query(Libro).get(id_libro)
         db_session.close()
         return libro
 
-    def elimina(self, libro: Libro):
+    def elimina(self, id_libro: int):
         db_session = Session()
+        libro = db_session.query(Libro).get(id_libro)
         db_session.delete(libro)
         db_session.commit()
         db_session.close()
 
-    def modifica(self, dati: dict[str, str], old_isbn):
+    def modifica(self,
+                 id_libro: int,
+                 titolo: str,
+                 autori: str,
+                 editore: str,
+                 isbn: str,
+                 anno_edizione: datetime,
+                 anno_pubblicazione: datetime,
+                 disponibili: int,
+                 dati: str,
+                 copertina: str):
         db_session = Session()
-        libro = ModelLibri.by_isbn(self, old_isbn)
-        libro.titolo = dati['titolo']
-        libro.autori = dati['autori']
-        libro.editore = dati['editore']
-        libro.anno_edizione = dati['anno_edizione']
-        libro.anno_pubblicazione = dati['anno_pubblicazione']
-        libro.disponibili = dati['disponibili']
-        libro.dati = dati['dati']
+        libro: Libro = db_session.query(Libro).get(id_libro)
+        libro.titolo = titolo
+        libro.autori = autori
+        libro.editore = editore
+        libro.isbn = isbn
+        libro.anno_edizione = anno_edizione
+        libro.anno_pubblicazione = anno_pubblicazione
+        libro.disponibili = disponibili
+        libro.dati = dati
+        libro.immagine = copertina
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
