@@ -15,7 +15,7 @@ from view.operatore.conferma_posto import ConfermaPostoView
 from view.operatore.registra_prestito import RegistraPrestitoView
 from view.operatore.registra_restituzione import RegistraRestituzioneView
 from view.utente.posti_prenotati import PostiPrenotatiView
-from view.utente.sanzioni import SanzioniView
+from view.common.sanzioni import SanzioniView
 from view.utente.scegli_quando import ScegliQuandoView
 
 

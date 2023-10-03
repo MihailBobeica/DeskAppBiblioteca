@@ -13,17 +13,6 @@ from utils.backend import DURATA_PRENOTAZIONE
 
 
 class ModelSanzioni(Model):
-    def new_sanzione(self, prestito: Prestito):
-        db_session = Session()
-        ''' ricerca vecchie sospensioni ?'''
-
-        giorni = (prestito.data_restituzione - prestito.data_scadenza)
-        sanzione = Sanzione(durata=datetime.now() + timedelta(giorni.days),
-                            tipo="sospensione", utente_id=prestito.utente_id)
-        db_session.add(sanzione)
-        db_session.commit()
-        db_session.close()
-
     def cancella_sanzioni_terminate(self):
         cancella_sanzioni_scadute = delete(Sanzione).where(
             and_(Sanzione.data_fine != None,
@@ -102,21 +91,6 @@ class ModelSanzioni(Model):
                             prenotazione_id=id_prenotazione,
                             data_fine=data_fine)
         db_session.add(sanzione)
-        db_session.commit()
-        db_session.close()
-
-    def check_sanzioni(self):
-        db_session = Session
-        scaduti = db_session.query(Prestito).filter(
-            and_(Prestito.data_scadenza < datetime.now(),
-                 Prestito.data_restituzione == None)
-        ).all()
-        for scaduto in scaduti:
-            sanzione_attiva = db_session.query(Sanzione).filter_by(
-                or_(and_(Sanzione.durata < datetime.now()), Sanzione.utente_id == scaduto.utente_id),
-                Sanzione.utente_id != scaduto.utente_id).first()
-            if not sanzione_attiva:
-                self.new_sanzione(scaduto)
         db_session.commit()
         db_session.close()
 
@@ -217,3 +191,17 @@ class ModelSanzioni(Model):
         ).all()
         db_session.close()
         return len(sanzione) >= 1  # >= just in case
+
+    def restituzione_in_ritardo(self, prestito: Prestito):
+        db_session = Session()
+        prestito: Prestito = db_session.query(Prestito).get(prestito.id)
+        durata: timedelta = prestito.data_restituzione - prestito.data_scadenza
+        data_fine = datetime.now() + durata
+        sanzione = Sanzione(data_fine=data_fine,
+                            durata=durata,
+                            tipo="sospensione",
+                            utente_id=prestito.utente_id,
+                            prestito_id=prestito.id)
+        db_session.add(sanzione)
+        db_session.commit()
+        db_session.close()

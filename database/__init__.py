@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Interval
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
@@ -141,7 +141,7 @@ class Sanzione(Base):
 
     id = Column(Integer, primary_key=True)
     data_fine = Column(DateTime, nullable=True)
-    durata = Column(DateTime, nullable=True)
+    durata = Column(Interval, nullable=True)
     tipo = Column(String, nullable=True)
     utente_id = Column(Integer, ForeignKey('utenti.id'))
     prestito_id = Column(Integer, ForeignKey('prestiti.id'), nullable=True)

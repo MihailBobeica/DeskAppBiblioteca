@@ -6,6 +6,7 @@ from abstract import Controller
 from model.prenotazioni_posti import ModelPrenotazioniPosti
 from utils.auth import auth
 from utils.strings import *
+from view.operatore.conferma_posto import ConfermaPostoView
 from view.utente.posti_prenotati import PostiPrenotatiView
 from view.utente.scegli_aula import ScegliAulaView
 from view.utente.scegli_posto_singolo import ScegliPostoSingoloView
@@ -36,30 +37,6 @@ class ControllerPosti(Controller):
                    message=ALERT_MESSAGE_PRENOTAZIONE_POSTO_SINGOLO.format(codice_posto_singolo))
         self.redirect(PostiPrenotatiView())
 
-    def _fill_view_scegli_aula(self, view: ScegliAulaView):
-        aule_disponibili = self.model_prenotazioni_posti.get_aule_disponibili(view.ora_inizio, view.ora_fine)
-        for aula in aule_disponibili:
-            view.add_aula(aula.nome)
-
-    def _fill_view_scegli_posto_singolo(self, view: ScegliPostoSingoloView):
-        posti_disponibili = self.model_prenotazioni_posti.get_posti_disponibili(view.codice_aula, view.ora_inizio, view.ora_fine)
-        for posto in posti_disponibili:
-            view.add_posto_singolo(posto.nome)
-
-    def _fill_table_posti_prenotati(self, view: PostiPrenotatiView):
-        prenotazioni_posti_singoli = self.model_prenotazioni_posti.posti_singoli_by_username(auth.user.username)
-        prenotazioni_aule = self.model_prenotazioni_posti.aule_by_username(auth.user.username)
-        for pps in prenotazioni_posti_singoli:
-            view.add_row_posti_singoli(pps.id,
-                                       pps.ora_inizio,
-                                       pps.ora_fine,
-                                       pps.codice_posto)
-        for pa in prenotazioni_aule:
-            view.add_row_aule(pa.id,
-                              pa.ora_inizio,
-                              pa.ora_fine,
-                              pa.codice_aula)
-
     def scegli_aula(self, metodo: str, ora_inizio: datetime, ora_fine: datetime):
         has_prenotazione_in_fascia_oraria = self.model_prenotazioni_posti.has_prenotazione_in_fascia_oraria(auth.user,
                                                                                                             ora_inizio,
@@ -87,3 +64,69 @@ class ControllerPosti(Controller):
         if response == QMessageBox.StandardButton.Yes:
             self.model_prenotazioni_posti.cancella_prenotazione_aula(id_prenotazione_aula)
             self.redirect(PostiPrenotatiView())
+
+    def registra_prenotazione_posto_singolo(self, id_prenotazione: int, view: ConfermaPostoView):
+        response = self.confirm(title=CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO,
+                                message=CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO)
+        if response == QMessageBox.StandardButton.Yes:
+            self.model_prenotazioni_posti.conferma_prenotazione_posto_singolo(id_prenotazione)
+
+            view.search(view.searchbar.text())
+
+    def registra_prenotazione_aula(self, id_prenotazione: int, view: ConfermaPostoView):
+        response = self.confirm(title=CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO,
+                                message=CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO)
+        if response == QMessageBox.StandardButton.Yes:
+            self.model_prenotazioni_posti.conferma_prenotazione_aula(id_prenotazione)
+
+            view.search(view.searchbar.text())
+
+    def _fill_view_scegli_aula(self, view: ScegliAulaView):
+        aule_disponibili = self.model_prenotazioni_posti.get_aule_disponibili(view.ora_inizio, view.ora_fine)
+        for aula in aule_disponibili:
+            view.add_aula(aula.nome)
+
+    def _fill_view_scegli_posto_singolo(self, view: ScegliPostoSingoloView):
+        posti_disponibili = self.model_prenotazioni_posti.get_posti_disponibili(view.codice_aula, view.ora_inizio,
+                                                                                view.ora_fine)
+        for posto in posti_disponibili:
+            view.add_posto_singolo(posto.nome)
+
+    def _fill_table_posti_prenotati(self, view: PostiPrenotatiView):
+        prenotazioni_posti_singoli = self.model_prenotazioni_posti.posti_singoli_by_username(auth.user.username)
+        prenotazioni_aule = self.model_prenotazioni_posti.aule_by_username(auth.user.username)
+        for pps in prenotazioni_posti_singoli:
+            view.add_row_posti_singoli(pps.id,
+                                       pps.ora_inizio,
+                                       pps.ora_fine,
+                                       pps.codice_posto)
+        for pa in prenotazioni_aule:
+            view.add_row_aule(pa.id,
+                              pa.ora_inizio,
+                              pa.ora_fine,
+                              pa.codice_aula)
+
+    def _fill_view_conferma_posto(self, view: ConfermaPostoView, text: str):
+        # utenti con prenotazioni posti singoli oggi
+        utenti_posti_singoli_oggi = self.model_prenotazioni_posti.get_utenti_con_prenotazioni_posti_singoli_oggi(text)
+        for utente in utenti_posti_singoli_oggi:
+            posti_singoli_oggi = self.model_prenotazioni_posti.get_prenotazioni_posti_singoli_oggi_by_utente(utente)
+            dati = [{"metodo": "posto_singolo",
+                     "id_prenotazione": prenotazione_posto_singolo.id,
+                     "codice": prenotazione_posto_singolo.codice_posto,
+                     "ora_inizio": prenotazione_posto_singolo.ora_inizio,
+                     "ora_fine": prenotazione_posto_singolo.ora_fine}
+                    for prenotazione_posto_singolo in posti_singoli_oggi]
+            view.add_dati(utente.username, utente.nome, utente.cognome, dati)
+
+        # utenti con prenotazioni aule oggi
+        utenti_aule_oggi = self.model_prenotazioni_posti.get_utenti_con_prenotazioni_aule_oggi(text)
+        for utente in utenti_aule_oggi:
+            aule_oggi = self.model_prenotazioni_posti.get_prenotazioni_aule_oggi_by_utente(utente)
+            dati = [{"metodo": "aula",
+                     "id_prenotazione": prenotazione_aula.id,
+                     "codice": prenotazione_aula.codice_aula,
+                     "ora_inizio": prenotazione_aula.ora_inizio,
+                     "ora_fine": prenotazione_aula.ora_fine}
+                    for prenotazione_aula in aule_oggi]
+            view.add_dati(utente.username, utente.nome, utente.cognome, dati)

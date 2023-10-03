@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 from abstract import Model
 from database import PrenotazionePosto, PrenotazioneAula, Session, Aula, Posto, Utente
@@ -153,4 +153,76 @@ class ModelPrenotazioniPosti(Model):
         if prenotazione_aula:
             db_session.delete(prenotazione_aula)
             db_session.commit()
+        db_session.close()
+
+    def get_utenti_con_prenotazioni_posti_singoli_oggi(self, text: str) -> list[Utente]:
+        db_session = Session()
+        adesso = datetime.now()
+        utenti_con_prenotazioni_posti_singoli_oggi = db_session.query(Utente).join(
+            PrenotazionePosto, Utente.username == PrenotazionePosto.codice_utente).filter(
+            and_(
+                 # Utente.username == PrenotazionePosto.codice_utente,
+                 PrenotazionePosto.ora_attivazione == None,
+                 PrenotazionePosto.ora_inizio < adesso,
+                 PrenotazionePosto.ora_fine > adesso,
+                 or_(Utente.username.ilike(f"%{text}%"),
+                     Utente.nome.ilike(f"%{text}%"),
+                     Utente.cognome.ilike(f"%{text}%")))
+        ).limit(3).all()
+        db_session.close()
+        return utenti_con_prenotazioni_posti_singoli_oggi
+
+    def get_utenti_con_prenotazioni_aule_oggi(self, text: str) -> list[Utente]:
+        db_session = Session()
+        adesso = datetime.now()
+        utenti_con_prenotazioni_aule_oggi = db_session.query(Utente).join(
+            PrenotazioneAula, Utente.username == PrenotazioneAula.codice_utente).filter(
+            and_(
+                 # Utente.username == PrenotazioneAula.codice_utente,
+                 PrenotazioneAula.ora_attivazione == None,
+                 PrenotazioneAula.ora_inizio < adesso,
+                 PrenotazioneAula.ora_fine > adesso,
+                 or_(Utente.username.ilike(f"%{text}%"),
+                     Utente.nome.ilike(f"%{text}%"),
+                     Utente.cognome.ilike(f"%{text}%"),))
+        ).limit(3).all()
+        db_session.close()
+        return utenti_con_prenotazioni_aule_oggi
+
+    def get_prenotazioni_posti_singoli_oggi_by_utente(self, utente: Utente) -> list[PrenotazionePosto]:
+        db_session = Session()
+        adesso = datetime.now()
+        prenotazioni_posti_singoli_oggi = db_session.query(PrenotazionePosto).filter(
+            and_(PrenotazionePosto.codice_utente == utente.username,  # in un mondo ideale avrei potuto usare l'id.
+                 PrenotazionePosto.ora_attivazione == None,
+                 PrenotazionePosto.ora_inizio < adesso,
+                 PrenotazionePosto.ora_fine > adesso)
+        ).all()
+        db_session.close()
+        return prenotazioni_posti_singoli_oggi
+
+    def get_prenotazioni_aule_oggi_by_utente(self, utente: Utente) -> list[PrenotazioneAula]:
+        db_session = Session()
+        adesso = datetime.now()
+        prenotazioni_posti_singoli_oggi = db_session.query(PrenotazioneAula).filter(
+            and_(PrenotazioneAula.codice_utente == utente.username,  # in un mondo ideale avrei potuto usare l'id.
+                 PrenotazioneAula.ora_attivazione == None,
+                 PrenotazioneAula.ora_inizio < adesso,
+                 PrenotazioneAula.ora_fine > adesso)
+        ).all()
+        db_session.close()
+        return prenotazioni_posti_singoli_oggi
+
+    def conferma_prenotazione_posto_singolo(self, id_prenotazione: int):
+        db_session = Session()
+        prenotazione_posto_singolo: PrenotazionePosto = db_session.query(PrenotazionePosto).get(id_prenotazione)
+        prenotazione_posto_singolo.ora_attivazione = datetime.now()
+        db_session.commit()
+        db_session.close()
+
+    def conferma_prenotazione_aula(self, id_prenotazione: int):
+        db_session = Session()
+        prenotazione_aula: PrenotazioneAula = db_session.query(PrenotazioneAula).get(id_prenotazione)
+        prenotazione_aula.ora_attivazione = datetime.now()
+        db_session.commit()
         db_session.close()

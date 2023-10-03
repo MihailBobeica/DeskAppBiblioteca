@@ -29,6 +29,11 @@ UTENTI = [
      "ruolo": "utente",
      "username": "S005",
      "password": hash_password("utente")},
+    {"nome": "Leonardo",
+     "cognome": "Dicapri",
+     "ruolo": "utente",
+     "username": "S006",
+     "password": hash_password("utente")},
 ]
 
 LIBRI = [
@@ -92,7 +97,7 @@ for aula in AULE:
         posto = {"nome": f"Aula: {nome_aula}, Posto: {numero_posto}", "aula": nome_aula}
         POSTI.append(posto)
 
-PRESTITI_PASSATI = [
+PRESTITI = [
     {
         "data_inizio": datetime(day=1, month=1, year=2023),
         "data_restituzione": datetime(day=7, month=1, year=2023),
@@ -137,7 +142,22 @@ PRENOTAZIONI_LIBRI = [
         "codice": "asdfghjkl",
         "utente_id": 4,
         "libro_id": 1
-    },
+    }, {
+        "data_prenotazione": datetime.now(),
+        "codice": "asdfghjkl",
+        "utente_id": 3,
+        "libro_id": 2
+    }, {
+        "data_prenotazione": datetime.now(),
+        "codice": "asdfghjkl",
+        "utente_id": 3,
+        "libro_id": 4
+    }, {
+        "data_prenotazione": datetime.now(),
+        "codice": "asdfghjkl",
+        "utente_id": 4,
+        "libro_id": 4
+    }
 ]
 
 PRENOTAZIONI_AULE = []

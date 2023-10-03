@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QHBoxLayout
+from PySide6.QtWidgets import QVBoxLayout
 
 from abstract.view import View
 from view.component import SidebarComponent
@@ -13,9 +13,10 @@ class HomeAdminView(View):
         self.sidebar.set_button("Gestione utenti").clicked.connect(self.go_to_gestione_utenti)
         self.sidebar.set_button("Statistiche").clicked.connect(self.go_to_statistiche)
         self.sidebar.set_button("Logout").clicked.connect(self.logout)
+        self.sidebar.layout().addStretch()
 
         # layout
-        layout = QHBoxLayout(self)
+        layout = QVBoxLayout(self)
         layout.addWidget(self.sidebar)
 
     def attach_controllers(self) -> None:

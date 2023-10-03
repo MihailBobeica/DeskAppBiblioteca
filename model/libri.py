@@ -59,7 +59,7 @@ class ModelLibri(Model):
             db_session.commit()
             db_session.close()
 
-    def by_prestito(self, id_prestito: int) -> Libro:
+    def by_id_prestito(self, id_prestito: int) -> Libro:
         db_session = Session()
         prestito: Prestito = db_session.query(Prestito).get(id_prestito)
         libro = prestito.libro
@@ -74,6 +74,7 @@ class ModelLibri(Model):
 
     def by_prenotazione(self, prenotazione: PrenotazioneLibro) -> Libro:
         db_session = Session()
+        prenotazione = db_session.query(PrenotazioneLibro).get(prenotazione.id)
         libro = prenotazione.libro
         db_session.close()
         return libro

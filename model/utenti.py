@@ -1,7 +1,7 @@
 from typing import Dict
 
 from abstract.model import Model
-from database import Session
+from database import Session, PrenotazioneLibro
 from database import User as DbUtente
 
 
@@ -12,6 +12,13 @@ class ModelUtenti(Model):
     def by_username(self, username):
         db_session = Session()
         utente = db_session.query(DbUtente).filter_by(username=username).first()
+        db_session.close()
+        return utente
+
+    def by_prenotazione(self, prenotazione: PrenotazioneLibro) -> DbUtente:
+        db_session = Session()
+        prenotazione = db_session.query(PrenotazioneLibro).get(prenotazione.id)
+        utente = prenotazione.utente
         db_session.close()
         return utente
 

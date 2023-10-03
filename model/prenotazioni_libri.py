@@ -49,7 +49,28 @@ class ModelPrenotazioniLibri(Model):
         db_session.close()
         return query
 
-    def valide(self, utente: DbUtente) -> list[PrenotazioneLibro]:
+    def by_id(self, id_prenotazione: int) -> PrenotazioneLibro:
+        db_session = Session()
+        prenotazione_libro = db_session.query(PrenotazioneLibro).get(id_prenotazione)
+        db_session.close()
+        return prenotazione_libro
+
+    def get_utenti_con_prenotazioni(self, text):
+        db_session = Session()
+        utenti_con_prenotazioni = db_session.query(DbUtente).join(PrenotazioneLibro).filter(
+            and_(DbUtente.id == PrenotazioneLibro.utente_id,
+                 PrenotazioneLibro.data_cancellazione == None,
+                 PrenotazioneLibro.data_scadenza > datetime.now(),
+                 or_(
+                     DbUtente.username.ilike(f"%{text}%"),
+                     DbUtente.nome.ilike(f"%{text}%"),
+                     DbUtente.cognome.ilike(f"%{text}%")
+                 ))
+        ).limit(3).all()
+        db_session.close()
+        return utenti_con_prenotazioni
+
+    def valide_by_utente(self, utente: DbUtente) -> list[PrenotazioneLibro]:
         db_session = Session()
         query_prenotazioni_valide = self._query_prenotazioni_valide(utente=utente)
         prenotazioni_valide: list[PrenotazioneLibro] = query_prenotazioni_valide.all()
@@ -109,12 +130,14 @@ class ModelPrenotazioniLibri(Model):
 
     def get_libro(self, prenotazione_libro: PrenotazioneLibro) -> DbLibro:
         db_session = Session()
+        prenotazione_libro: PrenotazioneLibro = db_session.query(PrenotazioneLibro).get(prenotazione_libro.id)
         libro = prenotazione_libro.libro
         db_session.close()
         return libro
 
     def cancella(self, prenotazione: PrenotazioneLibro) -> None:
         db_session = Session()
+        prenotazione = db_session.query(PrenotazioneLibro).get(prenotazione.id)
         prenotazione.data_cancellazione = datetime.now()
         libro: DbLibro = prenotazione.libro
         libro.disponibili += 1

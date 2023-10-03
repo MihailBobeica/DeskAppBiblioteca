@@ -9,6 +9,7 @@ from utils.auth import auth
 from utils.strings import *
 from view.catalogo import LibriPrenotatiView
 from view.component import CatalogoComponent
+from view.operatore.registra_prestito import RegistraPrestitoView
 
 
 class ControllerPrenotazioniLibri(Controller):
@@ -66,3 +67,16 @@ class ControllerPrenotazioniLibri(Controller):
                     catalogo.refresh()
                 else:
                     self.redirect(LibriPrenotatiView())
+
+    def _fill_view_registra_prestito(self, view: RegistraPrestitoView, text: str):
+        utenti_con_prenotazioni = self.model_prenotazioni_libri.get_utenti_con_prenotazioni(text)
+        for utente in utenti_con_prenotazioni:
+            prenotazioni = self.model_prenotazioni_libri.valide_by_utente(utente)
+            libri = [self.model_prenotazioni_libri.get_libro(prenotazione) for prenotazione in prenotazioni]
+            dati = [{"id_prenotazione": prenotazione.id,
+                     "titolo": libro.titolo,
+                     "autori": libro.autori,
+                     "isbn": libro.isbn,
+                     "codice": prenotazione.codice}
+                    for prenotazione, libro in zip(prenotazioni, libri)]
+            view.add_dati(utente.username, utente.nome, utente.cognome, dati)

@@ -34,7 +34,7 @@ class CercaPrenotazioniValide(SearchStrategy):
         model_libro: ModelLibri = models[MODEL_LIBRO]
         utente = auth.user
         if is_empty(text):
-            prenotazioni_valide = model_prenotazione_libro.valide(utente=utente)
+            prenotazioni_valide = model_prenotazione_libro.valide_by_utente(utente=utente)
         else:
             prenotazioni_valide = model_prenotazione_libro.ricerca_valide(utente=utente,
                                                                           text=text)
@@ -68,9 +68,10 @@ class CercaLibriInPrestito(SearchStrategy):
         model_prestito: ModelPrestiti = models["prestiti"]
 
         if is_empty(text):
-            prestiti, libri_in_prestito = model_prestito.valide(auth.user)
+            prestiti = model_prestito.validi_by_utente(auth.user)
         else:
-            prestiti, libri_in_prestito = model_prestito.valide_by_text(auth.user, text)
+            prestiti = model_prestito.validi_by_utente_and_text(auth.user, text)
+        libri_in_prestito = [model_prestito.get_libro(prestito) for prestito in prestiti]
         data = [{"libro": libro, "prestito": prestito} for libro, prestito in zip(libri_in_prestito, prestiti)]
         return data
 

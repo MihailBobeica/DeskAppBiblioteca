@@ -1,7 +1,7 @@
 from abstract import Controller
 from model.sanzioni import ModelSanzioni
 from utils.auth import auth
-from view.utente.sanzioni import SanzioniView
+from view.common.sanzioni import SanzioniView
 
 
 class ControllerSanzioni(Controller):

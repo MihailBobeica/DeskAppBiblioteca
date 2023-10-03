@@ -75,3 +75,17 @@ ALERT_MESSAGE_PRENOTAZIONE_POSTO_FASCIA_ORARIA = "Hai già effettuato una prenot
 CONFIRM_TITLE_CANCELLA_PRENOTAZIONE_POSTO = "Cancella prenotazione posto"
 CONFIRM_MESSAGE_CANCELLA_PRENOTAZIONE_POSTO = "Sei sicuro di voler cancellare" \
                                               "\nquesta prenotazione?"
+
+ALERT_TITLE_MAX_PRESTITI = "Operazione non riuscita"
+ALERT_MESSAGE_MAX_PRESTITI = "L'utente ha già raggiunto il" \
+                             "\nnumero massimo di prestiti!"
+
+CONFIRM_TITLE_REGISTRA_PRESTITO = "Registra prestito"
+CONFIRM_MESSAGE_REGISTRA_PERSTITO = "Confermi di voler registrare" \
+                                    "\nquesto prestito?"
+
+CONFIRM_TITLE_REGISTRA_RESTITUZIONE_PRESTITO = "Registra restituzione"
+CONFIRM_MESSAGE_REGISTRA_RESTITUZIONE_PRESTITO = "Confermi di voler registrare" \
+                                                 "\nla restituzione del libro?"
+CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO = "Prenotazione posto"
+CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO = "Vuoi attivare questa prenotazione?"
