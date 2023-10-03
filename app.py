@@ -1,5 +1,5 @@
 from controller import LoginController, LogoutController, CatalogoController, gestione_operatore, \
-    gestione_libri, gestione_utenti, statistiche, prenotazioni_libri, prestiti, ControllerLibriOsservati, \
+    gestione_utenti, statistiche, prenotazioni_libri, prestiti, ControllerLibriOsservati, \
     ControllerPrenotazioniLibri, ControllerPosti
 from controller.libri import ControllerLibri
 from controller.notifica import ControllerNotifica
@@ -64,7 +64,6 @@ controller_login = LoginController(model_users)
 controller_logout = LogoutController()
 # controller_admin = AdminController.AdminController()
 controller_crud_operatore = gestione_operatore.CRUD_operatore()
-controller_gestione_libri = gestione_libri.GestioneLibriController()
 controller_gestione_utenti = gestione_utenti.GestioneUtentiController()
 controller_sanzioni = ControllerSanzioni(model_sanzioni)
 controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri, model_sanzioni, model_prestiti)
