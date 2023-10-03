@@ -236,26 +236,26 @@ class ModelPrenotazioniPosti(Model):
 
     def cancella_prenotazioni_posti_non_attivate_in_tempo(self):
         db_session = Session()
-        mia = timedelta(30)  # minuti_intervallo_attivazione (mia)
+        mia = timedelta(minutes=30)  # minuti_intervallo_attivazione (mia)
         adesso = datetime.now()
 
         # prenotazioni posti singoli (pps) non attivate in tempo da cancellare
         pps_da_cancellare: list[PrenotazionePosto] = db_session.query(PrenotazionePosto).filter(
-            and_(PrenotazionePosto.ora_attivazione == None,
-                 PrenotazionePosto.ora_inizio + mia < adesso)
+            PrenotazionePosto.ora_attivazione == None
         ).all()
         for pps in pps_da_cancellare:
-            print(f"cancellata la prenotazione posto singolo non attivata in tempo dell'utente {pps.codice_utente}")
-            db_session.delete(pps)
+            if (pps.ora_inizio + mia) < adesso:
+                print(f"cancellata la prenotazione posto singolo non attivata in tempo dell'utente {pps.codice_utente}")
+                db_session.delete(pps)
 
         # prenotazioni aule (pa) non attivate in tempo
         pa_da_cancellare: list[PrenotazioneAula] = db_session.query(PrenotazioneAula).filter(
-            and_(PrenotazioneAula.ora_attivazione == None,
-                 PrenotazioneAula.ora_inizio + mia < adesso)
+            PrenotazioneAula.ora_attivazione == None
         ).all()
         for pa in pa_da_cancellare:
-            print(f"cancellata la prenotazione aula non attivata in tempo dell'utente {pa.codice_utente}")
-            db_session.delete(pa)
+            if (pa.ora_inizio + mia) < adesso:
+                print(f"cancellata la prenotazione aula non attivata in tempo dell'utente {pa.codice_utente}")
+                db_session.delete(pa)
 
         db_session.commit()
         db_session.close()
