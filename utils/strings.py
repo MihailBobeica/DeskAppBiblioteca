@@ -89,3 +89,5 @@ CONFIRM_MESSAGE_REGISTRA_RESTITUZIONE_PRESTITO = "Confermi di voler registrare" 
                                                  "\nla restituzione del libro?"
 CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO = "Prenotazione posto"
 CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO = "Vuoi attivare questa prenotazione?"
+
+ALERT_MESSAGE_LIBRO_IN_PRESTITO = "Al momento, hai questo libro in prestito."

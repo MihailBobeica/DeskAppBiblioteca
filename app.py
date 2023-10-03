@@ -50,7 +50,7 @@ model_prenotazioni_libri.seed_db(PRENOTAZIONI_LIBRI)
 
 # instantiate all controllers
 controller_notifica = ControllerNotifica(model_libri_osservati, model_prenotazioni_libri)
-controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati, model_prenotazioni_libri)
+controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati, model_prenotazioni_libri, model_prestiti)
 controller_router = RouterController()
 controller_statistiche = StatisticheController()
 controller_catalogo = CatalogoController({"libri": model_libri,
@@ -65,7 +65,7 @@ controller_crud_operatore = gestione_operatore.CRUD_operatore()
 controller_gestione_libri = gestione_libri.GestioneLibriController()
 controller_gestione_utenti = gestione_utenti.GestioneUtentiController()
 controller_sanzioni = ControllerSanzioni(model_sanzioni)
-controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri, model_sanzioni)
+controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri, model_sanzioni, model_prestiti)
 controller_prestiti = ControllerPrestiti(model_prestiti, model_libri, model_utenti, model_prenotazioni_libri, model_sanzioni)
 controller_posti = ControllerPosti(model_prenotazioni_posti)
 

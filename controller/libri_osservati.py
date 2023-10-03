@@ -1,6 +1,7 @@
 from abstract import Controller
 from database import Libro
 from model import ModelLibriOsservati, ModelPrenotazioniLibri
+from model.prestiti import ModelPrestiti
 from utils.auth import auth
 from utils.strings import *
 from view.catalogo import ListaDiOsservazioneView
@@ -10,9 +11,11 @@ from view.component import CatalogoComponent
 class ControllerLibriOsservati(Controller):
     def __init__(self,
                  model_libri_osservati: ModelLibriOsservati,
-                 model_prenotazioni_libri: ModelPrenotazioniLibri):
+                 model_prenotazioni_libri: ModelPrenotazioniLibri,
+                 model_prestiti: ModelPrestiti):
         self.model_libri_osservati = model_libri_osservati
         self.model_prenotazioni_libri = model_prenotazioni_libri
+        self.model_prestiti = model_prestiti
         super().__init__()
 
     def osserva_libro(self, libro: Libro):
@@ -21,6 +24,13 @@ class ControllerLibriOsservati(Controller):
         if gia_osservato:
             self.alert(title=ALERT_TITLE_OSSERVA_LIBRO,
                        message=ALERT_MESSAGE_LIBRO_GIA_OSSERVATO)
+            return
+
+        # check se l'utente ha già preso in prestito questo libro
+        has_already_this_prestito = self.model_prestiti.gia_in_prestito(auth.user, libro)
+        if has_already_this_prestito:
+            self.alert(title=ALERT_TITLE_PRENOTAZIONE_NEGATA,
+                       message=ALERT_MESSAGE_LIBRO_IN_PRESTITO)
             return
 
         # check se l'utente ha già prenotato questo libro

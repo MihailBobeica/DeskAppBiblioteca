@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller
 from database import Libro, PrenotazioneLibro
 from model import ModelPrenotazioniLibri, ModelSanzioni
+from model.prestiti import ModelPrestiti
 from utils.auth import auth
 from utils.strings import *
 from view.catalogo import LibriPrenotatiView
@@ -15,9 +16,11 @@ from view.operatore.registra_prestito import RegistraPrestitoView
 class ControllerPrenotazioniLibri(Controller):
     def __init__(self,
                  model_prenotazioni_libri: ModelPrenotazioniLibri,
-                 model_sanzioni: ModelSanzioni):
+                 model_sanzioni: ModelSanzioni,
+                 model_prestiti: ModelPrestiti):
         self.model_prenotazioni_libri = model_prenotazioni_libri
         self.model_sanzioni = model_sanzioni
+        self.model_prestiti = model_prestiti
         super().__init__()
 
     def prenota_libro(self, libro: Libro):
@@ -27,9 +30,15 @@ class ControllerPrenotazioniLibri(Controller):
             self.alert(title=ALERT_TITLE_PRENOTAZIONE_NEGATA,
                        message=ALERT_MESSAGE_UTENTE_SANZIONATO)
             return
+        # check se l'utente ha già preso in prestito questo libro
+        has_already_this_prestito = self.model_prestiti.gia_in_prestito(auth.user, libro)
+        if has_already_this_prestito:
+            self.alert(title=ALERT_TITLE_PRENOTAZIONE_NEGATA,
+                       message=ALERT_MESSAGE_LIBRO_IN_PRESTITO)
+            return
+
         # check se l'utente ha già prenotato questo libro
-        has_already_this_prenotazione = self.model_prenotazioni_libri.gia_prenotato(utente=auth.user,
-                                                                                    libro=libro)
+        has_already_this_prenotazione = self.model_prenotazioni_libri.gia_prenotato(utente=auth.user,                                                                            libro=libro)
         if has_already_this_prenotazione:
             self.alert(title=ALERT_TITLE_PRENOTAZIONE_NEGATA,
                        message=ALERT_MESSAGE_LIBRO_GIA_PRENOTATO)
