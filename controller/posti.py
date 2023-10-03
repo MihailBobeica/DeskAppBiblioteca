@@ -92,17 +92,10 @@ class ControllerPosti(Controller):
             view.search(view.searchbar.text())
 
     def cancella_prenotazioni_posti_non_attivate_in_tempo(self):
-        flag = True
         while not self.flag_thread_exit.is_set():
-            # implementazione dell'esecuzione ogni tot secondi "non bloccante"
-            adesso = datetime.now()
-            condition = adesso.second % 30 == 1
-            if condition and flag:
-                print(f"{adesso}: esecuzione thread cancella prenotazioni posti non attivate in tempo ...")
-                self.model_prenotazioni_posti.cancella_prenotazioni_posti_non_attivate_in_tempo()
-                flag = not flag
-            elif not condition and not flag:
-                flag = not flag
+            print(f"{datetime.now()}: esecuzione thread cancella prenotazioni posti non attivate in tempo ...")
+            self.model_prenotazioni_posti.cancella_prenotazioni_posti_non_attivate_in_tempo()
+            time.sleep(1)
 
     def _fill_view_scegli_aula(self, view: ScegliAulaView):
         if view.metodo == "posto_singolo":
