@@ -1,7 +1,9 @@
 from typing import Dict
 
+from sqlalchemy import or_
+
 from abstract.model import Model
-from database import Session, PrenotazioneLibro
+from database import Session, PrenotazioneLibro, Utente
 from database import User as DbUtente
 
 
@@ -40,5 +42,15 @@ class ModelUtenti(Model):
     def all(self) -> list[DbUtente]:
         db_session = Session()
         utenti = db_session.query(DbUtente).all()
+        db_session.close()
+        return utenti
+
+    def by_text(self, text: str) -> list[Utente]:
+        db_session = Session()
+        utenti = db_session.query(Utente).filter(
+            or_(Utente.username.ilike(f"%{text}%"),
+                Utente.nome.ilike(f"%{text}%"),
+                Utente.cognome.ilike(f"%{text}%"))
+        ).all()
         db_session.close()
         return utenti

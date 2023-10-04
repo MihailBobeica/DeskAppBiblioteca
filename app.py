@@ -1,5 +1,4 @@
-from controller import LoginController, LogoutController, CatalogoController, \
-    ControllerLibriOsservati, \
+from controller import LoginController, LogoutController, CatalogoController, ControllerLibriOsservati, \
     ControllerPrenotazioniLibri, ControllerPosti
 from controller.libri import ControllerLibri
 from controller.notifiche import ControllerNotifiche
@@ -8,6 +7,7 @@ from controller.prestiti import ControllerPrestiti
 from controller.router import RouterController
 from controller.sanzioni import ControllerSanzioni
 from controller.statistiche import StatisticheController
+from controller.utenti import ControllerUtenti
 from database.seed import *
 from model import ModelLibriOsservati, ModelUsers
 from model import ModelPrenotazioniLibri
@@ -48,8 +48,12 @@ model_prenotazioni_libri.seed_db(PRENOTAZIONI_LIBRI)
 # model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
 
 # instantiate all controllers
-controller_notifica = ControllerNotifiche(model_libri_osservati, model_prenotazioni_libri)
-controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati, model_prenotazioni_libri, model_prestiti)
+controller_utenti = ControllerUtenti(model_utenti)
+controller_notifica = ControllerNotifiche(model_libri_osservati,
+                                          model_prenotazioni_libri)
+controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati,
+                                                      model_prenotazioni_libri,
+                                                      model_prestiti)
 controller_libri = ControllerLibri(model_libri)
 controller_router = RouterController()
 controller_statistiche = StatisticheController()
@@ -60,12 +64,18 @@ controller_catalogo = CatalogoController({"libri": model_libri,
                                           "prestiti": model_prestiti})
 controller_login = LoginController(model_users)
 controller_logout = LogoutController()
-# controller_admin = AdminController.AdminController()
 controller_sanzioni = ControllerSanzioni(model_sanzioni)
-controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri, model_sanzioni, model_prestiti)
-controller_prestiti = ControllerPrestiti(model_prestiti, model_libri, model_utenti, model_prenotazioni_libri,
+controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri,
+                                                            model_sanzioni,
+                                                            model_prestiti)
+controller_prestiti = ControllerPrestiti(model_prestiti,
+                                         model_libri,
+                                         model_utenti,
+                                         model_prenotazioni_libri,
                                          model_sanzioni)
 controller_posti = ControllerPosti(model_prenotazioni_posti)
-controller_operatori = ControllerOperatori(model_operatori, model_users)
+controller_operatori = ControllerOperatori(model_operatori,
+                                           model_users)
 
+# go_to_home_guest
 main_window.set_view(HomeGuestView())

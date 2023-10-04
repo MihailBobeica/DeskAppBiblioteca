@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QScrollArea, QTableWidget, QTableWidgetItem
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QScrollArea, QTableWidget, QTableWidgetItem, QPushButton, QHBoxLayout
 
 from abstract import View
 
@@ -10,7 +10,7 @@ class CronologiaPrestitiView(View):
     def create_layout(self) -> None:
         layout = QVBoxLayout(self)
 
-        label_cronologia = QLabel("Cronologia prestiti:")
+        label_cronologia = QLabel("Cronologia prestiti passati:")
 
         scroll_area = QScrollArea(self)
         scroll_area.setWidgetResizable(True)
@@ -26,6 +26,15 @@ class CronologiaPrestitiView(View):
         self.table.setColumnWidth(1, 250)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
 
+        if self.id_utente:
+            h_layout = QHBoxLayout()
+            indietro = QPushButton("Indietro")
+            indietro.clicked.connect(self._go_to_gestione_utenti)
+            h_layout.addStretch()
+            h_layout.addWidget(indietro)
+            h_layout.addStretch()
+            layout.addLayout(h_layout)
+
     def __init__(self, id_utente: Optional[int]):
         self.id_utente = id_utente
         self.table = QTableWidget()
@@ -36,6 +45,9 @@ class CronologiaPrestitiView(View):
     def attach_controllers(self) -> None:
         from app import controller_prestiti
         self.attach(controller_prestiti)
+        if self.id_utente:
+            from app import controller_router
+            self.attach(controller_router)
 
     def fill_table(self):
         self.notify("_fill_table_cronologia_prestiti",
@@ -56,3 +68,6 @@ class CronologiaPrestitiView(View):
         self.table.setItem(row_position, 2, item2)
         self.table.setItem(row_position, 3, item3)
         self.table.setItem(row_position, 4, item4)
+
+    def _go_to_gestione_utenti(self):
+        self.notify("go_to_gestione_utenti")
