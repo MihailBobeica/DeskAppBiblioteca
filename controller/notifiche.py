@@ -5,7 +5,7 @@ from utils.backend import MINIMO_COPIE_DISPONIBILI
 from utils.strings import *
 
 
-class ControllerNotifica(Controller):
+class ControllerNotifiche(Controller):
     def __init__(self,
                  model_libri_osservati: ModelLibriOsservati,
                  model_prenotazioni_libri: ModelPrenotazioniLibri):
