@@ -18,6 +18,7 @@ from model.posti import ModelPosti
 from model.prenotazioni_posti import ModelPrenotazioniPosti
 from model.prestiti import ModelPrestiti
 from model.sanzioni import ModelSanzioni
+from model.statistiche import ModelStatistiche
 from model.utenti import ModelUtenti
 from view.homepage import HomeGuestView
 from view.main import MainWindow
@@ -37,6 +38,7 @@ model_prestiti = ModelPrestiti()
 model_sanzioni = ModelSanzioni()
 model_prenotazioni_posti = ModelPrenotazioniPosti()
 model_operatori = ModelOperatori()
+model_statistiche = ModelStatistiche()
 
 # seeding
 model_users.seed_db(UTENTI)
@@ -56,7 +58,7 @@ controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati,
                                                       model_prestiti)
 controller_libri = ControllerLibri(model_libri)
 controller_router = RouterController()
-controller_statistiche = StatisticheController()
+controller_statistiche = StatisticheController(model_statistiche)
 controller_catalogo = CatalogoController({"libri": model_libri,
                                           "prenotazioni_libri": model_prenotazioni_libri,
                                           "osserva_libri": model_libri_osservati,

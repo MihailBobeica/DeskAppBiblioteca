@@ -1,41 +1,53 @@
-from sqlalchemy import and_, or_, func
+from sqlalchemy import func
 
 from abstract.model import Model
-from database import Prestito as db_Prestito,Session, Sanzione as db_Sanzioni,Libro as db_Libro
+from database import Prestito
+from database import Session
+from database import Sanzione
+from database import Libro
 
-class Statistiche(Model):
+
+class ModelStatistiche(Model):
+    def inserisci(self, **kwargs):
+        pass
+
     def __init__(self):
         super().__init__()
 
-    def num_prestiti(self):
+    def totale_prestiti(self) -> int:
         db_session = Session()
-        num = db_session.query(db_Prestito).count()
+        totale_prestiti = db_session.query(Prestito).count()
         db_session.close()
-        return num
+        return totale_prestiti
 
-    def num_utenti(self):
+    def totale_utenti(self) -> int:
         db_session = Session()
-        num = db_session.query(db_Prestito.utente_id).distinct().count()
+        totale_utenti = db_session.query(Prestito.utente_id).distinct().count()
         db_session.close()
-        return num
+        return totale_utenti
 
-    def libri_piu_prestati(self):
+    def titoli_piu_prestati(self):
         db_session = Session()
-        most_borrowed_books = db_session.query(
-            db_Prestito.libro_id,
-            func.count(db_Prestito.libro_id).label('total_borrowed')
-        ).group_by(db_Prestito.libro_id).order_by(func.count(db_Prestito.libro_id).desc())
+        # prestiti_libri: list[tuple[int(id_libro), int(numero_prestiti)]]
+        prestiti_libri = db_session.query(
+            Prestito.libro_id,
+            func.count(Prestito.libro_id).label('total_borrowed')
+        ).group_by(Prestito.libro_id).order_by(func.count(Prestito.libro_id).desc()).all()
+        titoli_libri = []
+        for id_libro, numero_prestiti in prestiti_libri[:3]:
+            libro: Libro = db_session.query(Libro).get(id_libro)
+            titoli_libri.append(libro.titolo)
         db_session.close()
-        return most_borrowed_books
+        return titoli_libri
 
-    def num_sospensioni(self):
+    def totale_sospensioni(self):
         db_session = Session()
-        num = db_session.query(db_Sanzioni).count()
+        totale_sospensioni = db_session.query(Sanzione).count()
         db_session.close()
-        return num
+        return totale_sospensioni
 
-    def num_libri(self):
+    def totale_libri(self):
         db_session = Session()
-        num = db_session.query(db_Libro).count()
+        totale_libri = db_session.query(Libro).count()
         db_session.close()
-        return num
+        return totale_libri

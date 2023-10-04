@@ -1,22 +1,22 @@
-from typing import Optional
-
 from abstract import Controller
-from model.libri import ModelLibri
-from model.statistiche import Statistiche
+from model.statistiche import ModelStatistiche
+from view.admin.statistiche import StatisticheView
 
 
 class StatisticheController(Controller):
-    def __init__(self):
+    def __init__(self,
+                 model_statistiche: ModelStatistiche):
+        self.model_statistiche = model_statistiche
         super().__init__()
 
-    def visualizza_statistiche(self, data: Optional[dict] = None) -> None:
-        num_prestiti = Statistiche().num_prestiti()
-        num_utenti = Statistiche().num_utenti()
-        num_sospensioni = Statistiche().num_sospensioni()
-        num_libri = Statistiche().num_libri()
-        results = Statistiche().libri_piu_prestati()
-        libri = []
-        for res in results:
-            libri.append(ModelLibri().by_id(res.libro_id).titolo)
-        from view.Statistiche import StatsWindow
-        self.redirect(StatsWindow(num_utenti, num_libri, num_prestiti, num_sospensioni, libri))
+    def _fill_view_statistiche(self, view: StatisticheView):
+        utenti_totali = self.model_statistiche.totale_utenti()
+        libri_totali = self.model_statistiche.totale_libri()
+        prestiti_totali = self.model_statistiche.totale_prestiti()
+        sospensioni_totali = self.model_statistiche.totale_sospensioni()
+        piu_prestati = self.model_statistiche.titoli_piu_prestati()
+        view.fill_view(utenti_totali=utenti_totali,
+                       libri_totali=libri_totali,
+                       prestiti_totali=prestiti_totali,
+                       sospensioni_totali=sospensioni_totali,
+                       piu_prestati=piu_prestati)
