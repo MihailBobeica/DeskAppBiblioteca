@@ -69,7 +69,7 @@ class ControllerPrenotazioniLibri(Controller):
             if response == QMessageBox.StandardButton.Yes:
                 self.model_prenotazioni_libri.cancella(prenotazione_libro)
 
-                data_fine = datetime.now() + (prenotazione_libro.data_cancellazione - prenotazione_libro.data_prenotazione)
+                data_fine = datetime.now() + (datetime.now() - prenotazione_libro.data_prenotazione)
                 self.model_sanzioni.da_cancella_prenotazione(auth.user, data_fine)
 
                 if catalogo:
