@@ -1,3 +1,5 @@
+import os
+from os import path
 from typing import TypeVar
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Interval
@@ -5,7 +7,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
 
-db_engine = create_engine('sqlite:///./database/db.sqlite')
+base_dir_name = "DeskAppBiblioteca"
+project_dir = os.getcwd().rsplit(base_dir_name)[0]
+app_dir = path.join(project_dir, base_dir_name)
+database_absolute_path = path.join(app_dir, "database/db.sqlite")
+db_engine = create_engine(f"sqlite:///{database_absolute_path}")
 
 Session = sessionmaker(bind=db_engine)
 
@@ -164,5 +170,6 @@ class LibroOsservato(Base):
     libro = relationship("Libro")
 
 
+# reset database
 Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle
 Base.metadata.create_all(db_engine)  # crea tutte le tabelle

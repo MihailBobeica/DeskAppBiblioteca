@@ -101,13 +101,13 @@ class ModelLibri(Model):
 
     def by_id(self, id_libro: int) -> Libro:
         db_session = Session()
-        libro = db_session.query(Libro).get(id_libro)
+        libro = db_session.get(Libro, id_libro)
         db_session.close()
         return libro
 
     def elimina(self, id_libro: int):
         db_session = Session()
-        libro = db_session.query(Libro).get(id_libro)
+        libro = db_session.get(Libro, id_libro)
         db_session.delete(libro)
         db_session.commit()
         db_session.close()
@@ -124,7 +124,7 @@ class ModelLibri(Model):
                  dati: str,
                  copertina: str):
         db_session = Session()
-        libro: Libro = db_session.query(Libro).get(id_libro)
+        libro: Libro = db_session.get(Libro, id_libro)
         libro.titolo = titolo
         libro.autori = autori
         libro.editore = editore
