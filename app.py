@@ -57,7 +57,7 @@ controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati,
                                                       model_prenotazioni_libri,
                                                       model_prestiti)
 controller_libri = ControllerLibri(model_libri)
-controller_router = RouterController(model_libri)
+controller_router = RouterController(model_libri, model_operatori)
 controller_statistiche = StatisticheController(model_statistiche)
 controller_catalogo = CatalogoController({"libri": model_libri,
                                           "prenotazioni_libri": model_prenotazioni_libri,

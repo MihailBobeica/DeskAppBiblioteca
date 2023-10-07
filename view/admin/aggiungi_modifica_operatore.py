@@ -10,6 +10,11 @@ class AggiungiModificaOperatoreView(View):
     def create_layout(self) -> None:
         v_layout = QVBoxLayout(self)
 
+        self.conferma.setFixedWidth(150)
+
+        button_container = QVBoxLayout()
+        button_container.addWidget(self.conferma)
+
         label_window_title = QLabel()
         if self.metodo == "aggiungi":
             label_window_title.setText("Aggiungi operatore")
@@ -17,6 +22,10 @@ class AggiungiModificaOperatoreView(View):
         elif self.metodo == "modifica":
             label_window_title.setText("Modifica operatore")
             self.conferma.setText("Modifica")
+            indietro = QPushButton("Indietro")
+            indietro.setFixedWidth(150)
+            indietro.clicked.connect(self.go_to_gestione_operatori)
+            button_container.addWidget(indietro)
         else:
             raise ValueError("metodo aggiungi/modifica operatore view errato!")
 
@@ -38,7 +47,7 @@ class AggiungiModificaOperatoreView(View):
 
         h_layout = QHBoxLayout()
         h_layout.addStretch()
-        h_layout.addWidget(self.conferma)
+        h_layout.addLayout(button_container)
         h_layout.addStretch()
 
         v_layout.addLayout(grid_layout)
@@ -67,7 +76,8 @@ class AggiungiModificaOperatoreView(View):
         super().__init__()
 
     def attach_controllers(self) -> None:
-        from app import controller_operatori
+        from app import controller_router, controller_operatori
+        self.attach(controller_router)
         self.attach(controller_operatori)
 
     def fill_dati_operatore(self):
@@ -75,6 +85,9 @@ class AggiungiModificaOperatoreView(View):
             self.username.setText(self.operatore.username)
             self.nome.setText(self.operatore.nome)
             self.cognome.setText(self.operatore.cognome)
+
+    def go_to_gestione_operatori(self):
+        self.notify("go_to_gestione_operatori")
 
     def aggiungi_modifica_operatore(self):
         if not (username := self.username.text()):
@@ -97,16 +110,16 @@ class AggiungiModificaOperatoreView(View):
                                 "Attenzione",
                                 "Devi inserire la password dell'operatore.")
             return
-        data = {"metodo": self.metodo,
-                "username": username,
-                "nome": nome,
+        data = {"nome": nome,
                 "cognome": cognome,
                 "password": password}
         if self.metodo == "aggiungi":
-            data.update({"id_operatore": None})
+            data.update({"username": username})
+            self.notify("aggiungi_operatore",
+                        data=data)
         elif self.metodo == "modifica":
             data.update({"id_operatore": self.operatore.id})
+            self.notify("modifica_operatore",
+                        data=data)
         else:
             raise ValueError("metodo aggiungi/modifica operatore view errato!")
-        self.notify("aggiungi_modifica_operatore",
-                    data=data)

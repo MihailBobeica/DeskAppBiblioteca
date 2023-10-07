@@ -27,7 +27,8 @@ class GestioneOperatoriView(View):
         self.search("")
 
     def attach_controllers(self) -> None:
-        from app import controller_operatori
+        from app import controller_router, controller_operatori
+        self.attach(controller_router)
         self.attach(controller_operatori)
 
     def search(self, text: str) -> None:
@@ -49,7 +50,7 @@ class GestioneOperatoriView(View):
         modifica = QPushButton("Modifica")
         elimina = QPushButton("Elimina")
 
-        modifica.clicked.connect(lambda: self.modifica_operatore(id_operatore))
+        modifica.clicked.connect(lambda: self.go_to_modifica_operatore(id_operatore))
         elimina.clicked.connect(lambda: self.elimina_operatore(id_operatore))
 
         row_position = self.table.rowCount()
@@ -61,8 +62,8 @@ class GestioneOperatoriView(View):
         self.table.setCellWidget(row_position, 3, modifica)
         self.table.setCellWidget(row_position, 4, elimina)
 
-    def modifica_operatore(self, id_operatore: int):
-        self.notify("modifica_operatore",
+    def go_to_modifica_operatore(self, id_operatore: int):
+        self.notify("go_to_modifica_operatore",
                     data={"id_operatore": id_operatore})
 
     def elimina_operatore(self, id_operatore: int):

@@ -1,6 +1,7 @@
 from abstract import Controller
 from database import Libro, PrenotazioneLibro, Prestito
 from model import ModelLibri
+from model.operatori import ModelOperatori
 from view.admin.aggiungi_modifica_libro import AggiungiModificaLibroView
 from view.admin.aggiungi_modifica_operatore import AggiungiModificaOperatoreView
 from view.admin.gestione_libri import GestioneLibriView
@@ -22,8 +23,10 @@ from view.utente.scegli_quando import ScegliQuandoView
 
 class RouterController(Controller):
     def __init__(self,
-                 model_libri: ModelLibri):
+                 model_libri: ModelLibri,
+                 model_operatori: ModelOperatori):
         self.model_libri = model_libri
+        self.model_operatori = model_operatori
         super().__init__()
 
     def go_to_login(self):
@@ -50,6 +53,10 @@ class RouterController(Controller):
 
     def go_to_aggiungi_operatore(self):
         self.redirect(AggiungiModificaOperatoreView(metodo="aggiungi"))
+
+    def go_to_modifica_operatore(self, id_operatore: int):
+        operatore = self.model_operatori.by_id(id_operatore)
+        self.redirect(AggiungiModificaOperatoreView(metodo="modifica", operatore=operatore))
 
     def go_to_gestione_operatori(self):
         self.redirect(GestioneOperatoriView())
