@@ -28,9 +28,12 @@ class AggiungiModificaLibroView(View):
         self.seleziona_copertina.setFixedWidth(150)
         self.conferma.setFixedWidth(150)
 
+        button_container = QVBoxLayout()
+        button_container.addWidget(self.conferma)
+
         h_layout = QHBoxLayout()
         h_layout.addStretch()
-        h_layout.addWidget(self.conferma)
+        h_layout.addLayout(button_container)
         h_layout.addStretch()
 
         label_window_title = QLabel()
@@ -40,6 +43,10 @@ class AggiungiModificaLibroView(View):
         elif self.metodo == "modifica":
             label_window_title.setText("Modifica libro")
             self.conferma.setText("Modifica")
+            indietro = QPushButton("Indietro")
+            indietro.setFixedWidth(150)
+            indietro.clicked.connect(self.go_to_gestione_libri)
+            button_container.addWidget(indietro)
         else:
             raise ValueError("metodo aggiungi/modifica libro view errato!")
 
@@ -102,7 +109,8 @@ class AggiungiModificaLibroView(View):
         super().__init__()
 
     def attach_controllers(self) -> None:
-        from app import controller_libri
+        from app import controller_router, controller_libri
+        self.attach(controller_router)
         self.attach(controller_libri)
 
     def fill_dati_libro(self):
@@ -117,6 +125,9 @@ class AggiungiModificaLibroView(View):
             self.dati.setText(self.libro.dati)
             self.copertina = self.libro.immagine
             self.label_copertina.setText(self.copertina)
+
+    def go_to_gestione_libri(self):
+        self.notify("go_to_gestione_libri")
 
     def aggiungi_modifica_libro(self):
         if not (titolo := self.titolo.text()):
