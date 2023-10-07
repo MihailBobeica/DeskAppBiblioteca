@@ -29,7 +29,8 @@ class GestioneLibriView(View):
         self.search("")
 
     def attach_controllers(self) -> None:
-        from app import controller_libri
+        from app import controller_router, controller_libri
+        self.attach(controller_router)
         self.attach(controller_libri)
 
     def search(self, text: str) -> None:
@@ -51,7 +52,7 @@ class GestioneLibriView(View):
         modifica = QPushButton("Modifica")
         elimina = QPushButton("Elimina")
 
-        modifica.clicked.connect(lambda: self.modifica_libro(id_libro))
+        modifica.clicked.connect(lambda: self.go_to_modifica_libro(id_libro))
         elimina.clicked.connect(lambda: self.elimina_libro(id_libro))
 
         row_position = self.table.rowCount()
@@ -63,8 +64,8 @@ class GestioneLibriView(View):
         self.table.setCellWidget(row_position, 3, modifica)
         self.table.setCellWidget(row_position, 4, elimina)
 
-    def modifica_libro(self, id_libro: int):
-        self.notify("modifica_libro",
+    def go_to_modifica_libro(self, id_libro: int):
+        self.notify("go_to_modifica_libro",
                     data={"id_libro": id_libro})
 
     def elimina_libro(self, id_libro: int):

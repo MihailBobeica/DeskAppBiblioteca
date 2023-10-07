@@ -6,7 +6,6 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller
 from model import ModelLibri
 from utils.strings import *
-from view.admin.aggiungi_modifica_libro import AggiungiModificaLibroView
 from view.admin.gestione_libri import GestioneLibriView
 
 
@@ -67,10 +66,6 @@ class ControllerLibri(Controller):
                                titolo=libro.titolo,
                                autori=libro.autori,
                                isbn=libro.isbn)
-
-    def modifica_libro(self, id_libro: int):
-        libro = self.model_libri.by_id(id_libro)
-        self.redirect(AggiungiModificaLibroView(metodo="modifica", libro=libro))
 
     def elimina_libro(self, id_libro: int, view: GestioneLibriView):
         response = self.confirm(title=CONFIRM_TITLE_ELIMINA_LIBRO,
