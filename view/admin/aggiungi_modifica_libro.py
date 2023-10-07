@@ -161,8 +161,7 @@ class AggiungiModificaLibroView(View):
             return
         if not self.copertina:
             self.copertina = "default.jpg"
-        data = {"metodo": self.metodo,
-                "titolo": titolo,
+        data = {"titolo": titolo,
                 "autori": autori,
                 "editore": editore,
                 "isbn": isbn,
@@ -172,13 +171,14 @@ class AggiungiModificaLibroView(View):
                 "dati": dati,
                 "copertina": self.copertina}
         if self.metodo == "aggiungi":
-            data.update({"id_libro": None})
+            self.notify("aggiungi_libro",
+                        data=data)
         elif self.metodo == "modifica":
             data.update({"id_libro": self.libro.id})
+            self.notify("modifica_libro",
+                        data=data)
         else:
             raise ValueError("metodo aggiungi/modifica libro view errato!")
-        self.notify("aggiungi_modifica_libro",
-                    data=data)
 
     def dialog_selezione_copertina(self):
         options = QFileDialog.Options()

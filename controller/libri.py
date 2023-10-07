@@ -16,43 +16,49 @@ class ControllerLibri(Controller):
         self.model_libri = model_libri
         super().__init__()
 
-    def aggiungi_modifica_libro(self,
-                                metodo: str,
-                                id_libro: Optional[int],
-                                titolo: str,
-                                autori: str,
-                                editore: str,
-                                isbn: str,
-                                anno_edizione: datetime,
-                                anno_pubblicazione: datetime,
-                                disponibili: int,
-                                dati: str,
-                                copertina: str):
-        if metodo == "aggiungi":
-            self.model_libri.aggiungi(titolo=titolo,
-                                      autori=autori,
-                                      editore=editore,
-                                      isbn=isbn,
-                                      anno_edizione=anno_edizione,
-                                      anno_pubblicazione=anno_pubblicazione,
-                                      disponibili=disponibili,
-                                      dati=dati,
-                                      copertina=copertina)
-            self.redirect(GestioneLibriView())
-        elif metodo == "modifica":
-            self.model_libri.modifica(id_libro=id_libro,
-                                      titolo=titolo,
-                                      autori=autori,
-                                      editore=editore,
-                                      isbn=isbn,
-                                      anno_edizione=anno_edizione,
-                                      anno_pubblicazione=anno_pubblicazione,
-                                      disponibili=disponibili,
-                                      dati=dati,
-                                      copertina=copertina)
-            self.redirect(GestioneLibriView())
-        else:
-            raise ValueError("metodo aggiungi/modifica libro controller errato!")
+    def aggiungi_libro(self,
+                       titolo: str,
+                       autori: str,
+                       editore: str,
+                       isbn: str,
+                       anno_edizione: datetime,
+                       anno_pubblicazione: datetime,
+                       disponibili: int,
+                       dati: str,
+                       copertina: str):
+        self.model_libri.aggiungi(titolo=titolo,
+                                  autori=autori,
+                                  editore=editore,
+                                  isbn=isbn,
+                                  anno_edizione=anno_edizione,
+                                  anno_pubblicazione=anno_pubblicazione,
+                                  disponibili=disponibili,
+                                  dati=dati,
+                                  copertina=copertina)
+        self.redirect(GestioneLibriView())
+
+    def modifica_libro(self,
+                       id_libro: Optional[int],
+                       titolo: str,
+                       autori: str,
+                       editore: str,
+                       isbn: str,
+                       anno_edizione: datetime,
+                       anno_pubblicazione: datetime,
+                       disponibili: int,
+                       dati: str,
+                       copertina: str):
+        self.model_libri.modifica(id_libro=id_libro,
+                                  titolo=titolo,
+                                  autori=autori,
+                                  editore=editore,
+                                  isbn=isbn,
+                                  anno_edizione=anno_edizione,
+                                  anno_pubblicazione=anno_pubblicazione,
+                                  disponibili=disponibili,
+                                  dati=dati,
+                                  copertina=copertina)
+        self.redirect(GestioneLibriView())
 
     def _fill_table_gestione_libri(self, view: GestioneLibriView, text: str):
         libri = self.model_libri.by_text(text)
