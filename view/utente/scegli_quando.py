@@ -21,7 +21,9 @@ class ScegliQuandoView(View):
 
         self.time_edit.setFixedWidth(500)
         self.time_edit.setDisplayFormat("HH:mm")
-        self.time_edit.setTimeRange(q_current_time, QTime(18, 15))
+        self.time_edit.setTimeRange(QTime(8, 30), QTime(18, 15))
+
+        self.time_edit.setTimeRange(q_current_time, QTime(18, 15))  # Remove
         self.time_edit.setTime(q_current_time)
 
         self.calendar.selectionChanged.connect(self.date_changed)
@@ -29,11 +31,12 @@ class ScegliQuandoView(View):
         if q_current_time > QTime(18, 15):  # se siamo prossimi all'orario di chiusura
             self.calendar.setMinimumDate(q_next_day)
             self.calendar.setSelectedDate(q_next_day)
-            self.time_edit.setTimeRange(QTime(8, 30), QTime(18, 15))
             self.time_edit.setTime(QTime(8, 30))
         else:
             self.calendar.setMinimumDate(q_current_date)
             self.calendar.setSelectedDate(q_current_date)
+            if q_current_time > QTime(8, 30):
+                self.time_edit.setTimeRange(q_current_time, QTime(18, 15))
         self.date_changed()
         self.time_changed(self.time_edit.time())
 
