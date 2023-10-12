@@ -49,7 +49,7 @@ class ModelLibriOsservati(Model):
         db_session.close()
         return numero_libri_osservati > MAX_OSSERVAZIONI
 
-    def by_text(self, utente: Utente, text: str) -> list[Libro]:
+    def by_utente_and_text(self, utente: Utente, text: str) -> list[Libro]:
         db_session = Session()
 
         libri_osservati = db_session.query(Libro).join(LibroOsservato).filter(

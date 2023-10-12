@@ -36,8 +36,8 @@ class CercaPrenotazioniValide(SearchStrategy):
         if is_empty(text):
             prenotazioni_valide = model_prenotazione_libro.valide_by_utente(utente=utente)
         else:
-            prenotazioni_valide = model_prenotazione_libro.ricerca_valide_by_text(utente=utente,
-                                                                                  text=text)
+            prenotazioni_valide = model_prenotazione_libro.valide_by_utente_and_text(utente=utente,
+                                                                                     text=text)
         libri_prenotati = [model_libro.by_prenotazione(prenotazione) for prenotazione in prenotazioni_valide]
         data = [{"prenotazione_libro": prenotazione,
                  "libro": libro}
@@ -55,7 +55,7 @@ class CercaLibriOsservati(SearchStrategy):
         if is_empty(text):
             libri_osservati = model_libro_osservato.by_utente(auth.user)
         else:
-            libri_osservati = model_libro_osservato.by_text(auth.user, text)
+            libri_osservati = model_libro_osservato.by_utente_and_text(auth.user, text)
         data = [{"libro": libro} for libro in libri_osservati]
         return data
 

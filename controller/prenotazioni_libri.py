@@ -77,7 +77,7 @@ class ControllerPrenotazioniLibri(Controller):
                     self.redirect(LibriPrenotatiView())
 
     def _fill_view_registra_prestito(self, view: RegistraPrestitoView, text: str):
-        utenti_con_prenotazioni = self.model_prenotazioni_libri.get_utenti_con_prenotazioni(text)
+        utenti_con_prenotazioni = self.model_prenotazioni_libri.get_utenti_con_prenotazioni_by_text(text)
         for utente in utenti_con_prenotazioni:
             prenotazioni = self.model_prenotazioni_libri.valide_by_utente(utente)
             libri = [self.model_prenotazioni_libri.get_libro(prenotazione) for prenotazione in prenotazioni]

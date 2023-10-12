@@ -72,7 +72,7 @@ class ModelPrenotazioniLibri(Model):
         db_session.close()
         return libro
 
-    def get_utenti_con_prenotazioni(self, text: str) -> list[Utente]:
+    def get_utenti_con_prenotazioni_by_text(self, text: str) -> list[Utente]:
         db_session = Session()
         utenti_con_prenotazioni = db_session.query(Utente).join(PrenotazioneLibro).filter(
             and_(Utente.id == PrenotazioneLibro.utente_id,
@@ -104,7 +104,7 @@ class ModelPrenotazioniLibri(Model):
         db_session.close()
         return prenotazioni_quasi_scadute
 
-    def ricerca_valide_by_text(self, utente: Utente, text: str) -> list[PrenotazioneLibro]:
+    def valide_by_utente_and_text(self, utente: Utente, text: str) -> list[PrenotazioneLibro]:
         db_session = Session()
         query_prenotazioni_valide = self._query_prenotazioni_valide(utente=utente)
         query_ricerca_prenotazioni_valide = query_prenotazioni_valide.join(Libro).filter(

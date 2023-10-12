@@ -82,7 +82,8 @@ class ModelSanzioni(Model):
         db_session.commit()
         db_session.close()
 
-    def _aggiungi_sanzione_da_prenotazione_non_ritirata(self, id_utente: int, id_prenotazione: int, data_fine: datetime):
+    def _aggiungi_sanzione_da_prenotazione_non_ritirata(self, id_utente: int, id_prenotazione: int,
+                                                        data_fine: datetime):
         db_session = Session()
 
         sanzione = Sanzione(utente_id=id_utente,
