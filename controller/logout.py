@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QMessageBox
 
-from abstract.controller import Controller
+from abstract import Controller
 from utils.auth import auth
 from utils.strings import *
-from view.homepage.guest import HomeGuestView
+from view.homepage import HomeGuestView
 
 
-class LogoutController(Controller):
+class ControllerLogout(Controller):
     def __init__(self):
         super().__init__()
 

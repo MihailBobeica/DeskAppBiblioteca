@@ -1,11 +1,10 @@
 from abstract import Controller
 from database import Libro
-from model import ModelLibriOsservati, ModelPrenotazioniLibri
-from model.prestiti import ModelPrestiti
+from model import ModelLibriOsservati, ModelPrenotazioniLibri, ModelPrestiti
 from utils.auth import auth
 from utils.strings import *
-from view.catalogo import ListaDiOsservazioneView
 from view.component import CatalogoComponent
+from view.component.catalogo import ListaDiOsservazioneView
 
 
 class ControllerLibriOsservati(Controller):

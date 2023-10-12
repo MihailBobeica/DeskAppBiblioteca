@@ -1,47 +1,33 @@
-from typing import Dict
-
 from sqlalchemy import or_
 
-from abstract.model import Model
-from database import Session, PrenotazioneLibro, Utente
-from database import User as DbUtente
+from abstract import Model
+from database import PrenotazioneLibro, Utente
+from database import Session
 
 
 class ModelUtenti(Model):
+    def inserisci(self, **kwargs):
+        pass
+
     def __init__(self):
         super().__init__()
 
-    def by_username(self, username):
+    def by_username(self, username) -> Utente:
         db_session = Session()
-        utente = db_session.query(DbUtente).filter_by(username=username).first()
+        utente = db_session.query(Utente).filter_by(username=username).first()
         db_session.close()
         return utente
 
-    def by_prenotazione(self, prenotazione: PrenotazioneLibro) -> DbUtente:
+    def by_prenotazione(self, prenotazione: PrenotazioneLibro) -> Utente:
         db_session = Session()
         prenotazione = db_session.query(PrenotazioneLibro).get(prenotazione.id)
         utente = prenotazione.utente
         db_session.close()
         return utente
 
-    def inserisci(self, dati: Dict[str, str]):
+    def all(self) -> list[Utente]:
         db_session = Session()
-        utente = DbUtente(nome=dati["nome"],
-                          cognome=dati["cognome"],
-                          ruolo=dati["ruolo"],
-                          username=dati["username"],
-                          password=dati["password"])
-        if ModelUtenti.by_username(self, utente.username):
-            from view.component.view_errore import view_errore
-            view_errore.create_layout(self, "Errore", "L'operatore è già presente nel sistema")
-        else:
-            db_session.add(utente)
-            db_session.commit()
-            db_session.close()
-
-    def all(self) -> list[DbUtente]:
-        db_session = Session()
-        utenti = db_session.query(DbUtente).all()
+        utenti = db_session.query(Utente).all()
         db_session.close()
         return utenti
 

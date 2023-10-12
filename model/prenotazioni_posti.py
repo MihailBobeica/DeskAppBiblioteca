@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import and_, or_
 
 from abstract import Model
-from database import PrenotazionePosto, PrenotazioneAula, Session, Aula, Posto, Utente
+from database import PrenotazionePosto, PrenotazioneAula, Aula, Posto, Utente
+from database import Session
 
 
 class ModelPrenotazioniPosti(Model):
@@ -88,7 +89,8 @@ class ModelPrenotazioniPosti(Model):
         db_session.close()
         return posti_disponibili
 
-    def crea_prenotazione_aula(self, utente: Utente, codice_aula: str, ora_inizio: datetime, ora_fine: datetime):
+    def crea_prenotazione_aula(self, utente: Utente, codice_aula: str, ora_inizio: datetime,
+                               ora_fine: datetime) -> None:
         db_session = Session()
         prenotazione_aula = PrenotazioneAula(
             codice_aula=codice_aula,
@@ -102,7 +104,7 @@ class ModelPrenotazioniPosti(Model):
         db_session.close()
 
     def crea_prenotazione_posto_singolo(self, utente: Utente, codice_posto_singolo: str, ora_inizio: datetime,
-                                        ora_fine: datetime):
+                                        ora_fine: datetime) -> None:
         db_session = Session()
         prenotazione_posto_singolo = PrenotazionePosto(
             codice_posto=codice_posto_singolo,
@@ -115,7 +117,7 @@ class ModelPrenotazioniPosti(Model):
         db_session.commit()
         db_session.close()
 
-    def has_prenotazione_in_fascia_oraria(self, utente: Utente, ora_inizio, ora_fine) -> bool:
+    def has_prenotazione_in_fascia_oraria(self, utente: Utente, ora_inizio: datetime, ora_fine: datetime) -> bool:
         db_session = Session()
 
         # Controlla se esistono prenotazioni sovrapposte per l'utente nella data specificata
@@ -140,7 +142,7 @@ class ModelPrenotazioniPosti(Model):
         db_session.close()
         return len(prenotazioni_posti) > 0
 
-    def cancella_prenotazione_posto_singolo(self, id_prenotazione_posto_singolo):
+    def cancella_prenotazione_posto_singolo(self, id_prenotazione_posto_singolo: int) -> None:
         db_session = Session()
         prenotazione_posto = db_session.query(PrenotazionePosto).get(id_prenotazione_posto_singolo)
         if prenotazione_posto:
@@ -148,7 +150,7 @@ class ModelPrenotazioniPosti(Model):
             db_session.commit()
         db_session.close()
 
-    def cancella_prenotazione_aula(self, id_prenotazione_aula):
+    def cancella_prenotazione_aula(self, id_prenotazione_aula: int) -> None:
         db_session = Session()
         prenotazione_aula = db_session.query(PrenotazioneAula).get(id_prenotazione_aula)
         if prenotazione_aula:
@@ -234,7 +236,7 @@ class ModelPrenotazioniPosti(Model):
         db_session.close()
         return aule
 
-    def cancella_prenotazioni_posti_non_attivate_in_tempo(self):
+    def cancella_prenotazioni_posti_non_attivate_in_tempo(self) -> None:
         db_session = Session()
         mia = timedelta(minutes=30)  # minuti_intervallo_attivazione (mia)
         adesso = datetime.now()

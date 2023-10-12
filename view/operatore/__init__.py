@@ -1,0 +1,3 @@
+from .conferma_posto import ConfermaPostoView
+from .registra_prestito import RegistraPrestitoView
+from .registra_restituzione import RegistraRestituzioneView

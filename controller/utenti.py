@@ -1,6 +1,6 @@
 from abstract import Controller
-from model.utenti import ModelUtenti
-from view.admin.gestione_utenti import GestioneUtentiView
+from model import ModelUtenti
+from view.admin import GestioneUtentiView
 
 
 class ControllerUtenti(Controller):

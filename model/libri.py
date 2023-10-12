@@ -2,9 +2,8 @@ from datetime import datetime
 
 from sqlalchemy import or_
 
-from abstract.model import Model
-from database import Libro, Prestito
-from database import PrenotazioneLibro
+from abstract import Model
+from database import Libro, Prestito, PrenotazioneLibro
 from database import Session
 from utils.ui import RESULTS_LIMIT
 
@@ -66,52 +65,6 @@ class ModelLibri(Model):
         db_session.commit()
         db_session.close()
 
-    def by_id_prestito(self, id_prestito: int) -> Libro:
-        db_session = Session()
-        prestito: Prestito = db_session.query(Prestito).get(id_prestito)
-        libro = prestito.libro
-        db_session.close()
-        return libro
-
-    def get(self, n: int = RESULTS_LIMIT) -> list[Libro]:
-        db_session = Session()
-        libri = db_session.query(Libro).limit(n).all()
-        db_session.close()
-        return libri
-
-    def by_prenotazione(self, prenotazione: PrenotazioneLibro) -> Libro:
-        db_session = Session()
-        prenotazione = db_session.query(PrenotazioneLibro).get(prenotazione.id)
-        libro = prenotazione.libro
-        db_session.close()
-        return libro
-
-    def by_text(self, text) -> list[Libro]:
-        db_session = Session()
-        libri = db_session.query(Libro).filter(or_(Libro.titolo.ilike(f"%{text}%"),
-                                                   Libro.autori.ilike(f"%{text}%"))).limit(RESULTS_LIMIT).all()
-        db_session.close()
-        return libri
-
-    def by_isbn(self, isbn: str) -> Libro:
-        db_session = Session()
-        libro = db_session.query(Libro).filter_by(isbn=isbn).first()
-        db_session.close()
-        return libro
-
-    def by_id(self, id_libro: int) -> Libro:
-        db_session = Session()
-        libro = db_session.get(Libro, id_libro)
-        db_session.close()
-        return libro
-
-    def elimina(self, id_libro: int):
-        db_session = Session()
-        libro = db_session.get(Libro, id_libro)
-        db_session.delete(libro)
-        db_session.commit()
-        db_session.close()
-
     def modifica(self,
                  id_libro: int,
                  titolo: str,
@@ -137,3 +90,49 @@ class ModelLibri(Model):
         db_session.merge(libro)
         db_session.commit()
         db_session.close()
+
+    def elimina(self, id_libro: int):
+        db_session = Session()
+        libro = db_session.get(Libro, id_libro)
+        db_session.delete(libro)
+        db_session.commit()
+        db_session.close()
+
+    def by_id_prestito(self, id_prestito: int) -> Libro:
+        db_session = Session()
+        prestito: Prestito = db_session.query(Prestito).get(id_prestito)
+        libro = prestito.libro
+        db_session.close()
+        return libro
+
+    def get(self, n: int = RESULTS_LIMIT) -> list[Libro]:
+        db_session = Session()
+        libri = db_session.query(Libro).limit(n).all()
+        db_session.close()
+        return libri
+
+    def by_prenotazione(self, prenotazione: PrenotazioneLibro) -> Libro:
+        db_session = Session()
+        prenotazione = db_session.query(PrenotazioneLibro).get(prenotazione.id)
+        libro = prenotazione.libro
+        db_session.close()
+        return libro
+
+    def by_text(self, text: str, n: int = RESULTS_LIMIT) -> list[Libro]:
+        db_session = Session()
+        libri = db_session.query(Libro).filter(or_(Libro.titolo.ilike(f"%{text}%"),
+                                                   Libro.autori.ilike(f"%{text}%"))).limit(n).all()
+        db_session.close()
+        return libri
+
+    def by_isbn(self, isbn: str) -> Libro:
+        db_session = Session()
+        libro = db_session.query(Libro).filter_by(isbn=isbn).first()
+        db_session.close()
+        return libro
+
+    def by_id(self, id_libro: int) -> Libro:
+        db_session = Session()
+        libro = db_session.get(Libro, id_libro)
+        db_session.close()
+        return libro

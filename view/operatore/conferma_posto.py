@@ -102,9 +102,9 @@ class ConfermaPostoView(View):
 
         button = QPushButton("Conferma")
         if metodo == "posto_singolo":
-            button.clicked.connect(lambda: self.registra_prenotazione_posto_singolo(id_prenotazione))
+            button.clicked.connect(lambda: self.attiva_prenotazione_posto_singolo(id_prenotazione))
         elif metodo == "aula":
-            button.clicked.connect(lambda: self.registra_prenotazione_aula(id_prenotazione))
+            button.clicked.connect(lambda: self.attiva_prenotazione_aula(id_prenotazione))
         else:
             raise ValueError("Metodo conferma prenotazione posto errato!")
         table.setItem(row_position, 0, item0)
@@ -112,12 +112,12 @@ class ConfermaPostoView(View):
         table.setItem(row_position, 2, item2)
         table.setCellWidget(row_position, 3, button)
 
-    def registra_prenotazione_posto_singolo(self, id_prenotazione: int):
-        self.notify("registra_prenotazione_posto_singolo",
+    def attiva_prenotazione_posto_singolo(self, id_prenotazione: int):
+        self.notify("attiva_prenotazione_posto_singolo",
                     data={"id_prenotazione": id_prenotazione,
                           "view": self})
 
-    def registra_prenotazione_aula(self, id_prenotazione: int):
-        self.notify("registra_prenotazione_aula",
+    def attiva_prenotazione_aula(self, id_prenotazione: int):
+        self.notify("attiva_prenotazione_aula",
                     data={"id_prenotazione": id_prenotazione,
                           "view": self})

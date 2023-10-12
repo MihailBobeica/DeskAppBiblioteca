@@ -1,14 +1,11 @@
 from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller
-from model import ModelLibri, ModelPrenotazioniLibri, ModelSanzioni
-from model.prestiti import ModelPrestiti
-from model.utenti import ModelUtenti
+from model import ModelLibri, ModelPrenotazioniLibri, ModelSanzioni, ModelPrestiti, ModelUtenti
 from utils.auth import auth
 from utils.strings import *
-from view.common.cronologia_prestiti import CronologiaPrestitiView
-from view.operatore.registra_prestito import RegistraPrestitoView
-from view.operatore.registra_restituzione import RegistraRestituzioneView
+from view.common import CronologiaPrestitiView
+from view.operatore import RegistraPrestitoView, RegistraRestituzioneView
 
 
 class ControllerPrestiti(Controller):

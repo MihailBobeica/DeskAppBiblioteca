@@ -1,5 +1,5 @@
-from abstract.controller import Controller
-from factory.homepage import HomepageFactory
+from abstract import Controller
+from factory import HomepageFactory
 from model import ModelUsers
 from utils.auth import auth, check_password
 from utils.backend import is_empty

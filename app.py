@@ -1,12 +1,12 @@
-from controller import LoginController, LogoutController, CatalogoController, ControllerLibriOsservati, \
-    ControllerPrenotazioniLibri, ControllerPosti
+from controller import LoginController, ControllerLogout, CatalogoController, ControllerLibriOsservati, \
+    ControllerPrenotazioniLibri, ControllerPrenotazioniPosti
 from controller.libri import ControllerLibri
 from controller.notifiche import ControllerNotifiche
 from controller.operatori import ControllerOperatori
 from controller.prestiti import ControllerPrestiti
-from controller.router import RouterController
+from controller.router import ControllerRouter
 from controller.sanzioni import ControllerSanzioni
-from controller.statistiche import StatisticheController
+from controller.statistiche import ControllerStatistiche
 from controller.utenti import ControllerUtenti
 from database.seed import *
 from model import ModelLibriOsservati, ModelUsers
@@ -57,15 +57,15 @@ controller_libri_osservati = ControllerLibriOsservati(model_libri_osservati,
                                                       model_prenotazioni_libri,
                                                       model_prestiti)
 controller_libri = ControllerLibri(model_libri)
-controller_router = RouterController(model_libri, model_operatori)
-controller_statistiche = StatisticheController(model_statistiche)
+controller_router = ControllerRouter(model_libri, model_operatori)
+controller_statistiche = ControllerStatistiche(model_statistiche)
 controller_catalogo = CatalogoController({"libri": model_libri,
                                           "prenotazioni_libri": model_prenotazioni_libri,
                                           "osserva_libri": model_libri_osservati,
                                           "sanzioni": model_sanzioni,
                                           "prestiti": model_prestiti})
 controller_login = LoginController(model_users)
-controller_logout = LogoutController()
+controller_logout = ControllerLogout()
 controller_sanzioni = ControllerSanzioni(model_sanzioni)
 controller_prenotazioni_libri = ControllerPrenotazioniLibri(model_prenotazioni_libri,
                                                             model_sanzioni,
@@ -75,7 +75,7 @@ controller_prestiti = ControllerPrestiti(model_prestiti,
                                          model_utenti,
                                          model_prenotazioni_libri,
                                          model_sanzioni)
-controller_posti = ControllerPosti(model_prenotazioni_posti)
+controller_posti = ControllerPrenotazioniPosti(model_prenotazioni_posti)
 controller_operatori = ControllerOperatori(model_operatori,
                                            model_users)
 

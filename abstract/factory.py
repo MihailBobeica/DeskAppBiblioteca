@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from enum import Enum
+from typing import Any
 
 
 class Factory(ABC):
@@ -7,5 +7,5 @@ class Factory(ABC):
         ...
 
     @abstractmethod
-    def create(self, key: Enum):
+    def create(self, key: Any):
         pass

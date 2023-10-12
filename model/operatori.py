@@ -3,7 +3,8 @@ from typing import Optional
 from sqlalchemy import or_
 
 from abstract import Model
-from database import Session, Operatore
+from database import Operatore
+from database import Session
 from utils.auth import hash_password
 
 
@@ -28,6 +29,28 @@ class ModelOperatori(Model):
         db_session.commit()
         db_session.close()
 
+    def modifica(self,
+                 id_operatore: int,
+                 nome: str,
+                 cognome: str,
+                 password: Optional[str]):
+        db_session = Session()
+        operatore: Operatore = db_session.query(Operatore).get(id_operatore)
+        operatore.nome = nome
+        operatore.cognome = cognome
+        if password:
+            operatore.password = hash_password(password)
+        db_session.merge(operatore)
+        db_session.commit()
+        db_session.close()
+
+    def elimina(self, id_operatore: int):
+        db_session = Session()
+        operatore = db_session.query(Operatore).get(id_operatore)
+        db_session.delete(operatore)
+        db_session.commit()
+        db_session.close()
+
     def by_text(self, text: str) -> list[Operatore]:
         db_session = Session()
         operatori = db_session.query(Operatore).filter(
@@ -43,25 +66,3 @@ class ModelOperatori(Model):
         operatore = db_session.query(Operatore).get(id_operatore)
         db_session.close()
         return operatore
-
-    def elimina(self, id_operatore: int):
-        db_session = Session()
-        operatore = db_session.query(Operatore).get(id_operatore)
-        db_session.delete(operatore)
-        db_session.commit()
-        db_session.close()
-
-    def modifica(self,
-                 id_operatore: int,
-                 nome: str,
-                 cognome: str,
-                 password: Optional[str]):
-        db_session = Session()
-        operatore: Operatore = db_session.query(Operatore).get(id_operatore)
-        operatore.nome = nome
-        operatore.cognome = cognome
-        if password:
-            operatore.password = hash_password(password)
-        db_session.merge(operatore)
-        db_session.commit()
-        db_session.close()

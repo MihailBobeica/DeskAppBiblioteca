@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QMessageBox
 from abstract import Controller
 from model import ModelLibri
 from utils.strings import *
-from view.admin.gestione_libri import GestioneLibriView
+from view.admin import GestioneLibriView
 
 
 class ControllerLibri(Controller):
@@ -59,6 +59,13 @@ class ControllerLibri(Controller):
                                   copertina=copertina)
         self.redirect(GestioneLibriView())
 
+    def elimina_libro(self, id_libro: int, view: GestioneLibriView):
+        response = self.confirm(title=CONFIRM_TITLE_ELIMINA_LIBRO,
+                                message=CONFIRM_MESSAGE_ELIMINA_LIBRO)
+        if response == QMessageBox.StandardButton.Yes:
+            self.model_libri.elimina(id_libro)
+            view.search(view.searchbar.text())
+
     def _fill_table_gestione_libri(self, view: GestioneLibriView, text: str):
         libri = self.model_libri.by_text(text)
         for libro in libri:
@@ -66,10 +73,3 @@ class ControllerLibri(Controller):
                                titolo=libro.titolo,
                                autori=libro.autori,
                                isbn=libro.isbn)
-
-    def elimina_libro(self, id_libro: int, view: GestioneLibriView):
-        response = self.confirm(title=CONFIRM_TITLE_ELIMINA_LIBRO,
-                                message=CONFIRM_MESSAGE_ELIMINA_LIBRO)
-        if response == QMessageBox.StandardButton.Yes:
-            self.model_libri.elimina(id_libro)
-            view.search(view.searchbar.text())

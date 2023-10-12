@@ -1,27 +1,18 @@
 from abstract import Controller
 from database import Libro, PrenotazioneLibro, Prestito
-from model import ModelLibri
-from model.operatori import ModelOperatori
-from view.admin.aggiungi_modifica_libro import AggiungiModificaLibroView
-from view.admin.aggiungi_modifica_operatore import AggiungiModificaOperatoreView
-from view.admin.gestione_libri import GestioneLibriView
-from view.admin.gestione_operatori import GestioneOperatoriView
-from view.admin.gestione_utenti import GestioneUtentiView
-from view.admin.statistiche import StatisticheView
+from model import ModelLibri, ModelOperatori
+from view.admin import AggiungiModificaLibroView, AggiungiModificaOperatoreView, GestioneLibriView, \
+    GestioneOperatoriView, GestioneUtentiView, StatisticheView
 from view.auth import LoginView
-from view.catalogo import LibriPrenotatiView, ListaDiOsservazioneView, LibriInPrestitoView
-from view.common.cronologia_prestiti import CronologiaPrestitiView
-from view.libro import DettagliLibroGuestView, DettagliLibroUtenteView, DettagliPrenotazioneLibroView, \
+from view.common import CronologiaPrestitiView, SanzioniView
+from view.common.libro import DettagliLibroGuestView, DettagliLibroUtenteView, DettagliPrenotazioneLibroView, \
     DettagliPrestitoView
-from view.operatore.conferma_posto import ConfermaPostoView
-from view.operatore.registra_prestito import RegistraPrestitoView
-from view.operatore.registra_restituzione import RegistraRestituzioneView
-from view.utente.posti_prenotati import PostiPrenotatiView
-from view.common.sanzioni import SanzioniView
-from view.utente.scegli_quando import ScegliQuandoView
+from view.component.catalogo import LibriPrenotatiView, ListaDiOsservazioneView, LibriInPrestitoView
+from view.operatore import ConfermaPostoView, RegistraPrestitoView, RegistraRestituzioneView
+from view.utente import PostiPrenotatiView, ScegliQuandoView
 
 
-class RouterController(Controller):
+class ControllerRouter(Controller):
     def __init__(self,
                  model_libri: ModelLibri,
                  model_operatori: ModelOperatori):

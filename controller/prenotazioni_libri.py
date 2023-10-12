@@ -4,13 +4,12 @@ from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller
 from database import Libro, PrenotazioneLibro
-from model import ModelPrenotazioniLibri, ModelSanzioni
-from model.prestiti import ModelPrestiti
+from model import ModelPrenotazioniLibri, ModelSanzioni, ModelPrestiti
 from utils.auth import auth
 from utils.strings import *
-from view.catalogo import LibriPrenotatiView
 from view.component import CatalogoComponent
-from view.operatore.registra_prestito import RegistraPrestitoView
+from view.component.catalogo import LibriPrenotatiView
+from view.operatore import RegistraPrestitoView
 
 
 class ControllerPrenotazioniLibri(Controller):
@@ -38,7 +37,7 @@ class ControllerPrenotazioniLibri(Controller):
             return
 
         # check se l'utente ha già prenotato questo libro
-        has_already_this_prenotazione = self.model_prenotazioni_libri.gia_prenotato(utente=auth.user,                                                                            libro=libro)
+        has_already_this_prenotazione = self.model_prenotazioni_libri.gia_prenotato(utente=auth.user, libro=libro)
         if has_already_this_prenotazione:
             self.alert(title=ALERT_TITLE_PRENOTAZIONE_NEGATA,
                        message=ALERT_MESSAGE_LIBRO_GIA_PRENOTATO)

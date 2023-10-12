@@ -5,17 +5,14 @@ from datetime import datetime
 from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller
-from model.prenotazioni_posti import ModelPrenotazioniPosti
+from model import ModelPrenotazioniPosti
 from utils.auth import auth
 from utils.strings import *
-from view.operatore.conferma_posto import ConfermaPostoView
-from view.utente.posti_prenotati import PostiPrenotatiView
-from view.utente.scegli_aula import ScegliAulaView
-from view.utente.scegli_posto_singolo import ScegliPostoSingoloView
-from view.utente.scegli_quando import ScegliQuandoView
+from view.operatore import ConfermaPostoView
+from view.utente import PostiPrenotatiView, ScegliAulaView, ScegliPostoSingoloView, ScegliQuandoView
 
 
-class ControllerPosti(Controller):
+class ControllerPrenotazioniPosti(Controller):
     def __init__(self,
                  model_prenotazioni_posti: ModelPrenotazioniPosti):
         self.model_prenotazioni_posti = model_prenotazioni_posti
@@ -75,7 +72,7 @@ class ControllerPosti(Controller):
             self.model_prenotazioni_posti.cancella_prenotazione_aula(id_prenotazione_aula)
             self.redirect(PostiPrenotatiView())
 
-    def registra_prenotazione_posto_singolo(self, id_prenotazione: int, view: ConfermaPostoView):
+    def attiva_prenotazione_posto_singolo(self, id_prenotazione: int, view: ConfermaPostoView):
         response = self.confirm(title=CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO,
                                 message=CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO)
         if response == QMessageBox.StandardButton.Yes:
@@ -83,7 +80,7 @@ class ControllerPosti(Controller):
 
             view.search(view.searchbar.text())
 
-    def registra_prenotazione_aula(self, id_prenotazione: int, view: ConfermaPostoView):
+    def attiva_prenotazione_aula(self, id_prenotazione: int, view: ConfermaPostoView):
         response = self.confirm(title=CONFIRM_TITLE_ATTIVA_PRENOTAZIONE_POSTO,
                                 message=CONFIRM_MESSAGE_ATTIVA_PRENOTAZIONE_POSTO)
         if response == QMessageBox.StandardButton.Yes:

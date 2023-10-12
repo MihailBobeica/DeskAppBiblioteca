@@ -1,9 +1,9 @@
 from abstract import Controller
-from model.statistiche import ModelStatistiche
-from view.admin.statistiche import StatisticheView
+from model import ModelStatistiche
+from view.admin import StatisticheView
 
 
-class StatisticheController(Controller):
+class ControllerStatistiche(Controller):
     def __init__(self,
                  model_statistiche: ModelStatistiche):
         self.model_statistiche = model_statistiche

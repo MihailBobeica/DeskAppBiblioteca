@@ -1,10 +1,8 @@
 from sqlalchemy import func
 
-from abstract.model import Model
-from database import Prestito
+from abstract import Model
+from database import Prestito, Sanzione, Libro
 from database import Session
-from database import Sanzione
-from database import Libro
 
 
 class ModelStatistiche(Model):
@@ -26,7 +24,7 @@ class ModelStatistiche(Model):
         db_session.close()
         return totale_utenti
 
-    def titoli_piu_prestati(self):
+    def titoli_piu_prestati(self) -> list[str]:
         db_session = Session()
         # prestiti_libri: list[tuple[int(id_libro), int(numero_prestiti)]]
         prestiti_libri = db_session.query(
@@ -40,13 +38,13 @@ class ModelStatistiche(Model):
         db_session.close()
         return titoli_libri
 
-    def totale_sospensioni(self):
+    def totale_sospensioni(self) -> int:
         db_session = Session()
         totale_sospensioni = db_session.query(Sanzione).count()
         db_session.close()
         return totale_sospensioni
 
-    def totale_libri(self):
+    def totale_libri(self) -> int:
         db_session = Session()
         totale_libri = db_session.query(Libro).count()
         db_session.close()

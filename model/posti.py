@@ -1,5 +1,5 @@
-from abstract.model import Model
-from database import Posto as DbPosto
+from abstract import Model
+from database import Posto
 from database import Session
 
 
@@ -8,8 +8,8 @@ class ModelPosti(Model):
                   nome: str,
                   aula: str):
         db_session = Session()
-        posto = DbPosto(nome=nome,
-                        aula=aula)
+        posto = Posto(nome=nome,
+                      aula=aula)
         db_session.add(posto)
         db_session.commit()
         db_session.close()

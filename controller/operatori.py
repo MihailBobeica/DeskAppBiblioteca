@@ -1,10 +1,9 @@
 from PySide6.QtWidgets import QMessageBox
 
 from abstract import Controller
-from model import ModelUsers
-from model.operatori import ModelOperatori
+from model import ModelUsers, ModelOperatori
 from utils.strings import *
-from view.admin.gestione_operatori import GestioneOperatoriView
+from view.admin import GestioneOperatoriView
 
 
 class ControllerOperatori(Controller):
@@ -12,7 +11,7 @@ class ControllerOperatori(Controller):
                  model_operatori: ModelOperatori,
                  model_users: ModelUsers):
         self.model_operatori = model_operatori
-        self.model_utenti = model_users
+        self.model_users = model_users
         super().__init__()
 
     def aggiungi_operatore(self,
@@ -21,7 +20,7 @@ class ControllerOperatori(Controller):
                            cognome: str,
                            password: str):
         # controllo che lo username sia univoco
-        is_username_univoco = self.model_utenti.is_username_univoco(username)
+        is_username_univoco = self.model_users.is_username_univoco(username)
         if is_username_univoco:
             self.model_operatori.aggiungi(username=username,
                                           nome=nome,

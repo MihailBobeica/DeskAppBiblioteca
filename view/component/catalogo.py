@@ -77,3 +77,18 @@ class CatalogoComponent(View):
             libro_component_factory = LibroComponentFactory(catalogo=self, dati=data)
             libro = libro_component_factory.create(self.context)
             self.grid_layout.addWidget(libro, row, col)
+
+
+class LibriPrenotatiView(CatalogoComponent):
+    def __init__(self):
+        super().__init__(KeyContext.CATALOGO_PRENOTAZIONI_LIBRI)
+
+
+class ListaDiOsservazioneView(CatalogoComponent):
+    def __init__(self):
+        super().__init__(KeyContext.CATALOGO_LIBRI_OSSERVATI)
+
+
+class LibriInPrestitoView(CatalogoComponent):
+    def __init__(self):
+        super().__init__(KeyContext.CATALOGO_LIBRI_IN_PRESTITO)

@@ -2,10 +2,9 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import or_, and_
 
-from abstract.model import Model
-from database import Libro
-from database import Session, Prestito
-from database import User as Utente
+from abstract import Model
+from database import Libro, Prestito, Utente
+from database import Session
 from utils.backend import get_codice, DURATA_PRESTITO, MAX_PRESTITI
 
 
@@ -29,7 +28,7 @@ class ModelPrestiti(Model):
     def __init__(self):
         super().__init__()
 
-    def aggiungi(self, utente: Utente, libro: Libro):
+    def aggiungi(self, utente: Utente, libro: Libro) -> None:
         db_session = Session()
         adesso = datetime.now()
         prestito = Prestito(data_inizio=adesso,
@@ -40,6 +39,27 @@ class ModelPrestiti(Model):
         db_session.add(prestito)
         db_session.commit()
         db_session.close()
+
+    def restituzione(self, prestito: Prestito) -> None:
+        db_session = Session()
+
+        prestito: Prestito = db_session.query(Prestito).get(prestito.id)
+        prestito.data_restituzione = datetime.now()
+
+        libro = prestito.libro
+        libro.disponibili += 1
+
+        db_session.merge(prestito)
+        db_session.merge(libro)
+
+        db_session.commit()
+        db_session.close()
+
+    def by_id(self, id_prestito: int) -> Prestito:
+        db_session = Session()
+        prestito = db_session.query(Prestito).get(id_prestito)
+        db_session.close()
+        return prestito
 
     def get_utenti_con_prestiti(self, text) -> list[Utente]:
         db_session = Session()
@@ -55,29 +75,12 @@ class ModelPrestiti(Model):
         db_session.close()
         return utenti_con_prestiti
 
-    def by_id(self, id_prestito: int) -> Prestito:
+    def get_libro(self, prestito: Prestito) -> Libro:
         db_session = Session()
-        prestito = db_session.query(Prestito).get(id_prestito)
-        db_session.close()
-        return prestito
-
-    def is_scaduto(self, prestito: Prestito):
-        return prestito.data_scadenza < datetime.now()
-
-    def restituzione(self, prestito: Prestito):
-        db_session = Session()
-
         prestito: Prestito = db_session.query(Prestito).get(prestito.id)
-        prestito.data_restituzione = datetime.now()
-
         libro = prestito.libro
-        libro.disponibili += 1
-
-        db_session.merge(prestito)
-        db_session.merge(libro)
-
-        db_session.commit()
         db_session.close()
+        return libro
 
     def passati(self, id_utente: int) -> list[Prestito]:
         db_session = Session()
@@ -87,13 +90,6 @@ class ModelPrestiti(Model):
         ).order_by(Prestito.data_inizio.desc()).all()
         db_session.close()
         return prestiti
-
-    def get_libro(self, prestito: Prestito) -> Libro:
-        db_session = Session()
-        prestito: Prestito = db_session.query(Prestito).get(prestito.id)
-        libro = prestito.libro
-        db_session.close()
-        return libro
 
     def validi_by_utente(self, utente: Utente) -> list[Prestito]:
         db_session = Session()
@@ -115,22 +111,8 @@ class ModelPrestiti(Model):
         db_session.close()
         return prestiti_non_restituiti
 
-    def da_restituire(self, id):
-        db_session = Session()
-        prestiti = db_session.query(Prestito).filter(and_(Prestito.utente_id == id),
-                                                     (Prestito.data_restituzione == None)).all()
-        # print(prestiti)
-        db_session.close()
-        return prestiti
-
-    def scaduti(self, utente: Utente):
-        db_session = Session()
-        prestiti_scaduti = db_session.query(Prestito).filter(
-            and_(Prestito.utente_id == utente.id,
-                 Prestito.data_scadenza > datetime.now())
-        ).all()
-        db_session.close()
-        return prestiti_scaduti
+    def is_scaduto(self, prestito: Prestito) -> bool:
+        return prestito.data_scadenza < datetime.now()
 
     def has_max(self, utente: Utente) -> bool:
         db_session = Session()
@@ -140,7 +122,7 @@ class ModelPrestiti(Model):
         ).count()
         return numero_prestiti > MAX_PRESTITI
 
-    def gia_in_prestito(self, utente: Utente, libro: Libro):
+    def gia_in_prestito(self, utente: Utente, libro: Libro) -> bool:
         db_session = Session()
         prestito = db_session.query(Prestito).filter(
             and_(Prestito.utente_id == utente.id,
