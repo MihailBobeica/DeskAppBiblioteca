@@ -1,25 +1,6 @@
-from controller import LoginController, ControllerLogout, CatalogoController, ControllerLibriOsservati, \
-    ControllerPrenotazioniLibri, ControllerPrenotazioniPosti
-from controller.libri import ControllerLibri
-from controller.notifiche import ControllerNotifiche
-from controller.operatori import ControllerOperatori
-from controller.prestiti import ControllerPrestiti
-from controller.router import ControllerRouter
-from controller.sanzioni import ControllerSanzioni
-from controller.statistiche import ControllerStatistiche
-from controller.utenti import ControllerUtenti
+from controller import *
 from database.seed import *
-from model import ModelLibriOsservati, ModelUsers
-from model import ModelPrenotazioniLibri
-from model.aule import ModelAule
-from model.libri import ModelLibri
-from model.operatori import ModelOperatori
-from model.posti import ModelPosti
-from model.prenotazioni_posti import ModelPrenotazioniPosti
-from model.prestiti import ModelPrestiti
-from model.sanzioni import ModelSanzioni
-from model.statistiche import ModelStatistiche
-from model.utenti import ModelUtenti
+from model import *
 from view.homepage import HomeGuestView
 from view.main import MainWindow
 
