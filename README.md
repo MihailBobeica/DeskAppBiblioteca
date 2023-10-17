@@ -16,7 +16,7 @@ _Progetto corso Ingegneria del Software_
     ```
 
 2. Installare le librerie python necessarie per il corretto funzionamento dell'applicazione
-   **N.B.** E\' consigliato eseguire tali operazioni in un virtual environment che ha la versione di python 3.11
+   <br>**N.B.** E\' consigliato eseguire tali operazioni in un virtual environment che ha la versione di python 3.11
     ```shell
     pip install -r requirements.txt
     ```
