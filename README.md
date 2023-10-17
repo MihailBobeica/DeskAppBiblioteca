@@ -1,5 +1,6 @@
 # DeskAppBiblioteca
 _Progetto corso Ingegneria del Software_
+_Gestione Biblioteca_
 
 **Autori**
 * Mihail Bobeica
