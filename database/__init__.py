@@ -7,10 +7,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
 
+
+RESEED_DB = True  # flag per ricreare le tabelle del database e rifare il seed
+
 base_dir_name = "DeskAppBiblioteca"
 project_dir = os.getcwd().rsplit(base_dir_name)[0]
 app_dir = path.join(project_dir, base_dir_name)
 database_absolute_path = path.join(app_dir, "database/db.sqlite")
+if not os.path.exists(database_absolute_path):
+    with open(database_absolute_path, "w") as file:
+        print("Il database (file) non era presente ed è stato creato.")
 db_engine = create_engine(f"sqlite:///{database_absolute_path}")
 
 Session = sessionmaker(bind=db_engine)
@@ -170,6 +176,7 @@ class LibroOsservato(Base):
     libro = relationship("Libro")
 
 
-# reset database
-Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle
-Base.metadata.create_all(db_engine)  # crea tutte le tabelle
+if RESEED_DB:
+    # reset database
+    Base.metadata.drop_all(db_engine)  # cancella tutte le tabelle
+    Base.metadata.create_all(db_engine)  # crea tutte le tabelle

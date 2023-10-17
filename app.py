@@ -1,4 +1,5 @@
 from controller import *
+from database import RESEED_DB
 from database.seed import *
 from model import *
 from view.homepage import HomeGuestView
@@ -22,13 +23,14 @@ model_operatori = ModelOperatori()
 model_statistiche = ModelStatistiche()
 
 # seeding
-model_users.seed_db(UTENTI)
-model_libri.seed_db(LIBRI)
-model_aule.seed_db(AULE)
-model_posti.seed_db(POSTI)
-model_prestiti.seed_db(PRESTITI)
-model_prenotazioni_libri.seed_db(PRENOTAZIONI_LIBRI)
-# model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
+if RESEED_DB:
+    model_users.seed_db(UTENTI)
+    model_libri.seed_db(LIBRI)
+    model_aule.seed_db(AULE)
+    model_posti.seed_db(POSTI)
+    model_prestiti.seed_db(PRESTITI)
+    model_prenotazioni_libri.seed_db(PRENOTAZIONI_LIBRI)
+    # model_prenotazione_aula.seed_db(PRENOTAZIONI_AULE)
 
 # instantiate all controllers
 controller_utenti = ControllerUtenti(model_utenti)

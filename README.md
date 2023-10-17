@@ -16,7 +16,8 @@ _Progetto corso Ingegneria del Software_
     pip install -r requirements.txt
     ```
 
-3. Una volta avviata l'applicazione (potrebbe impiegare qualche secondo), è possibile effettuare il login usando le seguenti credenziali
+3. Una volta avviata l'applicazione (potrebbe impiegare qualche secondo), 
+è possibile effettuare il login usando le seguenti credenziali
 
 | ruolo     | username | password  |
 |-----------|----------|-----------|
@@ -25,6 +26,13 @@ _Progetto corso Ingegneria del Software_
 | utente    | S003     | utente    |
 | utente    | S004     | utente    |
 | utente    | S005     | utente    |
+
+**N.B.** Essendo una demo, per motivi di comodità, il contenuto del database viene 
+ricreato tramite i seeder (presenti nel file `/database/seed.py`) a ogni avvio dell'applicazione.
+Se si desidera evitare tale comportamento settare la flag `RESEED_DB` (presente nel file 
+`/database/__init__.py`) a `False`, (prerequisito: aver già creato le tabelle del database, 
+in questo caso semplicemente aver eseguito l'applicazione almeno una volta con la flag `RESEED_DB = True`,
+che è l'opzione di default).
 
 
 ## Preview homepage
