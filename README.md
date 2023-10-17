@@ -1,6 +1,11 @@
 # DeskAppBiblioteca
 _Progetto corso Ingegneria del Software_
 
+**Autori**
+* Mihail Bobeica
+* Lorenzo Gaetani
+* Zaki Mina Youssef Fahmy 
+
 
 ## Get started!
 
