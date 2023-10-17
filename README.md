@@ -30,11 +30,11 @@ _Progetto corso Ingegneria del Software_
 ## Preview homepage
 
 ### Homepage Guest
-![Vista homepage guest](URL)
+![Vista homepage guest](https://github.com/MihailBobeica/DeskAppBiblioteca/blob/master/img/home_guest.png)
 ### Homepage Utente
-![Vista homepage utente](URL)
+![Vista homepage utente](https://github.com/MihailBobeica/DeskAppBiblioteca/blob/master/img/home_utente.png)
 ### Homepage Operatore
-![Vista homepage operatore](URL)
+![Vista homepage operatore](https://github.com/MihailBobeica/DeskAppBiblioteca/blob/master/img/home_operatore.png)
 ### Homepage Admin
-![vista homepage admin](URL)
+![vista homepage admin](https://github.com/MihailBobeica/DeskAppBiblioteca/blob/master/img/home_admin.png)
 
